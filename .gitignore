@@ -1,9 +1,33 @@
-# Ignore everything
-*
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
 
-# Keep the folder and one file inside it
-!.gitignore
-!.nojekyll
-!README.md
-!docs/*
+# Quarto / knitr / cache
+.quarto/
+_freeze/
+_site/
+_publish/
+*_cache/
 
+# R
+.Rhistory
+.RData
+.Rproj.user/
+renv/library/
+renv/staging/
+
+# Python
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# LaTeX byproducts
+*.aux *.log *.out *.toc *.snm *.nav *.synctex.gz *.fls *.fdb_latexmk *.bbl *.blg *.bcf *.run.xml
+
+
+/.quarto/
+**/*.quarto_ipynb
+
+old/

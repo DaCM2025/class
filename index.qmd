@@ -1,0 +1,7 @@
+---
+title: "DaCM — Slides"
+page-layout: full
+---
+
+- [Lecture 1 — Introduction & Tools](lecture01.html)
+

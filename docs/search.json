@@ -1,0 +1,408 @@
+[
+  {
+    "objectID": "lecture01.html#welcome",
+    "href": "lecture01.html#welcome",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Welcome!",
+    "text": "Welcome!\n\n\n\nCourse: Data & Code Management: From Collection to Application\nTime & place: Thursdays 9:00–12:00\nCommunication: Slack (class workspace)\nMaterials: GitHub repo & website\nGrading: participation (bonus), homeworks (3 indivuals) and final project (group)\n\nAlways refer to the course website dcm.samorso.ch for the latest info!\n\n\n\n“Reproducibility is job #1 for modern data science.”\n— everyone who has ever lost a script 😉\n\n\n\n\n\n\n\n\nNote\n\n\nToday’s goals\n1. Understand course scope & expectations\n2. See why reproducibility matters\n3. Meet the core toolchain (R, Python, SQL, GitHub, Markdown/Jupyter/Quarto)\n4. Try small, focused exercises"
+  },
+  {
+    "objectID": "lecture01.html#agenda",
+    "href": "lecture01.html#agenda",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Agenda",
+    "text": "Agenda\n\nCourse overview & evaluation\n\nReproducibility in analytics\n\nCore tools & workflows\n\nQuarto refresher\nGitHub refresher\nMini‑exercises\n\nTip: Slides include short activities you can try during/after class."
+  },
+  {
+    "objectID": "lecture01.html#expectations-evaluation",
+    "href": "lecture01.html#expectations-evaluation",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Expectations & Evaluation",
+    "text": "Expectations & Evaluation\n\nParticipation: engaged presence (practicals), Slack questions/answers\nHomeworks: short, targeted (programming, SQL, tooling)\nProject: real‑world style, reproducible deliverable\nAcademic integrity: cite sources, no copy‑paste answers\n\nTools allowed: R, Python, SQL, Quarto, GitHub, AI copilots (with provenance & verification)."
+  },
+  {
+    "objectID": "lecture01.html#what-are-llms",
+    "href": "lecture01.html#what-are-llms",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "What are LLMs?",
+    "text": "What are LLMs?\n\nDefinition: Large Language Models (LLMs) are AI models trained on vast amounts of text data to understand and generate human language.\nExamples:\n\nGPT-4, GPT-5 (OpenAI)\nGemini (Google)\nLLaMA (Meta)\nClaude (Anthropic)\n\nCapabilities:\n\nNatural language understanding and generation\nText completion, summarization, translation\nAssistance in various domains, including programming."
+  },
+  {
+    "objectID": "lecture01.html#why-are-they-important-for-programming",
+    "href": "lecture01.html#why-are-they-important-for-programming",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Why are they important for programming?",
+    "text": "Why are they important for programming?\n\nLLMs can understand code as a special type of language.\n\nThey offer assistance in code generation, debugging, and improving programming productivity."
+  },
+  {
+    "objectID": "lecture01.html#llm-for-programming---key-features",
+    "href": "lecture01.html#llm-for-programming---key-features",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "LLM for Programming - Key Features",
+    "text": "LLM for Programming - Key Features\n\nCode Suggestions:\n\nAutomates repetitive coding tasks.\nHelps in writing boilerplate code.\nSee for instance GitHub’s copilot.\n\nError Debugging:\n\nIdentifies and resolves bugs in code snippets.\nSuggests alternative solutions or optimizations.\n\nCode Explanation:\n\nBreaks down complex code into simple explanations.\nHelps in learning new programming concepts."
+  },
+  {
+    "objectID": "lecture01.html#benefits-of-using-llms-like-chatgpt-in-programming",
+    "href": "lecture01.html#benefits-of-using-llms-like-chatgpt-in-programming",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Benefits of Using LLMs like ChatGPT in Programming",
+    "text": "Benefits of Using LLMs like ChatGPT in Programming\n1. Increased Productivity\n\nAutomates repetitive and boilerplate tasks.\nHelps explore new coding approaches faster.\n\n2. Learning and Discovery\n\nExplains code, libraries, and new languages in an intuitive manner.\nGreat for beginners and advanced users alike."
+  },
+  {
+    "objectID": "lecture01.html#challenges-and-considerations",
+    "href": "lecture01.html#challenges-and-considerations",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Challenges and Considerations",
+    "text": "Challenges and Considerations\n1. Not Always Correct\n\nLLMs can suggest incorrect code, it can hallucinate, requiring human oversight.\n\n2. Context Limitations\n\nLLMs lack the full project context, so they might not understand the specific requirements.\n\n3. Ethical Concerns\n\nIntellectual property, security, and data privacy must be considered when using AI for programming.\n\n\n\n\n\n\n\nImportant\n\n\nAI policy (short)\nUse AI to brainstorm, outline, or lint code. Own the result: verify outputs, write your tests, and document AI assistance (what, why, where)."
+  },
+  {
+    "objectID": "lecture01.html#minimal-project-structure",
+    "href": "lecture01.html#minimal-project-structure",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Minimal Project Structure",
+    "text": "Minimal Project Structure\nproject/\n├─ data/           # raw/ and processed/ (never overwrite raw)\n├─ R/ or src/      # functions, modules\n├─ notebooks/      # exploratory analysis\n├─ reports/        # Quarto/Markdown outputs\n├─ tests/          # unit tests\n├─ renv/ or .venv/ # R or Python environment\n├─ .gitignore\n└─ README.md"
+  },
+  {
+    "objectID": "lecture01.html#tooling-map",
+    "href": "lecture01.html#tooling-map",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Tooling Map",
+    "text": "Tooling Map\n\nR (tidyverse, data.table) & Python (pandas, polars)\nSQL for data retrieval/joins/aggregations (next week)\nGit + GitHub for versioning & collaboration\nMarkdown/Jupyter/Quarto for literate workflows\nOptional helpers: make, pre-commit, linters\n\n\n\nR snippet\n# Vectorized transform\nlibrary(dplyr)\nset.seed(42)\ndf &lt;- tibble(x = rnorm(5), y = rnorm(5))\ndf |&gt;\n  mutate(z = x + y, grp = if_else(z &gt; 0, \"pos\", \"neg\"))\n\nPython snippet\nimport pandas as pd\nimport numpy as np\nrng = np.random.default_rng(42)\ndf = pd.DataFrame({\"x\": rng.normal(size=5), \"y\": rng.normal(size=5)})\ndf.assign(z=lambda d: d.x + d.y,\n          grp=lambda d: np.where(d.z &gt; 0, \"pos\", \"neg\"))\n\n\n\n\n\n\n\nCaution\n\n\nAre these codes reproducible? Why/why not?"
+  },
+  {
+    "objectID": "lecture01.html#what-is-quarto",
+    "href": "lecture01.html#what-is-quarto",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "What is Quarto?",
+    "text": "What is Quarto?\n\nQuarto: successor of RMarkdown\nmarkdown contrasts markup languages (e.g. HTML) which require heavy syntax\nQuarto provides a literate programming framework for data science.\nLiterate programming: narrative + code in the same document.\nReproducible research: analyses can be reproduced the same way by someone else."
+  },
+  {
+    "objectID": "lecture01.html#what-is-quarto-1",
+    "href": "lecture01.html#what-is-quarto-1",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "What is Quarto?",
+    "text": "What is Quarto?\n\nIn a nutshell, Quarto builds on Pandoc and execution engines (Knitr for R, Jupyter for Python/Julia/Observable). It allows embedding code into Markdown documents, which can be rendered into multiple formats (HTML, PDF, Word, …)."
+  },
+  {
+    "objectID": "lecture01.html#create-a-quarto-document",
+    "href": "lecture01.html#create-a-quarto-document",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Create a Quarto document",
+    "text": "Create a Quarto document\nIn RStudio or VSCode, click File → New File → Quarto Document. Or simply create a .qmd file."
+  },
+  {
+    "objectID": "lecture01.html#important-features-of-markdown",
+    "href": "lecture01.html#important-features-of-markdown",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Important features of markdown",
+    "text": "Important features of markdown\n\nThree aspects:\n\nYAML metadata\nText\nCode cells/chunks"
+  },
+  {
+    "objectID": "lecture01.html#yaml-yaml-aint-markup-language",
+    "href": "lecture01.html#yaml-yaml-aint-markup-language",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "YAML (YAML Ain’t Markup Language)",
+    "text": "YAML (YAML Ain’t Markup Language)\n\nHeader where options are defined.\nSurrounded by ---\nOptions include: author, date, output format, table of contents, themes, code folding, …\n\nExample:\n---\ntitle: \"My Report\"\nauthor: \"Jane Doe\"\nformat: html\ntoc: true\n---"
+  },
+  {
+    "objectID": "lecture01.html#text-in-markdown",
+    "href": "lecture01.html#text-in-markdown",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Text in Markdown",
+    "text": "Text in Markdown\n\nCore body, essential for explaining your analysis.\nMarkdown syntax:\n\n*italics*, **bold**, code style\nheaders (#, ##, ###)\nlists (*, -, +, 1.)\nlinks: [Quarto](https://quarto.org)\nblockquotes (&gt; …)\nimages: ![](path/to/img.png)\ntables (basic Markdown or functions like knitr::kable())"
+  },
+  {
+    "objectID": "lecture01.html#extended-text-features",
+    "href": "lecture01.html#extended-text-features",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Extended text features",
+    "text": "Extended text features\n\nMath: in \\(\\LaTeX\\) via $...$ inline or $$...$$ display.\nCross-references: @fig-label or @sec-label.\nCitations with .bib files ([@doe2023]).\nYou can always use HTML when needed."
+  },
+  {
+    "objectID": "lecture01.html#code-cells-in-quarto",
+    "href": "lecture01.html#code-cells-in-quarto",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Code cells in Quarto",
+    "text": "Code cells in Quarto\nQuarto supports R, Python, Julia, and ObservableJS.\nCode cell delimiters:\n```r\n# R code here\n```\n\n```python\n# Python code here\n```\n\nIn Jupyter notebooks, the same concepts apply — each code cell is language-specific."
+  },
+  {
+    "objectID": "lecture01.html#chunk-cell-options",
+    "href": "lecture01.html#chunk-cell-options",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Chunk / cell options",
+    "text": "Chunk / cell options\nQuarto syntax uses YAML-like #| comments:\n```r\n#| echo: false\n#| eval: true\n#| warning: false\n#| cache: false\n1 + 1\n```\nOptions you’ll use most often:\n\neval: run code?\necho: show code?\nwarning: show warnings?\ncache: reuse computations?"
+  },
+  {
+    "objectID": "lecture01.html#figures-in-code-cells",
+    "href": "lecture01.html#figures-in-code-cells",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Figures in code cells",
+    "text": "Figures in code cells\nOptions for plots:\n```r\n#| fig-width: 6\n#| fig-height: 4\n#| fig-align: center\n#| fig-cap: \"A scatterplot\"\nplot(iris$Sepal.Length, iris$Sepal.Width)\n```\n\nA scatterplot"
+  },
+  {
+    "objectID": "lecture01.html#printing-tables-with-knitrkable",
+    "href": "lecture01.html#printing-tables-with-knitrkable",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Printing tables with knitr::kable()",
+    "text": "Printing tables with knitr::kable()\n```r\n#| echo: true\n#| fig-height: 5\ndata(\"iris\")\nknitr::kable(iris[1:5,])\n```\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\n5.1\n3.5\n1.4\n0.2\nsetosa\n\n\n4.9\n3.0\n1.4\n0.2\nsetosa\n\n\n4.7\n3.2\n1.3\n0.2\nsetosa\n\n\n4.6\n3.1\n1.5\n0.2\nsetosa\n\n\n5.0\n3.6\n1.4\n0.2\nsetosa\n\n\n\n\n\nFor enhanced tables: kableExtra."
+  },
+  {
+    "objectID": "lecture01.html#extended-tables-with-kableextra",
+    "href": "lecture01.html#extended-tables-with-kableextra",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Extended tables with kableExtra",
+    "text": "Extended tables with kableExtra\n\nlibrary(kableExtra)\nmtcars[1:3, 1:8] %&gt;%\n  kbl() %&gt;%\n  kable_paper(full_width = T)\n\n\n\n\n\nmpg\ncyl\ndisp\nhp\ndrat\nwt\nqsec\nvs\n\n\n\n\nMazda RX4\n21.0\n6\n160\n110\n3.90\n2.620\n16.46\n0\n\n\nMazda RX4 Wag\n21.0\n6\n160\n110\n3.90\n2.875\n17.02\n0\n\n\nDatsun 710\n22.8\n4\n108\n93\n3.85\n2.320\n18.61\n1"
+  },
+  {
+    "objectID": "lecture01.html#mathpix-for-equations",
+    "href": "lecture01.html#mathpix-for-equations",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mathpix for equations",
+    "text": "Mathpix for equations\nMathpix Snip digitizes handwritten/printed math and pastes directly into Markdown/LaTeX/Word."
+  },
+  {
+    "objectID": "lecture01.html#live-preview",
+    "href": "lecture01.html#live-preview",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Live preview",
+    "text": "Live preview\n\nRStudio: quarto preview\nVSCode: Quarto extension\nJupyter: live interactive editing\n\nInstant feedback without full rebuilds."
+  },
+  {
+    "objectID": "lecture01.html#why-github",
+    "href": "lecture01.html#why-github",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Why GitHub?",
+    "text": "Why GitHub?\n\nWork with others on the same project without endless email exchanges\n\nAvoid “file_v1”, “file_v2”, “final_version_really.R” chaos\n\nTrack who changed what and when\n\nDiscuss, review, and plan changes in one place\n\n\n\n\n\n\n\nTip\n\n\n💡 Think of GitHub as both a time machine and a teamwork hub."
+  },
+  {
+    "objectID": "lecture01.html#why-github-for-this-course",
+    "href": "lecture01.html#why-github-for-this-course",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Why GitHub for this course?",
+    "text": "Why GitHub for this course?\nWe will use GitHub to:\n- Work in groups on projects\n- Submit homeworks\n- Develop programs"
+  },
+  {
+    "objectID": "lecture01.html#what-is-git",
+    "href": "lecture01.html#what-is-git",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "What is Git?",
+    "text": "What is Git?\nGit is a distributed version control system:\n\nDistributed: every copy of a project has the full history\n\nVersion control: keeps track of all changes to your project\n\n\n\n\n\n\n\nImportant\n\n\nInstead of dozens of “final” files, Git records every change in one clean history."
+  },
+  {
+    "objectID": "lecture01.html#types-of-version-control-systems",
+    "href": "lecture01.html#types-of-version-control-systems",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Types of Version Control Systems",
+    "text": "Types of Version Control Systems\n\nLocal – on your own computer\n\nCentralized – one main server (risk of failure!)\n\nDistributed – full history on every machine (Git)"
+  },
+  {
+    "objectID": "lecture01.html#why-version-control",
+    "href": "lecture01.html#why-version-control",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Why Version Control?",
+    "text": "Why Version Control?\n\nCollaborate safely with others\n\nRoll back mistakes\n\nExplore new ideas with branches\n\nReduce risks of file loss or corruption"
+  },
+  {
+    "objectID": "lecture01.html#git-github",
+    "href": "lecture01.html#git-github",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Git ≠ GitHub",
+    "text": "Git ≠ GitHub\n\nGit = software for version control\n\nGitHub = website/platform that hosts Git repositories\n\nAlternatives: GitLab, BitBucket, SourceForge"
+  },
+  {
+    "objectID": "lecture01.html#file-states-in-git",
+    "href": "lecture01.html#file-states-in-git",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "File States in Git",
+    "text": "File States in Git\nA file can be:\n- Untracked – new, not in Git yet\n- Modified – changed, not saved in history\n- Staged – marked for next snapshot\n- Committed – safely stored in the repository"
+  },
+  {
+    "objectID": "lecture01.html#ignoring-files",
+    "href": "lecture01.html#ignoring-files",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Ignoring Files",
+    "text": "Ignoring Files\nUse a .gitignore file to tell Git which files to skip:\n- Temporary files (.Rhistory, .DS_Store)\n- Large data files\n- Secrets or keys"
+  },
+  {
+    "objectID": "lecture01.html#github-basic-workflow",
+    "href": "lecture01.html#github-basic-workflow",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "GitHub: Basic Workflow",
+    "text": "GitHub: Basic Workflow\n\nOpen your RStudio project (linked to GitHub)\n\nWork locally as usual\n\nSave often\n\nCommit snapshots of your changes\n\nPush commits to GitHub\n\nOn another computer (or from a teammate) → Pull updates\n\n\n\n\n\n\n\nTip\n\n\nAlways pull before you push to avoid conflicts!"
+  },
+  {
+    "objectID": "lecture01.html#commits",
+    "href": "lecture01.html#commits",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Commits",
+    "text": "Commits\n\nCommit = snapshot of your work\n\nGood commit messages explain why you changed something, not just what"
+  },
+  {
+    "objectID": "lecture01.html#common-issues-fixes",
+    "href": "lecture01.html#common-issues-fixes",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Common Issues & Fixes",
+    "text": "Common Issues & Fixes\n\nWrong repo → Double-check you’re in the right project\n\nLarge files (&gt;100MB) → use another service (Dropbox, Zenodo, etc.)\n\nConflicts → someone else changed the same file → git pull --rebase\n\nMerge conflicts → same lines changed → talk to your teammate + edit manually"
+  },
+  {
+    "objectID": "lecture01.html#new-habits-with-github",
+    "href": "lecture01.html#new-habits-with-github",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "New Habits with GitHub",
+    "text": "New Habits with GitHub\n\nCommit often\n\nPush regularly\n\nPull before you start working\n\nCommunicate with teammates"
+  },
+  {
+    "objectID": "lecture01.html#collaboration-rituals",
+    "href": "lecture01.html#collaboration-rituals",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Collaboration Rituals",
+    "text": "Collaboration Rituals\n\nBranch → small PR → peer review → merge\nUse Issues with labels (“bug”, “enhancement”, “question”)\nTemplates: PULL_REQUEST_TEMPLATE.md, ISSUE_TEMPLATE.md\nDocument decisions in CHANGELOG.md\n\n\n\n\n\n\n\nNote\n\n\nActivity (2’): In pairs, outline a PR description for adding a new utils/plot.R with one function and one test."
+  },
+  {
+    "objectID": "lecture01.html#example-pr-description",
+    "href": "lecture01.html#example-pr-description",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Example PR Description",
+    "text": "Example PR Description\nPR Title\nAdd utils/plot.R with basic plotting function and test\nSummary\n- Add plot_scatter() in utils/plot.R\n- Add test in tests/testthat/test-plot.R\nDetails\n- Input validation (numeric vectors of equal length)\n- Uses ggplot2\n- Tests:\n- Error if unequal lengths\n- Output is \"ggplot\""
+  },
+  {
+    "objectID": "lecture01.html#example-pr-description-cont.",
+    "href": "lecture01.html#example-pr-description-cont.",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Example PR Description (cont.)",
+    "text": "Example PR Description (cont.)\nChecklist\n- [x] Function implemented\n- [x] Tests added\n- [x] Documentation with roxygen2\n- [ ] CI checks pass\nRelated Issues\nCloses #12 (feature request: plotting utilities)"
+  },
+  {
+    "objectID": "lecture01.html#github-in-a-nutshell",
+    "href": "lecture01.html#github-in-a-nutshell",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "GitHub in a Nutshell",
+    "text": "GitHub in a Nutshell\n\nGit gets easier once you get the basic idea that branches are homeomorphic endofunctors mapping submanifolds of a Hilbert space.\n—Isaac Wolkerstorfer (joking)"
+  },
+  {
+    "objectID": "lecture01.html#git-in-6-commands",
+    "href": "lecture01.html#git-in-6-commands",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Git in 6 commands",
+    "text": "Git in 6 commands\ngit status\ngit add -A\ngit commit -m \"Explain what/why, not how\"\ngit pull --rebase\ngit push\ngit switch -c feature/your-topic   # create a feature branch\n\n\n\n\n\n\nNote\n\n\nActivity (think‑pair‑share):\nWhat makes a good commit message? Write one for “fixed weird bug in script” that would help your future self."
+  },
+  {
+    "objectID": "lecture01.html#reproducibility-why-it-matters",
+    "href": "lecture01.html#reproducibility-why-it-matters",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Reproducibility: Why it matters",
+    "text": "Reproducibility: Why it matters\nSymptoms of non‑reproducible work (raise your hand if you’ve seen these):\n- “It works on my machine.”\n- “I changed nothing and it broke.”\n- “Which file is the final_final_v3.R?”\nPrinciples\n- Deterministic environments\n- Versioned code and data contracts\n- Scripts, not clicks\n- Single‑source of truth (parameters, config)\n- Literate programming (Markdown/Quarto)\n- Automated checks (CI later in course)"
+  },
+  {
+    "objectID": "lecture01.html#is-there-a-reproducibility-crisis",
+    "href": "lecture01.html#is-there-a-reproducibility-crisis",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Is there a reproducibility crisis?",
+    "text": "Is there a reproducibility crisis?"
+  },
+  {
+    "objectID": "lecture01.html#environments-determinism",
+    "href": "lecture01.html#environments-determinism",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Environments (determinism)",
+    "text": "Environments (determinism)\n\n\nR — renv\ninstall.packages(\"renv\")\nrenv::init()\nrenv::snapshot()   # lock versions\nrenv::restore()    # reproduce elsewhere\n\nPython — Conda (recommended)\n# create & activate\nconda create -n bia python=3.11 pandas scikit-learn jupyterlab -c conda-forge\nconda activate bia\n\n# share exact env\nconda env export --from-history &gt; environment.yml\n# reproduce elsewhere\nconda env create -f environment.yml\n\nPython — Poetry (alternative)\n# once\npoetry config virtualenvs.in-project true\n# in project\npoetry init\npoetry add pandas scikit-learn jupyter\npoetry install           # recreate from poetry.lock\n\n\n\n\n\n\n\nNote\n\n\nExercise (1′): List one package you rely on in R and in Python. Why lock its version?"
+  },
+  {
+    "objectID": "lecture01.html#data-contracts-file-hygiene",
+    "href": "lecture01.html#data-contracts-file-hygiene",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Data Contracts & File Hygiene",
+    "text": "Data Contracts & File Hygiene\n\nNever overwrite raw/ data\nValidate schemas (columns, types, keys)\nRecord data provenance (source, timestamp)\nUse .gitignore to avoid committing large/secret files\n\n# data & local env\ndata/raw/*\n!.gitkeep\n.venv/\nrenv/library/\n*.sqlite\n*.parquet"
+  },
+  {
+    "objectID": "lecture01.html#common-pitfalls-how-to-avoid-them",
+    "href": "lecture01.html#common-pitfalls-how-to-avoid-them",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Common Pitfalls & How to Avoid Them",
+    "text": "Common Pitfalls & How to Avoid Them\n\nUndocumented notebooks → add titles, goals, outputs\nHidden state (globals) → pass parameters explicitly (next lecture)\nOne giant script → split into modules\nNo seeds → set seeds where randomness matters\nUnpinned packages → lock versions"
+  },
+  {
+    "objectID": "lecture01.html#quick-wins-you-can-adopt-today",
+    "href": "lecture01.html#quick-wins-you-can-adopt-today",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Quick Wins You Can Adopt Today",
+    "text": "Quick Wins You Can Adopt Today\n\nCreate a project with folders from the template earlier\nInitialize Git and push to GitHub\nSet up renv or .venv or equivalent\nConvert one analysis to Quarto"
+  },
+  {
+    "objectID": "lecture01.html#whats-next",
+    "href": "lecture01.html#whats-next",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "What’s Next",
+    "text": "What’s Next\n\nNext lecture: Programming foundations (R & Python)\nBefore next time: ensure you can\n\nclone a GitHub repo,\ncreate a branch & commit,\nrender a Quarto .qmd to HTML,\nset up renv or .venv.\n\n\n\n\n\n\n\n\nTip\n\n\nIf stuck: ask on Slack—show error, steps tried, and minimal example."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-1-r",
+    "href": "lecture01.html#mini-exercise-1-r",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (1): R",
+    "text": "Mini-exercise (1): R\n\nOpen RStudio (or your preferred IDE).\n\nCreate a new R script named exercise1.R.\n\nWrite R code that:\n\nCreates a numeric vector of length 5.\n\nComputes its mean.\n\nPrints the result with a short message.\n\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Use c() for vectors, mean() for averages, and paste() for printing messages."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-2-python",
+    "href": "lecture01.html#mini-exercise-2-python",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (2): Python",
+    "text": "Mini-exercise (2): Python\n\nCreate a new Python file named exercise2.py.\n\nWrite a script that:\n\nCreates a list of 5 numbers.\n\nComputes their average.\n\nPrints the result.\n\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Use sum() and len() to calculate an average."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-3-quarto",
+    "href": "lecture01.html#mini-exercise-3-quarto",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (3): Quarto",
+    "text": "Mini-exercise (3): Quarto\n\nCreate a new Quarto document named exercise3.qmd.\n\nAdd:\n\nA title and author.\n\nOne R code chunk that prints \"Hello R!\".\n\nOne Python code chunk that prints \"Hello Python!\".\n\n\nRender the document to HTML.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Use ```{r} and ```{python} for chunks."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-4-github",
+    "href": "lecture01.html#mini-exercise-4-github",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (4): GitHub",
+    "text": "Mini-exercise (4): GitHub\n\nCreate a new GitHub repository called first-exercises.\n\nAdd the three files you created (exercise1.R, exercise2.py, exercise3.qmd).\n\nWrite a short README.md describing what each file does.\n\nCommit and push your changes.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Use GitHub Desktop, git on the command line, or RStudio’s Git interface."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-5-r-data",
+    "href": "lecture01.html#mini-exercise-5-r-data",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (5): R + Data",
+    "text": "Mini-exercise (5): R + Data\n\nIn R, load the built-in dataset mtcars.\n\nCompute the average miles per gallon (mpg) by the number of cylinders (cyl).\n\nMake a simple scatterplot of mpg vs hp (horsepower).\n\nSave the script as exercise5.R.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Look at aggregate() or dplyr::group_by() + summarise(). Use plot() for a quick scatterplot."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-6-python-visualization",
+    "href": "lecture01.html#mini-exercise-6-python-visualization",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (6): Python + Visualization",
+    "text": "Mini-exercise (6): Python + Visualization\n\nIn Python, use the pandas and matplotlib libraries.\n\nLoad the dataset iris (you can import it from sklearn.datasets).\n\nCompute the average petal length per species.\n\nMake a histogram of sepal lengths.\n\nSave the script as exercise6.py.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: pandas.DataFrame.groupby() is useful for summaries."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-7-quarto-reproducibility",
+    "href": "lecture01.html#mini-exercise-7-quarto-reproducibility",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (7): Quarto + Reproducibility",
+    "text": "Mini-exercise (7): Quarto + Reproducibility\n\nCreate a Quarto document called exercise7.qmd.\n\nInclude:\n\nA title, author, and date.\n\nA short text section explaining what the document does.\n\nOne R chunk producing a table of summary statistics (e.g., summary(mtcars)).\n\nOne Python chunk producing a plot of the iris dataset.\n\n\nRender both HTML and PDF versions.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: To render PDF, you may need LaTeX installed. Use quarto render exercise7.qmd --to pdf."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-8-all-together",
+    "href": "lecture01.html#mini-exercise-8-all-together",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (8): All Together 🎯",
+    "text": "Mini-exercise (8): All Together 🎯\n\nCreate a new Quarto document named exercise8.qmd.\n\nInside it:\n\nAdd a short introduction paragraph.\n\nAn R chunk that computes and prints the mean of mtcars$mpg.\n\nA Python chunk that loads iris and plots sepal length vs sepal width.\n\n\nRender the document to HTML.\n\nPush the .qmd, the HTML output, and any supporting files to your GitHub repo first-exercises.\n\nUpdate your README.md to include a short description of this integrated exercise.\n\n\n\n\n\n\n\nNote\n\n\n💡 Goal: Practice combining R + Python code in Quarto, and making results reproducible via GitHub."
+  },
+  {
+    "objectID": "lecture01.html#bonus-opportunity",
+    "href": "lecture01.html#bonus-opportunity",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "💡 Bonus Opportunity",
+    "text": "💡 Bonus Opportunity\n\nIf you prepare a solution to one of the mini-exercises\n\nand present it briefly during the next practical session\n👉 You may receive a bonus point (participation credit).\n\n\n\n\n\n\n\nNote\n\n\n🌟 Tip: The focus is on sharing your approach, not on having a perfect solution."
+  },
+  {
+    "objectID": "lecture01.html#qa",
+    "href": "lecture01.html#qa",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Q&A",
+    "text": "Q&A\nThanks!\nOptional: After class, try converting one old analysis to Quarto and push it to GitHub with a short README."
+  }
+]

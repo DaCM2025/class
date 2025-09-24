@@ -1,0 +1,78 @@
+---
+title: "Data & Code Management: From Collection to Application"
+subtitle: "Lecture 1 — Course kickoff & modern analytics toolkit"
+author: "HEC Lausanne — Master in Business Analytics"
+format:
+  revealjs:
+    theme: [default]
+    slide-number: true
+    toc: true
+    toc-depth: 2
+    toc-title: "Outline"
+    center: false
+    transition: slide
+    hash: true
+    footer: "Autumn 2025 • HEC Lausanne"
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+---
+
+# Welcome
+
+- What you'll learn: **collect → manage → analyze → communicate** with R, Python, SQL, BI & LLMs.
+- How you'll work: **reproducible, collaborative, professional** workflows.
+- Deliverables: **3 homeworks** + **group project** (no final exam; participation is bonus).
+
+# Course logistics
+
+## Rhythm & schedule
+
+- **Thursdays** (14 weeks).  
+- **Weeks 2 & 3** are lectures. From **Week 4 onward**: alternate **Practical / Lecture**.
+
+| Week | Date       | Focus                                      | Session (3h) | Homework |
+|:---:|:-----------|:--------------------------------------------|:-------------|:---------|
+| 1 | 18 Sep 2025 | Kick-off                                   | No class (Thesis & Career workshops) | – |
+| 2 | 25 Sep 2025 | Introduction & Tools                        | Lecture | – |
+| 3 | 02 Oct 2025 | Programming Foundations                      | Lecture | **HW1 released** |
+| 4 | 09 Oct 2025 | Practical 1                                  | Practical | **HW1 discussed** |
+| 5 | 16 Oct 2025 | Data Management & Collection                 | Lecture | **HW1 due**, **HW2 released** |
+| 6 | 23 Oct 2025 | Practical 2                                  | Practical | **HW2 discussed** |
+| 7 | 30 Oct 2025 | Software Engineering for Data Science        | Lecture | **HW2 due**, **HW3 released** |
+| 8 | 06 Nov 2025 | Practical 3                                  | Practical | **HW3 discussed** |
+| 9 | 13 Nov 2025 | Modern Tools: BI & LLMs                      | Lecture | **HW3 due** |
+| 10 | 20 Nov 2025 | Practical 4                                  | Practical | – |
+| 11 | 27 Nov 2025 | Project Work I                                | Lecture | – |
+| 12 | 04 Dec 2025 | Practical 5                                  | Practical | – |
+| 13 | 11 Dec 2025 | Project Work II                               | Lecture | – |
+| 14 | 18 Dec 2025 | Project Presentations                         | Practical | – |
+
+## Grading
+
+- **Homeworks:** 60% (3 × 20%).  
+- **Group project:** 40% (Weeks 11–14; presentations in Week 14).  
+- **Participation (bonus):** exercise corrections during practicals.
+
+# Tools & setup
+
+- **R** (tidyverse, Shiny), **Python** (pandas, scikit-learn, Streamlit), **SQL** (SQLite/Postgres)
+- **Git & GitHub** for collaboration, **Power BI** for dashboards
+- **Quarto** for slides/reports; responsible **LLM** assistance
+
+# Norms for LLM use
+
+- **Allowed**: boilerplate code, docstrings, tests, SQL drafts.  
+- **Required**: cite LLM use; manually review outputs.  
+- **Not allowed**: unreviewed code or fabricated results.
+
+# Today
+
+- Reproducibility foundations (project structure, Quarto, Git)
+- Quick tour of R, Python, SQL
+- GitHub workflow (issues, branches, PRs)
+- Overview of homeworks and project
+- Setup checklist
+

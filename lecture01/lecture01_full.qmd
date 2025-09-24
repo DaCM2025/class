@@ -1,0 +1,1289 @@
+
+---
+title: "Lecture 1 — Introduction & Tools"
+subtitle: "Data & Code Management: From Collection to Application"
+author: "Samuel Orso"
+date: "2025-09-25"
+format:
+  revealjs:
+    theme: [default, dracula]
+    slide-number: true
+    toc: true
+    toc-depth: 2
+    code-overflow: wrap
+    code-line-numbers: true
+    anchor-sections: true
+    hash: true
+    footer: "HEC Lausanne · Business Analytics · Thu 9:00–12:00"
+    navigation-mode: vertical
+    auto-animate: true
+    controls: true
+    progress: true
+    chalkboard: false
+    incremental: true
+    preview-links: auto
+fontsize: 20pt
+execute:
+  echo: true
+  eval: false   # static snippets as requested
+  freeze: auto
+editor: visual
+---
+
+## Welcome!
+
+::: {.columns}
+::: {.column width="65%"}
+- Course: **Data & Code Management: From Collection to Application**
+- Time & place: **Thursdays 9:00–12:00**
+- Communication: **Slack (class workspace)**
+- Materials: GitHub repo & website
+- Grading: participation, homeworks, and final project
+:::
+::: {.column width="35%"}
+> “Reproducibility is job #1 for modern data science.”  
+> — everyone who has ever lost a script 😉
+:::
+:::
+
+::: callout-note
+**Today’s goals**
+1. Understand course scope & expectations  
+2. See why **reproducibility** matters  
+3. Meet the core **toolchain** (R, Python, SQL, GitHub, Markdown/Jupyter/Quarto)  
+4. Try small, focused **exercises**
+:::
+
+---
+
+## Agenda
+
+1. Course overview & evaluation  
+2. Reproducibility in analytics  
+3. Core tools & workflows  
+4. Mini‑exercises (static snippets)  
+
+*Tip:* Slides include short activities you can try during/after class.
+
+---
+
+## Course Overview
+
+- Orientation: **hands‑on data & code practices** for analytics
+- You will:
+  - write clean **R/Python** code
+  - query data via **SQL**
+  - document with **Markdown/Jupyter/Quarto**
+  - use **Git/GitHub** (branches, PRs, issues)
+  - deliver a **reproducible project** (group)
+- We value: clarity, collaboration, curiosity
+
+::: callout-tip
+**Success checklist**
+- Commit early, commit often
+- Make small, reversible changes
+- Automate what repeats
+- Document decisions, not only code
+- Prefer scripts & notebooks over manual clicks
+:::
+
+---
+
+## Expectations & Evaluation
+
+- **Participation:** engaged presence, Slack questions/answers
+- **Homeworks:** short, targeted (programming, SQL, tooling)
+- **Project:** real‑world style, **reproducible** deliverable
+- **Academic integrity:** cite sources, no copy‑paste answers
+
+**Tools allowed:** R, Python, SQL, Quarto, GitHub, AI copilots (with provenance & verification).
+
+::: callout-important
+**AI policy (short)**  
+Use AI to brainstorm, outline, or lint code. **Own** the result: verify outputs, write your tests, and **document** AI assistance (what, why, where).
+:::
+
+---
+
+## Reproducibility: Why it matters
+
+**Symptoms of non‑reproducible work** (raise your hand if you've seen these):  
+- “It works on my machine.”  
+- “I changed nothing and it broke.”  
+- “Which file is the final_final_v3.R?”
+
+**Principles**  
+- Deterministic environments  
+- Versioned code **and** data contracts  
+- Scripts, not clicks  
+- Single‑source of truth (parameters, config)  
+- Literate programming (Markdown/Quarto)  
+- Automated checks (CI later in course)
+
+---
+
+## Minimal Project Structure
+
+```
+project/
+├─ data/           # raw/ and processed/ (never overwrite raw)
+├─ R/ or src/      # functions, modules
+├─ notebooks/      # exploratory analysis
+├─ reports/        # Quarto/Markdown outputs
+├─ tests/          # unit tests
+├─ renv/ or .venv/ # R or Python environment
+├─ .gitignore
+└─ README.md
+```
+
+::: callout-note
+**Exercise (2′ thinking):**  
+What would you add for your domain (e.g., `sql/`, `fig/`, `configs/`)? Jot down 2 items.
+:::
+
+---
+
+## Tooling Map
+
+- **R** (tidyverse, data.table) & **Python** (pandas, polars)
+- **SQL** for data retrieval/joins/aggregations
+- **Git** + **GitHub** for versioning & collaboration
+- **Markdown/Jupyter/Quarto** for literate workflows
+- Optional helpers: **make**, **pre-commit**, **linters**
+
+::: {.columns}
+::: {.column width="50%"}
+**R snippet**
+```r
+# Vectorized transform
+library(dplyr)
+set.seed(42)
+df <- tibble(x = rnorm(5), y = rnorm(5))
+df |>
+  mutate(z = x + y, grp = if_else(z > 0, "pos", "neg"))
+```
+:::
+::: {.column width="50%"}
+**Python snippet**
+```python
+import pandas as pd
+import numpy as np
+rng = np.random.default_rng(42)
+df = pd.DataFrame({"x": rng.normal(size=5), "y": rng.normal(size=5)})
+df.assign(z=lambda d: d.x + d.y,
+          grp=lambda d: np.where(d.z > 0, "pos", "neg"))
+```
+:::
+:::
+
+---
+
+## SQL Refresher (we’ll go deeper later)
+
+```sql
+-- Top customers by revenue
+SELECT c.customer_id, SUM(o.amount) AS revenue
+FROM customers c
+JOIN orders o USING (customer_id)
+WHERE o.order_date >= DATE '2025-01-01'
+GROUP BY c.customer_id
+ORDER BY revenue DESC
+LIMIT 10;
+```
+
+::: callout-tip
+**Tip:** Keep SQL in `.sql` files and load/parametrise from R/Python for reproducibility.
+:::
+
+---
+
+## Git in 6 commands
+
+```bash
+git status
+git add -A
+git commit -m "Explain what/why, not how"
+git pull --rebase
+git push
+git switch -c feature/your-topic   # create a feature branch
+```
+
+::: callout-note
+**Activity (think‑pair‑share):**  
+What makes a good commit message? Write one for “fixed weird bug in script” that would help your future self.
+:::
+
+---
+
+## Literate Programming with Quarto
+
+- Write text + code together
+- Render to HTML/PDF/slides/reports
+- Parametrized reports & caching
+- Works with **R** and **Python**
+
+```markdown
+```{r}
+#| label: fig-scatter
+#| fig-cap: "A quick scatterplot"
+plot(mtcars$wt, mtcars$mpg)
+```
+```
+
+Render:
+```bash
+quarto render report.qmd
+```
+  
+::: callout-important
+**House rule:** every analysis step appears in a script/notebook—no manual spreadsheet edits.
+:::
+
+---
+
+## Environments (determinism)
+
+::: {.columns}
+::: {.column width="50%"}
+**R — renv**
+```r
+install.packages("renv")
+renv::init()
+renv::snapshot()   # lock versions
+renv::restore()    # reproduce elsewhere
+```
+:::
+::: {.column width="50%"}
+**Python — venv + requirements**
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+pip freeze > requirements.txt
+```
+:::
+:::
+
+::: callout-note
+**Exercise (1′):** List one package you rely on in R and in Python. Why lock its version?
+:::
+
+---
+
+## Data Contracts & File Hygiene
+
+- Never overwrite **raw/** data
+- Validate schemas (columns, types, keys)
+- Record data provenance (source, timestamp)
+- Use `.gitignore` to avoid committing large/secret files
+
+```gitignore
+# data & local env
+data/raw/*
+!.gitkeep
+.venv/
+renv/library/
+*.sqlite
+*.parquet
+```
+
+---
+
+## Quick Wins You Can Adopt Today
+
+- Create a project with folders from the template earlier
+- Initialize **Git** and push to **GitHub**
+- Set up **renv** or **.venv**
+- Convert one analysis to **Quarto**
+
+::: callout-tip
+**Stretch goal:** Add a small test (R `testthat` or Python `pytest`) for a helper function you wrote.
+:::
+
+---
+
+## Mini‑Exercise 1 (R)
+
+**Objective:** Write a function and test it quickly.
+
+```r
+# R: rolling mean for a numeric vector
+roll_mean <- function(x, k = 3) {
+  stopifnot(is.numeric(x), k >= 1, k == as.integer(k))
+  stats::filter(x, rep(1/k, k), sides = 2)
+}
+
+# quick check
+x <- 1:7
+roll_mean(x, k = 3)
+```
+
+*Discussion:* How would you handle NA edges?
+
+---
+
+## Mini‑Exercise 2 (Python)
+
+**Objective:** Clean a small dataset and compute a grouped metric.
+
+```python
+import pandas as pd
+df = pd.DataFrame({
+    "team": ["A","A","B","B","B"],
+    "score": [10, None, 9, 12, 13]
+}).assign(score=lambda d: d.score.fillna(d.score.median()))
+df.groupby("team", as_index=False)["score"].mean()
+```
+
+*Discussion:* Where would assertions / schema checks go?
+
+---
+
+## Mini‑Exercise 3 (SQL)
+
+**Objective:** Translate a business question into SQL.
+
+> *“Which products grew the most month‑over‑month in 2025?”*
+
+```sql
+WITH monthly AS (
+  SELECT product_id,
+         DATE_TRUNC('month', order_date) AS month,
+         SUM(amount) AS revenue
+  FROM orders
+  WHERE order_date >= DATE '2025-01-01'
+  GROUP BY product_id, DATE_TRUNC('month', order_date)
+),
+growth AS (
+  SELECT product_id, month,
+         revenue,
+         LAG(revenue) OVER (PARTITION BY product_id ORDER BY month) AS prev_revenue
+  FROM monthly
+)
+SELECT product_id, month, revenue, prev_revenue,
+       (revenue - prev_revenue) AS delta
+FROM growth
+WHERE prev_revenue IS NOT NULL
+ORDER BY delta DESC
+LIMIT 10;
+```
+
+---
+
+## Collaboration Rituals
+
+- Branch → small PR → peer review → merge
+- Use **Issues** with labels (“bug”, “enhancement”, “question”)
+- Templates: `PULL_REQUEST_TEMPLATE.md`, `ISSUE_TEMPLATE.md`
+- Document **decisions** in `CHANGELOG.md`
+
+::: callout-note
+**Activity:** In pairs, outline a PR description for adding a new `utils/plot.R` with one function and one test.
+:::
+
+---
+
+## Common Pitfalls & How to Avoid Them
+
+- Undocumented notebooks → add titles, goals, outputs
+- Hidden state (globals) → pass parameters explicitly
+- One giant script → split into modules
+- No seeds → set seeds where randomness matters
+- Unpinned packages → lock versions
+
+---
+
+## What’s Next
+
+- **Next lecture:** Programming foundations (R & Python)
+- **Before next time:** ensure you can
+  1. clone a GitHub repo,
+  2. create a branch & commit,
+  3. render a Quarto `.qmd` to HTML,
+  4. set up `renv` **or** `.venv`.
+
+::: callout-tip
+If stuck: ask on **Slack**—show error, steps tried, and minimal example.
+:::
+
+---
+
+## Q&A
+
+Thanks!  
+*Optional:* After class, try converting one old analysis to **Quarto** and push it to GitHub with a short README.
+
+---
+
+---
+
+## Appendix — Content from `lecture01.Rmd`
+
+---
+title: "Programming Tools in Data Science"
+subtitle: "Lecture #1: Introduction"
+author: "Samuel Orso"
+date: "26 September 2024"
+output:
+  xaringan::moon_reader:
+    css: ["default", "assets/sydney-fonts.css", "assets/sydney.css"]
+    self_contained: false # if true, fonts will be stored locally
+    seal: true # show a title slide with YAML information
+    includes:
+      in_header: "assets/mathjax-equation-numbers.html"
+    nature:
+      beforeInit: ["assets/remark-zoom.js"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9' # alternatives '16:9' or '4:3' or others e.g. 13:9
+      navigation:
+        scroll: false # disable slide transitions by scrolling
+
+---
+## Motivation
+
+* "Data Science" hits >900 of job offers on jobup.ch.
+* More than 3500 job offers for Switzerland on LinkedIn.
+* "_Job applicants with computer skills are highly sought-after due to the increase of technology in the workplace._", [Indeed](https://www.indeed.com/career-advice/resumes-cover-letters/computer-skills), August 2023.
+
+<img width="49%" src="images/linkedin_swiss_1.png"/>
+<img width="49%" src="images/linkedin_swiss_2.png"/>
+
+---
+## Motivation 
+
+* Computer skills help in solving problems.
+
+<center><iframe width="640" height="480"
+src="https://www.youtube.com/embed/Tzin1DgexlE">
+</iframe></center>
+
+---
+## General goals
+
+* Introduce tools and workflows for reproducible research (R/RStudio, Git/GitHub, etc.); 
+* Introduce principles of tidy data and tools for data wrangling; 
+* Exploit data structures to appropriately manage data, computer memory and computations;
+* Data manipulation through controls, instructions, and tailored functions;
+* Develop new software tools including functions, Shiny applications, and packages;
+* Manage the software development process including version control, documentation (with embed code), and dissemination for other users.
+
+---
+## General goals
+```{r echo=FALSE, fig.align='center', out.width=593, out.height=459}
+knitr::include_graphics("images/diagram.png")
+```
+
+---
+
+## Why Choose R for Data Science and Business Analytics?
+
+### 1. **Tailor-Made for Data Science**
+- **R was built with data in mind**: Designed specifically for statistical computing and data analysis.
+- **Comprehensive packages**: Tools like `ggplot2`, `dplyr`, and `tidyverse` make data manipulation and visualization a breeze.
+- **Cutting-edge techniques**: Stay ahead with powerful tools for machine learning, statistical modeling, and data mining.
+
+
+---
+
+### 2. **Ideal for Business Analytics**
+- **Advanced Statistical Methods**: R has a wide range of libraries to handle complex business data.
+- **Visualization Powerhouse**: Create stunning, customized visualizations that help tell compelling business stories.
+- **Report Generation**: With `RMarkdown` and `Shiny`, you can create automated reports and interactive dashboards for decision-making.
+
+---
+
+### 3. **Supported by a Strong Community**
+- **Open-source and free**: R is continually evolving with contributions from data scientists worldwide.
+- **Active Community**: Get access to countless tutorials, forums, and resources to grow your skills.
+  
+---
+
+### 4. **Integration Capabilities**
+- Seamlessly integrate R with other languages and tools (e.g., Python, SQL, Excel, Tableau).
+- R fits well into a larger business workflow, making it perfect for **end-to-end analytics solutions**.
+
+
+---
+## Brief histo`R`y
+* `R` is a language and environment for statistical computing and graphics;
+* It was developed around 1995 by Ross Ihaka and Robert Gentleman at the University of Auckland, as an alternative implementation of the basic `S` language developed by John Chambers and colleagues;
+* Oldest release (available) is version 0.49 (1997-04-23)
+
+```{r,echo=FALSE,fig.align='center'}
+knitr::include_graphics(path="images/extending_r.png")
+```
+
+
+---
+## Main featu`R`es
+* Much code written for `S` runs unaltered under `R`;
+* `R` provides a variety of statistical and graphical techniques;
+* `R` is popular for data science (in competition with Python);
+* `R` is open-source;
+* `R` is an interpreted language;
+* `R` is highly extensible via packages (more than 20,000 available on CRAN); 
+* `R` can be interfaced with other languages (C++, Fortran, ...).
+
+---
+## `R` is an interpreted language
+```{r, echo=FALSE, fig.align="center"}
+knitr::include_graphics(path = "images/cartoon_programming.png")
+```
+
+---
+## Compiled program
+
+- Program is translated into native machine instruction (compilation)
+
+```{r echo=FALSE, fig.align='center', out.width=750, out.height=111}
+knitr::include_graphics("images/compiled.png")
+```
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+```{r echo=FALSE, fig.align='center', out.width=750, out.height=117}
+knitr::include_graphics("images/compiled_pl.png")
+```
+
+---
+## Interpreted program
+
+- Program is translated into another code (bytecode). An interpreter then performs the required actions.
+
+```{r echo=FALSE, fig.align='center', out.width=750, out.height=111}
+knitr::include_graphics("images/interpreted.png")
+```
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+```{r echo=FALSE, fig.align='center', out.width=750, out.height=117}
+knitr::include_graphics("images/interpreted_pl.png")
+```
+
+---
+## `R` interfaces to other languages
+`R` is basically written in `C` and `Fortran`. Available interfaces to other languages comprise:
+- `C` via `.Call()` function
+- `Fortran` via `.Fortran()` function
+- `C++` via the `Rcpp` package
+- `Python` via `reticulate`, `rPython`, `rJython` or `XRPython`
+- `Julia` via `XRJulia`
+- `JavaScript` via `V8`
+- `Excel`, `JSON`, `SQL`, `Perl`, ...
+
+
+See Chambers, (2017) for a comprehensive discussion on interfacing `R`.
+
+---
+## What are LLMs?
+
+- **Definition**: Large Language Models (LLMs) are AI models trained on vast amounts of text data to understand and generate human language.
+  
+- **Examples**: 
+  - GPT-3, GPT-4 (OpenAI)
+  - Gemini (Google)
+  - LLaMA (Meta)
+  - Claude (Anthropic)
+
+- **Capabilities**:
+  - Natural language understanding and generation
+  - Text completion, summarization, translation
+  - Assistance in various domains, including **programming**.
+
+---
+
+**Why are they important for programming?**
+- LLMs can understand code as a special type of language.
+- They offer assistance in code generation, debugging, and improving programming productivity.
+
+---
+## LLM for Programming
+
+**Key Features**:
+1. **Code Suggestions**: 
+   - Automates repetitive coding tasks.
+   - Helps in writing boilerplate code.
+   - See for instance GitHub's copilot.
+
+2. **Error Debugging**: 
+   - Identifies and resolves bugs in code snippets.
+   - Suggests alternative solutions or optimizations.
+
+3. **Code Explanation**: 
+   - Breaks down complex code into simple explanations.
+   - Helps in learning new programming concepts.
+
+---
+## Benefits of Using LLMs like ChatGPT in Programming
+
+#### **1. Increased Productivity**
+- Automates repetitive and boilerplate tasks.
+- Helps explore new coding approaches faster.
+
+#### **2. Learning and Discovery**
+- Explains code, libraries, and new languages in an intuitive manner.
+- Great for beginners and advanced users alike.
+
+---
+
+## Challenges and Considerations
+
+#### **1. Not Always Correct**
+- LLMs can suggest incorrect code, requiring human oversight.
+
+#### **2. Context Limitations**
+- LLMs lack the full project context, so they might not understand the specific requirements.
+
+#### **3. Ethical Concerns**
+- Intellectual property, security, and data privacy must be considered when using AI for programming.
+
+---
+class: sydney-blue, center, middle
+## Course logistic and expectation
+
+---
+## Course logistic and expectation
+### Location and time
+.pull-left[
+.scroll-box-5[
+```{r, echo = FALSE}
+library(leaflet)
+leaflet() %>% addTiles() %>% setView(6.58455, 46.52356, zoom = 17)
+```
+]]
+
+.pull-right[
+.scroll-box-5[
+* Anthropole 3032
+* Every Thursday morning from 9 to 12. Either class or practical.
+* Verify the schedule on the course website.
+]]
+
+---
+### Ideal schedule (every Thursday 9 to 12)
+
+| Week | Date | Topic | Instructor |   
+|---|---|---|---|   
+| 2 | 26 Sept | [Introduction](https://ptds2024.github.io/class/lecture01), [RMarkdown](https://ptds2024.github.io/class/lecture02_markdown), [Github](https://ptds2024.github.io/class/lecture03_github), [Project](https://ptds2024.github.io/class/lecture13_project)| Samuel |
+| 3 | 3 Oct | [Data structures](https://ptds2024.github.io/class/lecture04_datastructure), [Control structures](https://ptds2024.github.io/class/lecture05_controlstructure), [Function](https://ptds2024.github.io/class/lecture06_function) | Samuel |
+| 4 | 10 Oct | Exercise and Homework 1 | Timofei |
+| 5 | 17 Oct | [Object-oriented programming](https://ptds2024.github.io/class/lecture07_OOP), [Webscraping](https://ptds2024.github.io/class/lecture08_webscrap), [Shiny App](https://ptds2024.github.io/class/lecture09_shiny)  | Samuel | 
+| 6 | 24 Oct | Exercise and Homework 2 | Timofei |
+| 7 | 31 Oct | [Functional programming](https://ptds2024.github.io/class/lecture10_functional), [Shiny App](https://ptds2024.github.io/class/lecture09_shiny), [Package creation](https://ptds2024.github.io/class/lecture11_pkg) | Samuel |
+| 8 | 7 Nov | Exercise and Homework 3 | Timofei |
+| 9 | 14 Nov | Data science with R on Google Cloud | Samuel |
+| 9 | 21 Nov | TBA | Samuel |
+| 11 | 28 Nov | Group Project | Timofei | 
+| 12 | 5 Dec | Group project | Timofei |
+| 13 | 12 Dec | Group project | Timofei | 
+| 14 | 19 Dec | Project Presentations | Samuel and Timofei| 
+
+---
+## Course logistic and expectation
+### Requirements
+
+* No IT background is assumed from the students but a strong will to learn useful and practical programming skills (Data Science in Business Analytics)
+* Willing to work and collaborate in groups (4~6 groups)
+* Be ready to struggle with your computer!
+<center><img src="https://media.giphy.com/media/bPCwGUF2sKjyE/giphy.gif" alt="gif"/></center>
+
+
+---
+### Grading
+
+* Learning outcomes will be assessed based on the performances within each of the following categories:
+
+Type | Points 
+:-- | :--  
+Semester project | 30 
+Homeworks | 30 
+
+* 3 homeworks (individual) of 10 points (**penalty for late submission**).
+* 1 group project of 30 points.
+* No final examination for this class.
+* Final presentation of project last day of class (19 Dec).
+
+---
+## Course logistic and expectation
+### Project
+
+The group project comprises:
+- **Presentation**
+- **Screencast**
+- **Shiny app**
+- **R package**
+- **GitHub repository**
+- **Website**
+
+---
+## Course logistic and expectation
+### Communication
+
+* We use <img src="images/slack.png" width="200px"/> to communicate and many more
+* We use the **NEIN rule**! (No Email, only If Necessary)
+* More info at [https://ptds.samorso.ch/](https://ptds.samorso.ch/)
+* To access slack, you need to register and wait for your invitation.
+
+---
+### Take 3 minutes to complete the form
+```{r echo=FALSE, fig.align='center'}
+knitr::include_url("https://docs.google.com/forms/d/e/1FAIpQLScQEYxeMdRYxHnvFHbRcJhtSRZeviKehI0vKjDO0WjhxEuW1Q/viewform")
+```
+
+---
+class: sydney-blue, center, middle
+
+## Question ?
+
+.pull-down[
+<a href="https://ptds.samorso.ch/">
+.white[`r icons::fontawesome("file")` website]
+</a>
+
+<a href="https://github.com/ptds2024/">
+.white[`r icons::fontawesome("github")` GitHub]
+</a>
+]
+
+---
+## Everything's done? Follow your first tutorial (10 minutes)
+### Make sure you have `R` and `RStudio` installed and follow the 
+### "R/RStudio installation and setup" tutorial
+
+
+---
+
+## Literate Tools — Markdown, Jupyter, Quarto (from your Rmd)
+
+---
+title: "Programming Tools in Data Science"
+subtitle: "Lecture #2: RMarkdown"
+author: "Samuel Orso"
+date: "26 September 2024"
+output:
+  xaringan::moon_reader:
+    css: ["default", "assets/sydney-fonts.css", "assets/sydney.css"]
+    self_contained: false # if true, fonts will be stored locally
+    seal: true # show a title slide with YAML information
+    includes:
+      in_header: "assets/mathjax-equation-numbers.html"
+    nature:
+      beforeInit: ["assets/remark-zoom.js"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9' # alternatives '16:9' or '4:3' or others e.g. 13:9
+      navigation:
+        scroll: false # disable slide transitions by scrolling
+
+---
+## What is RMarkdown? 
+<img src="images/markdown.png" style="width:150px; position:absolute; top:7%; left:45%" /> 
+
+* RMarkdown: `R` + `markdown`
+* `markdown` contrasts `markup` languages (e.g. HTML) which require syntax that can be quite difficult to decipher for the uninitiated
+* RMarkdown is a framework that provides a literate programming format for data science.
+* **Literate programming**: programmers add narrative context with code to produce documentation for the program simultaneously.
+* **Reproducible research**: the whole process (collecting data, performing analysis, producing output,...) can be reproduced the same way by someone else.  
+
+---
+## Is there a reproducibility crisis?
+```{r echo=FALSE, fig.align='center', out.width=453, out.height=385}
+knitr::include_graphics("images/reproducibility.png")
+```
+
+---
+## What is RMarkdown? 
+
+> In a nutshell, R Markdown stands on the shoulders of knitr and Pandoc. The former executes the computer code embedded in Markdown, and converts R Markdown to Markdown. The latter renders Markdown to the output format you want (such as PDF, HTML, Word, and so on).
+.right[-- <cite>R Markdown: The Definitive Guide</cite>]
+
+```{r echo=FALSE, fig.align='center', out.width=631, out.height=300}
+knitr::include_graphics("images/workflow.png")
+```
+
+
+---
+## Create a RMarkdown document
+
+Within RStudio, click `File` → `New File` → `R Markdown`. 
+```{r echo=FALSE, fig.align='center', out.width=750, out.height=450}
+knitr::include_graphics("images/rmd_new.png")
+```
+
+---
+## Important features of `markdown`
+
+* Three aspect: YAML metadata, text, code chunks
+
+---
+## Important features of `markdown`
+### 1. YAML Ain't Markup Language
+
+* Head of the document where options are defined.
+* Surrounded by `---`
+* Options comprises: author, date, output format, table of content, themes, code folding, ...
+
+---
+## Important features of `markdown`
+### 2. Text
+
+* Core body, essential for explaining your analysis. 
+* Markdown syntax comprises:  
+  * emphasis (*&ast;italics&ast;*, **&ast;&ast;bold&ast;&ast;**, or &grave;`code style`&grave;)  
+  * headers (# ## ###)
+  * lists (* - + for unnumbered and 1. for numbered)   
+  * hyperlinks (<> ()[])
+  * blockquotes (>)
+  * picture/gif ( !()[])
+  * tables (usually better to use `knitr::kable()`)
+  
+---
+## Important features of `markdown`
+### 2. Text
+* $\LaTeX$ in RMarkdown using the syntax `$math expression$`
+* Cross-referencing sections using syntax `\@ref(label)`
+* Citations and bibliographies can automatically be generated with RMarkdown
+* **You can always use HTML**
+
+---
+## Important features of `RMarkdown`
+### 3. Code Chunks 
+
+Code chunks are specific to `RMarkdown`. It allows to embed `R` code within your document.
+
+To insert these chunks within your RMarkdown file, use either:
+- the keyboard shortcut Ctrl + Alt + I (OS X: Cmd + Option + I)
+- the Add Chunk command in the editor toolbar
+- by typing the chunk delimiters ` ```{r label, some option}` and ` ``` `   
+
+---
+## Important features of `RMarkdown`
+### 3. Code Chunks 
+Most common chunk options: 
+
+- `eval`: (TRUE; logical) whether to evaluate the code chunk;
+- `echo`: (TRUE; logical or numeric) whether to include R source code in the output file;
+- `warning`: (TRUE; logical) whether to preserve warnings (produced by warning()) in the output like we run R code in a terminal (if FALSE, all warnings will be printed in the console instead of the output document);
+- `cache`: (FALSE; logical) whether to "*cache*" a code chunk. It may be convenient to avoid re-running the computations and save time.
+- `dependson`: (label) allows to refer to objects in other chunk.
+
+---
+## Important features of `RMarkdown`
+### 3. Code Chunks 
+Plot figure options: 
+
+- `fig.path`: ('figure/'; character) prefix to be used for figure filenames (fig.path and chunk labels are concatenated to make filenames);
+- `fig.show`: ('asis'; character) how to show/arrange the plots;
+- `fig.width`, `fig.height`: (both are 7; numeric) width and height of the plot, to be used in the graphics device (in inches) and have to be numeric;
+- `fig.align`: ('default'; character) alignment of figures in the output document (possible values are left, right and center;
+- `fig.cap`: (NULL; character) figure caption to be used in a figure environment.
+
+---
+class: sydney-blue, center, middle
+
+## Play 5 minutes with `https://tinyurl.com/RMdown`
+```{r echo=FALSE, fig.align='center', out.width=300, out.height=300}
+knitr::include_graphics("images/qrcode_data-analytics-lab.shinyapps.io.png")
+```
+
+<!---
+```{r echo=FALSE, fig.align='center'}
+knitr::include_url("https://data-analytics-lab.shinyapps.io/rmarkdown/")
+```
+-->
+
+---
+## Printing an output as a table with `knitr::kable()`
+```{r, fig.height=5}
+data("iris")
+knitr::kable(iris[1:5,])
+```
+
+There are many more options that can be set to have particularly good looking table with the `knitr` and `kableExtra` packages ([click here for a detailled documentation](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html)).
+
+---
+## Extended table options with `knitr::kable()` and `kableExtra`
+```{r, fig.height=4}
+library(kableExtra)
+mtcars[1:3, 1:8] %>%
+  kbl() %>%
+  kable_paper(full_width = F) %>%
+  column_spec(2, color = spec_color(mtcars$mpg[1:3]),
+              link = "https://haozhu233.github.io/kableExtra/") %>%
+  column_spec(6, color = "white",
+              background = spec_color(mtcars$drat[1:3], end = 0.7),
+              popover = paste("am:", mtcars$am[1:3]))
+```
+
+---
+## Mathpix to easily insert math equation in $\LaTeX$
+<blockquote>
+Mathpix Snip digitizes handwritten or printed text, and copies outputs to the clipboard that can be pasted into LaTeX editors like Overleaf, Markdown editors like Typora, Microsoft Word, and more. 
+.right[-- <cite>Mathpix Snip</cite>]
+</blockquote>
+<div align="center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Pc_6aKPYBwQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+Find more informations [here](https://mathpix.com/).
+
+---
+## `xaringan::infinite_moon_reader()` for live preview of your document
+Instant preview without fully rebuilding HTML, and the linked navigation
+
+```{r echo=FALSE, fig.align='center', out.width=606, out.height=360}
+knitr::include_graphics("images/gif_inf_m_r.gif")
+```
+
+---
+## From RMarkdown to Quarto
+<img src="images/quarto.png" style="width:250px; position:absolute; top:9%; left:55%" /> 
+- Similar to RMarkdown, it can render docs that contain code in R, Python, Julia,... 
+- It combines functionalities of RMarkdown and other packages into a **single system**, very useful to collaborate with people who write in a different programming language from you (and do not necessarily have R/R Studio).
+
+> Like R Markdown, Quarto uses Knitr to execute R code, and is therefore able to render most existing Rmd files without modification.
+> <cite>quarto.org/</cite>
+
+---
+class: sydney-blue, center, middle
+
+## Question ?
+
+.pull-down[
+<a href="https://ptds.samorso.ch/">
+.white[`r icons::fontawesome("file")` website]
+</a>
+
+<a href="https://github.com/ptds2024/">
+.white[`r icons::fontawesome("github")` GitHub]
+</a>
+]
+
+<!-- --- -->
+<!-- # Exercises -->
+<!-- Basic manipulations: -->
+<!-- 1. Create a RMarkdown HTML document in `RStudio` and "`knit`" it. -->
+<!-- 1. Create a new header of type 2. -->
+<!-- 1. Make a linear regression with "Sepal Length" as a response and  -->
+<!-- "Sepal Width" as an explanatory variable from the `iris` dataset and save the result.  -->
+<!-- 1. Highlight the code with `monochrome` style. -->
+<!-- 1. Print the summary of the linear regression. -->
+<!-- 1. Include the QQplot from the linear regression. Change to filled dots. -->
+<!-- 1. Print the head of the `iris` dataset with `kable`. -->
+<!-- 1. Remove the `.` from the labels (click [here](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#change-column-names)). -->
+
+<!-- --- -->
+<!-- # Exercises -->
+<!-- More advanced manipulations: -->
+<!-- 1. Install `kableExtra`. And perform the examples shown in the slides with `iris` dataset. -->
+<!-- 1. Using Mathpix, reproduce equation (6.1) of the paper [https://arxiv.org/abs/math/0303109](https://arxiv.org/abs/math/0303109) -->
+<!-- 1. Add the Reference and cite it in the RMarkdown. -->
+<!-- 1. Recreate your RMarkdown into a Quarto document. -->
+
+---
+## To go further
+- <https://www.markdownguide.org/>
+- <https://rmarkdown.rstudio.com/>
+- [R Markdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/) by Yihui Xie, Christophe Dervieux, Emily Riederer
+- [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/) by Yihui Xie, J. J. Allaire, Garrett Grolemund
+- Visit [bookdown.org]()
+
+
+---
+
+## Git & GitHub — Workflows & Tips (from your Rmd)
+
+---
+title: "Programming Tools in Data Science"
+subtitle: "Lecture #3: GitHub"
+author: "Samuel Orso"
+date: "26 September 2024"
+output:
+  xaringan::moon_reader:
+    css: ["default", "assets/sydney-fonts.css", "assets/sydney.css"]
+    self_contained: false # if true, fonts will be stored locally
+    seal: true # show a title slide with YAML information
+    includes:
+      in_header: "assets/mathjax-equation-numbers.html"
+    nature:
+      beforeInit: ["assets/remark-zoom.js"]
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9' # alternatives '16:9' or '4:3' or others e.g. 13:9
+      navigation:
+        scroll: false # disable slide transitions by scrolling
+
+---
+## GitHub
+```{r echo=FALSE, fig.align='center', out.width=950, out.height=450}
+knitr::include_graphics("images/github.png")
+```
+
+---
+## Motivation
+
+* When working on a project, there are usually different people working on the same file/folder
+* You want to avoid sending each modification by email
+* You could use dropbox/google drive and the likes but it is good practice to keep track of modifications and have a platform to plan and discuss changes
+
+---
+## Motivation
+
+GitHub allows you:
+- record the entire history of a file;
+- revert to a specific version of the file;
+- collaborate on the same platform with other people;
+- make changes without modifying the main file and add them once you feel comfortable with them.
+
+---
+## Motivation
+
+GitHub will be used for:
+- work in group on projects and homeworks;
+- submit projects/homeworks;
+- develop R packages and website;
+- ...
+
+---
+## Ready ?
+<center>
+<iframe src="https://giphy.com/embed/h4TdHo3RExSbHd9bOe" width="480" height="425" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/cbc-schitts-creek-h4TdHo3RExSbHd9bOe">via GIPHY</a></p>
+</center>
+
+---
+## In fact, what is Git?
+<img src="images/git.png" style="width:150px; position:absolute; top:9%; left:40%" /> 
+
+Git is a **distributed version control system**.
+
+* **distributed**: whenever you instruct Git to share files, Git does not only share the latest file version, but instead, it distributes **every version** it has recorded for that project.
+
+* **version control system**: many people are used to have *their own version control system* e.g. by having different versions of the same file (`file_v1.R`, `file_v2.R`, ...). This approach is error-prone and ineffective when working in team project. Thus, a version control system keeps track of changes to modification in your project.
+
+---
+## Types of VCS
+There are three types of version control system (VCS):
+* local
+* centralized
+* distributed
+
+---
+## Types of VCS
+### Local
+
+.pull-left[
+```{r echo=FALSE, fig.align='center', out.width=451, out.height=300}
+knitr::include_graphics("images/local_vcs.jpg")
+```
+]
+
+.pull-right[
+* One of the simplest and most commonly used VCS
+* It keeps patch sets (modification of a file) locally (on your computer)
+* It can recreate the file at any point in time by adding up the patches
+]
+
+---
+## Types of VCS
+### Centralized
+
+.pull-left[
+```{r echo=FALSE, fig.align='center', out.width=490, out.height=317}
+knitr::include_graphics("images/centralized_vcs.png")
+```
+]
+
+.pull-right[
+* A single server contains all the versioned files
+* Risk of failure
+* Risk of database corruption
+]
+
+---
+## Types of VCS
+### Distributed
+.pull-left[
+```{r echo=FALSE, fig.align='center', out.width=460, out.height=416}
+knitr::include_graphics("images/dst_vcs.jpg")
+```
+]
+
+.pull-right[
+* Store the entire history of files locally
+* Sync local changes back to server
+* Allow multiple users and minimize risks of centralized VCS
+]
+
+---
+## Benefits of VCS
+* Allow multiple users to collaborate and communicate while working on a project.
+* Keep tracks of the change history of the files (risk mitigation) with possibility to roll back to previous version.
+* Different workflows such as branching and merging (not discussed)
+
+```{r echo=FALSE, fig.align='center', out.width=410, out.height=250}
+knitr::include_graphics("images/branching.jpeg")
+```
+
+---
+## So Git and GitHub are the same things?
+<center>
+<iframe src="https://giphy.com/embed/3o6YglDndxKdCNw7q8" width="480" height="478" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/nba-basketball-chicago-bulls-3o6YglDndxKdCNw7q8">via GIPHY</a></p>
+</center>
+
+---
+## Git vs GitHub
+Git is a distributed VCS, so what is GitHub exactly?
+
+* Git is a software...
+* ...and GitHub is web-based plateform for software development and version control that uses Git.
+* GitHub hosts and shares Git repository.
+* GitHub is not the only service provider
+
+---
+#BitBucket
+```{r echo=FALSE, fig.align='center'}
+knitr::include_graphics("images/bitbucket.png")
+```
+
+---
+#GitLab
+```{r echo=FALSE, fig.align='center'}
+knitr::include_graphics("images/gitlab.png")
+```
+
+---
+#SourceForge
+```{r echo=FALSE, fig.align='center'}
+knitr::include_graphics("images/sourceforge.png")
+```
+
+---
+## Okay to continue ? 
+
+.center[
+<iframe src="https://giphy.com/embed/sG4PBWRjI4GSVCDXEq" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/nickelodeon-drama-club-sG4PBWRjI4GSVCDXEq">via GIPHY</a></p>
+]
+
+---
+## Files states in Git
+A file can have different states: **untracked**, **modified**, **staged** or **committed**
+
+* **untracked**: a new file that is not tracked by Git (yet);
+* **modified**: a tracked file which is modified but not recorded (not committed yet);
+* **staged**: a tracked file which is modified and that has been selected to be saved (committed) into the repository during the next commit snapshot;
+* **committed**: a file that is successfully recorded into the (local) repository.
+
+---
+## Files states in Git
+```{r echo=FALSE, fig.align='center'}
+knitr::include_graphics("images/git-basic-workflow-codesweetly.png")
+```
+
+---
+## you can also `.gitignore`
+* Some files or folders of your project can be excluded from version control by specifying `.gitignore`
+* These files or folders will not be shared to other users
+
+```{r, fig.align="center", echo=FALSE}
+knitr::include_graphics(path="images/gitignore.png")
+```
+
+
+---
+## GitHub
+### Basic workflow
+
+The basic workflow is as follows...
+
+1. Open the RStudio Project connected to your Git(Hub) Repo
+2. Work on your computer just like always
+3. **Save** your work often just like always
+4. When you want to preserve a **snapshot** of your project, you make a "commit"
+5. When you have a few commits and want to archive them, you "push" them to the GitHub remote server
+6. If you decide to work from a different computer, or want to pick up where a collaborator left off, you can "pull" the most up-to-date version of the files from the GitHub remote to your local computer and go back to step 2.
+
+---
+class: sydney-blue, center, middle
+
+## Demo on RStudio
+
+---
+## GitHub
+### New habits
+* When you want to preserve a **snapshot** of your project, you make a "commit."
+* When you have a few commits and want to archive them, you "push" them to the GitHub remote server.
+* If you decide to work from a different computer, or want to pick up where a collaborator left off, you can "pull" the most up-to-date version of the files from the GitHub remote to your local computer.
+
+---
+## GitHub
+### Commits
+Make your commit message as informative and concise as possible.
+
+```{r echo=FALSE, fig.align='center', out.width=439, out.height=250}
+knitr::include_graphics("images/git_commit.png")
+```
+
+---
+## GitHub
+### "pull" before you "push"
+Make sure you have the up-to-date version of your project before working on it.
+
+Try to avoid the headaches of "merge conflict".
+
+.center[
+<iframe src="https://giphy.com/embed/cFkiFMDg3iFoI" width="480" height="269" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/git-merge-cFkiFMDg3iFoI">via GIPHY</a></p>
+]
+
+---
+## GitHub
+### Common mistakes (and how to solve them)
+
+* **Commits in the wrong Repo**. Nothing seems to work? It's a common mistake. Solution: make sure you work on the correct RStudio project that is correctly linked to GitHub.
+
+* **Large files error**. GitHub blocks pushes that exceed 100 MB. Solution: find another solution for large files (Dropbox, ...)
+
+* **Conflict (not merge)**. Conflicts may happen when two collaborators make different changes to part of a program at the same time but on different lines of code. One of them push the modification to the remote. The second one to push will have a conflict as his/her version of the project is "outdated". Solution: `git pull --rebase`
+
+* **Merge conflict**. It happens when two collaborators work on the same lines of code at the same time. It is often a problem of miscommunication within groups and lack of organization. Solution: To resolve these conflicts, we must directly edit the documents making sure potential conflicts are discussed before pushing.
+
+---
+## GitHub
+
+> git gets easier once you get the basic idea that branches are homeomorphic endofunctors mapping submanifolds of a Hilbert space.
+> <cite> Isaac Wolkerstorfer </cite>
+
+---
+class: sydney-blue, center, middle
+
+## Question ?
+
+.pull-down[
+<a href="https://ptds.samorso.ch/">
+.white[`r icons::fontawesome("file")` website]
+</a>
+
+<a href="https://github.com/ptds2024/">
+.white[`r icons::fontawesome("github")` GitHub]
+</a>
+]
+
+<!-- --- -->
+<!-- # Exercises -->
+<!-- 1. Create a GitHub repo for the RMarkdown file (.Rmd) you created in the last class. -->
+<!-- 1. Edit the README.md file, push the .Rmd. -->
+<!-- 1. By two. Invite (person A) someone else (person B) to work on your repo and try: -->
+<!--   - Repo is up-to-date. Person B modifies .Rmd and pushes the changes, person A pulls the changes. -->
+<!--   - Repo is up-to-date. Person A modifies 1st section of .Rmd, person B modifies 2nd section (no conflict) of .Rmd. No push, no pull in between. Now person A commits and pushes. Then person B tries to commit and push. Try to solve until repo is up-to-date. -->
+<!--   - Same as last point, but person B modifies 1st section of .Rmd (conflict). -->
+<!-- 1. (optional) Complete the exercise "The Basics of Github". -->

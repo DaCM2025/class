@@ -1,0 +1,404 @@
+---
+title: "Data & Code Management — Lecture 2: Introduction & Tools"
+subtitle: "Course overview • Reproducibility • R • Python • SQL • GitHub • Markdown/Jupyter"
+author: "Samuel Orso"
+date: "25 Sep 2025"
+format:
+  revealjs:
+    theme: [default, night]
+    slide-number: true
+    controls: true
+    progress: true
+    center: false
+    overview: true
+    code-overflow: wrap
+    code-copy: true
+    transition: slide
+    auto-animate: true
+    toc: true
+    toc-depth: 2
+    incremental: false
+    footer: "HEC • Data & Code Management • 2025/26"
+    menu: true
+    chalkboard: true
+    history: true
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+  freeze: auto
+filters: [pantable]
+include-after-body:
+  - text: |
+      <style>
+      .title-slide h1 { letter-spacing: 0.5px; }
+      .reveal section img { border-radius: 12px; }
+      .reveal pre code { font-size: 0.9em; }
+      </style>
+---
+
+# Welcome
+
+::: {.columns}
+::: {.column width="55%"}
+- Course name: **Data & Code Management: From Collection to Application**  
+- Time & place: **Thursdays, 09:00–12:00**  
+- Slack for Q&A (join via form on the course site)
+- GitHub Classroom for assignments
+:::
+::: {.column width="45%"}
+> _Today_: overview, reproducibility, tooling baseline (R/Python/SQL), GitHub, Markdown/Jupyter.  
+> _Goal_: get everyone set up and productive across the full stack used this semester.
+:::
+:::
+
+::: callout-tip
+#### Pro tip
+Bring your laptops. We'll do short live challenges in R, Python, and SQL.
+:::
+
+---
+
+# Agenda
+
+1. Course overview & expectations
+2. Reproducibility (projects, environments, seeds, data)
+3. Tools tour: R • Python • SQL • GitHub • Markdown/Jupyter
+4. Live setup checks
+5. Mini challenges (R/Python/SQL)
+6. **HW1 released** (Programming foundations in R/Python)
+
+---
+
+# Course overview & expectations
+
+- **Learning outcomes**
+  - Version and document analyses reproducibly
+  - Build small tools (functions/packages/notebooks)
+  - Query and join data with SQL
+  - Communicate with clean visualizations & reports
+- **Assessment (high level)**
+  - Participation & engagement in practicals
+  - HWs (Foundations • SQL/API • Functions/Testing)
+  - Group project (integration & presentation)
+- **Logistics**
+  - GitHub Classroom repos per student/team
+  - Issues/PRs for feedback
+  - Slack for support & announcements
+
+::: callout-warning
+We follow an **open-book, open-internet** ethos but **credit sources** and **don’t paste** opaque outputs. Explanations matter.
+:::
+
+---
+
+# Reproducibility: the essentials
+
+## Projects & structure
+
+```
+project/
+├── data/            # raw/processed (read-only raw)
+├── R/ or src/       # functions & helpers
+├── notebooks/       # exploratory, numbered
+├── reports/         # Quarto/Markdown outputs
+├── tests/           # unit tests
+├── renv/ or .venv   # environments (R/Python)
+├── .gitignore
+└── README.md
+```
+
+- Keep **raw data immutable**; write derived data under `data/processed/`.
+- Prefer **relative paths**; avoid absolute paths.
+
+## Environments & seeds
+
+- R: `renv::init()`; Python: `uv`/`venv` + `requirements.txt`/`pyproject.toml`.
+- Set seeds: `set.seed(123)` (R), `random.seed(123)`/`numpy.random.seed(123)` (Py).
+
+::: callout-note
+**Tip**: Pin package versions in a `lockfile` (R: `renv.lock`; Py: `requirements.txt` or `uv.lock`).
+:::
+
+---
+
+# Tools tour
+
+## R (tidyverse + data.table when helpful)
+
+```{r}
+#| label: r-setup-check
+#| echo: true
+#| eval: false
+pkgs <- c("tidyverse", "data.table", "lubridate", "janitor", "readr")
+missing <- pkgs[!sapply(pkgs, requireNamespace, quietly = TRUE)]
+if (length(missing)) install.packages(missing)
+print(sessionInfo())
+```
+
+### Example: clean & summarize
+
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+library(janitor)
+mtcars |> clean_names() |> group_by(cyl) |> summarise(mpg = mean(mpg), .groups = "drop")
+```
+
+## Python (pandas + polars + jupyter)
+
+```{python}
+#| label: py-setup-check
+#| echo: true
+#| eval: false
+import sys, platform
+try:
+    import pandas as pd
+    import polars as pl
+except Exception as e:
+    print("Missing packages: ", e)
+print(platform.platform())
+print(sys.version)
+```
+
+### Example: small transform
+
+```{python}
+#| echo: true
+#| eval: false
+import pandas as pd
+cars = pd.DataFrame({"cyl":[4,6,8,4], "mpg":[22.8,21.4,18.7,30.4]})
+cars.groupby("cyl").mpg.mean()
+```
+
+## SQL (sqlite for class demos)
+
+```{sql}
+--| connection: con
+--| echo: true
+--| eval: false
+CREATE TABLE IF NOT EXISTS sales(region TEXT, product TEXT, qty INT);
+INSERT INTO sales VALUES ("EU","Widget",10), ("EU","Gadget",5), ("US","Widget",7);
+SELECT region, SUM(qty) AS total FROM sales GROUP BY region ORDER BY total DESC;
+```
+
+::: callout-tip
+**Tip**: For Quarto SQL chunks, configure a DBI connection in `setup` (see next slide).
+:::
+
+---
+
+## Git & GitHub
+
+- Git basics: `init → add → commit → push → pull`
+- Branching strategy: short-lived feature branches, PRs, code review
+- Issues & Projects for task tracking
+- **GitHub Classroom** will provision your starter repo
+
+```bash
+# first-time setup
+git config --global user.name "Your Name"
+git config --global user.email "you@unil.ch"
+
+# typical workflow
+git checkout -b feat/readme
+# edit files
+git add .
+git commit -m "docs: add course README"
+git push -u origin feat/readme
+```
+
+::: callout-note
+We evaluate **commit history** and **PR quality** (messages, diffs, comments) in assignments.
+:::
+
+---
+
+## Markdown / Jupyter / Quarto
+
+- **Quarto** unifies R Markdown & Jupyter: one tool for **R/Python/SQL**
+- Write once, render to **HTML, PDF, slides (reveal.js)**
+- Great for **reproducible reports** & teaching materials
+
+```markdown
+# Header 1
+Some inline code: `sum(1:10)`
+
+> A callout with a key point.
+
+- List item
+```
+
+```{r}
+#| label: r-chunk-demo
+#| echo: true
+#| eval: false
+mean(1:10)
+```
+
+---
+
+# Live setup (class)
+
+### R & Python engines in one Quarto doc
+
+```{r}
+#| label: setup-engines
+#| include: false
+#| echo: false
+# con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+```
+
+```{python}
+#| label: py-engine
+#| include: false
+```
+
+::: callout-warning
+If you see the error `The 'connection' option (DBI connection) is required for sql chunks.`, ensure you created `con` with **DBI** and that your SQL chunks include `connection: con`.
+:::
+
+---
+
+# Interactive mini challenges
+
+## R — vectorization & pipes (5')
+
+**Task.** Given `mtcars`, compute: mean `mpg` by `cyl`, filter mean `mpg` > 20, arrange descending.
+
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+mtcars |>
+  group_by(cyl) |>
+  summarise(mpg = mean(mpg), .groups = "drop") |>
+  filter(mpg > 20) |>
+  arrange(desc(mpg))
+```
+
+<details>
+<summary>Show solution</summary>
+Same as the code above. Discuss alternatives with `data.table`.
+</details>
+
+## Python — functions & tests (5')
+
+**Task.** Write `zscore(x)` that returns standardized values and simple asserts.
+
+```{python}
+#| echo: true
+#| eval: false
+import numpy as np
+
+def zscore(x):
+    x = np.asarray(x, dtype=float)
+    return (x - x.mean())/x.std(ddof=0)
+
+z = zscore([1,2,3])
+assert round(float(z.mean()), 10) == 0.0
+```
+
+## SQL — joins (5')
+
+**Task.** With tables `orders(order_id, customer_id)` and `customers(customer_id, country)`, return the **top-3 countries by orders**.
+
+```{sql}
+--| connection: con
+--| echo: true
+--| eval: false
+SELECT c.country, COUNT(*) AS n
+FROM orders o
+JOIN customers c USING(customer_id)
+GROUP BY c.country
+ORDER BY n DESC
+LIMIT 3;
+```
+
+---
+
+# Legacy content imported
+
+## From lecture01.Rmd
+
+```{r}
+# Legacy R content
+# (full text/code from lecture01.Rmd pasted here)
+```
+
+## From lecture02_markdown.Rmd
+
+```markdown
+# Legacy Markdown content
+# (full text/code from lecture02_markdown.Rmd pasted here)
+```
+
+## From lecture03_github.Rmd
+
+```markdown
+# Legacy GitHub content
+# (full text/code from lecture03_github.Rmd pasted here)
+```
+
+---
+
+# HW1 — Programming foundations (released today)
+
+- **R or Python**, your choice (or both if you’d like extra practice)
+- Topics: data structures, control flow, functions, basic tests, style
+- Submission: GitHub Classroom starter repo
+- **Due:** **09 Oct 2025** (start of Practical 1)
+
+::: callout-note
+Rubric will value **clear code**, **reproducibility**, and **meaningful commit messages**.
+:::
+
+---
+
+# Appendix
+
+## Setup snippets
+
+```{r}
+#| label: renv-init
+#| eval: false
+install.packages("renv"); renv::init()
+```
+
+```{bash}
+# Python environment (uv) example
+uv venv
+uv pip install pandas polars jupyterlab
+```
+
+```{r}
+#| label: dbi-setup
+#| eval: false
+# install.packages(c("DBI","RSQLite"))
+# con <- DBI::dbConnect(RSQLite::SQLite(), ":memory:")
+```
+
+## Git ignore essentials
+
+```
+.Rproj.user/
+.Rhistory
+.RData
+.venv/
+renv/
+renv.lock
+.DS_Store
+.ipynb_checkpoints/
+*.html
+*.pdf
+```
+
+---
+
+# Credits & license
+
+- Portions adapted from course best practices at UNIL/HEC
+- License: CC BY-SA 4.0
+

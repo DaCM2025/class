@@ -1,0 +1,11 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - index.qmd
+    - lecture01.qmd
+
+format:
+  revealjs:
+    theme: [default, dracula]
+
