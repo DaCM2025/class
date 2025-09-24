@@ -1,0 +1,15 @@
+# Ignore everything
+*
+
+# Keep the folder and one file inside it
+!.git/*
+!.gitignore
+!README.md
+!docs/
+!docs/logo_dacm.svg
+!docs/theme_dacm.css
+!docs/404.md
+!docs/lecture01.html
+!docs/images/
+!docs/images/*
+
