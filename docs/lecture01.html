@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="lecture01_files/libs/clipboard/clipboard.min.js"></script>
-<script src="lecture01_files/libs/quarto-html/tabby.min.js"></script>
-<script src="lecture01_files/libs/quarto-html/popper.min.js"></script>
-<script src="lecture01_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="lecture01_files/libs/quarto-html/anchor.min.js"></script>
-<link href="lecture01_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="lecture01_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="lecture01_files/libs/quarto-html/quarto-syntax-highlighting-dark-be2dad9397c9b99732ed2a04f2c65f62.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-be2dad9397c9b99732ed2a04f2c65f62.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-99.9.9">
 
   <meta name="author" content="Samuel Orso">
@@ -16,8 +16,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="lecture01_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="lecture01_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -97,12 +97,12 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="lecture01_files/libs/revealjs/dist/theme/quarto-4672a6d53a7f172c9e50360c0960cbcc.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4672a6d53a7f172c9e50360c0960cbcc.css">
   <link rel="stylesheet" href="theme_dacm.css">
-  <link href="lecture01_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="lecture01_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="lecture01_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="lecture01_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -190,8 +190,8 @@
       margin-right: 0; 
     }
   </style>
-  <script src="lecture01_files/libs/kePrint-0.0.1/kePrint.js"></script>
-  <link href="lecture01_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+  <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="quarto-dark">
   <div class="reveal">
@@ -434,20 +434,20 @@ Use AI to brainstorm, outline, or lint code. <strong>Own</strong> the result: ve
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>R snippet</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="co"># Vectorized transform</span></span>
-<span id="cb2-2"><a href=""></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-3"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb2-4"><a href=""></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>), <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>))</span>
-<span id="cb2-5"><a href=""></a>df <span class="sc">|&gt;</span></span>
-<span id="cb2-6"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">z =</span> x <span class="sc">+</span> y, <span class="at">grp =</span> <span class="fu">if_else</span>(z <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"pos"</span>, <span class="st">"neg"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="co"># Vectorized transform</span></span>
+<span id="cb2-2"><a></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-3"><a></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb2-4"><a></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>), <span class="at">y =</span> <span class="fu">rnorm</span>(<span class="dv">5</span>))</span>
+<span id="cb2-5"><a></a>df <span class="sc">|&gt;</span></span>
+<span id="cb2-6"><a></a>  <span class="fu">mutate</span>(<span class="at">z =</span> x <span class="sc">+</span> y, <span class="at">grp =</span> <span class="fu">if_else</span>(z <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"pos"</span>, <span class="st">"neg"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
 <p><strong>Python snippet</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href=""></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-2"><a href=""></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-3"><a href=""></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
-<span id="cb3-4"><a href=""></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"x"</span>: rng.normal(size<span class="op">=</span><span class="dv">5</span>), <span class="st">"y"</span>: rng.normal(size<span class="op">=</span><span class="dv">5</span>)})</span>
-<span id="cb3-5"><a href=""></a>df.assign(z<span class="op">=</span><span class="kw">lambda</span> d: d.x <span class="op">+</span> d.y,</span>
-<span id="cb3-6"><a href=""></a>          grp<span class="op">=</span><span class="kw">lambda</span> d: np.where(d.z <span class="op">&gt;</span> <span class="dv">0</span>, <span class="st">"pos"</span>, <span class="st">"neg"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb3-3"><a></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb3-4"><a></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"x"</span>: rng.normal(size<span class="op">=</span><span class="dv">5</span>), <span class="st">"y"</span>: rng.normal(size<span class="op">=</span><span class="dv">5</span>)})</span>
+<span id="cb3-5"><a></a>df.assign(z<span class="op">=</span><span class="kw">lambda</span> d: d.x <span class="op">+</span> d.y,</span>
+<span id="cb3-6"><a></a>          grp<span class="op">=</span><span class="kw">lambda</span> d: np.where(d.z <span class="op">&gt;</span> <span class="dv">0</span>, <span class="st">"pos"</span>, <span class="st">"neg"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="callout callout-caution callout-titled callout-style-default">
 <div class="callout-body">
@@ -476,10 +476,10 @@ Use AI to brainstorm, outline, or lint code. <strong>Own</strong> the result: ve
 <li>Works with <strong>R</strong> and <strong>Python</strong></li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">plot</span>(mtcars<span class="sc">$</span>wt, mtcars<span class="sc">$</span>mpg)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="fu">plot</span>(mtcars<span class="sc">$</span>wt, mtcars<span class="sc">$</span>mpg)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Render:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href=""></a><span class="ex">quarto</span> render report.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a></a><span class="ex">quarto</span> render report.qmd</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -533,12 +533,12 @@ Use AI to brainstorm, outline, or lint code. <strong>Own</strong> the result: ve
 <li>Options include: author, date, output format, table of contents, themes, code folding, …</li>
 </ul>
 <p>Example:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href=""></a><span class="pp">---</span></span>
-<span id="cb6-2"><a href=""></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"My Report"</span></span>
-<span id="cb6-3"><a href=""></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Jane Doe"</span></span>
-<span id="cb6-4"><a href=""></a><span class="fu">format</span><span class="kw">:</span><span class="at"> html</span></span>
-<span id="cb6-5"><a href=""></a><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb6-6"><a href=""></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource yaml number-lines code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a></a><span class="pp">---</span></span>
+<span id="cb6-2"><a></a><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"My Report"</span></span>
+<span id="cb6-3"><a></a><span class="fu">author</span><span class="kw">:</span><span class="at"> </span><span class="st">"Jane Doe"</span></span>
+<span id="cb6-4"><a></a><span class="fu">format</span><span class="kw">:</span><span class="at"> html</span></span>
+<span id="cb6-5"><a></a><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb6-6"><a></a><span class="pp">---</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="text-in-markdown" class="slide level2">
 <h2>Text in Markdown</h2>
@@ -569,13 +569,13 @@ Use AI to brainstorm, outline, or lint code. <strong>Own</strong> the result: ve
 <h2>Code cells in Quarto</h2>
 <p>Quarto supports <strong>R, Python, Julia, and ObservableJS</strong>.</p>
 <p>Code cell delimiters:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href=""></a><span class="in">```r</span></span>
-<span id="cb7-2"><a href=""></a><span class="co"># R code here</span></span>
-<span id="cb7-3"><a href=""></a><span class="in">```</span></span>
-<span id="cb7-4"><a href=""></a></span>
-<span id="cb7-5"><a href=""></a><span class="in">```python</span></span>
-<span id="cb7-6"><a href=""></a><span class="co"># Python code here</span></span>
-<span id="cb7-7"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a></a><span class="in">```r</span></span>
+<span id="cb7-2"><a></a><span class="co"># R code here</span></span>
+<span id="cb7-3"><a></a><span class="in">```</span></span>
+<span id="cb7-4"><a></a></span>
+<span id="cb7-5"><a></a><span class="in">```python</span></span>
+<span id="cb7-6"><a></a><span class="co"># Python code here</span></span>
+<span id="cb7-7"><a></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>In Jupyter notebooks, the same concepts apply — each code cell is language-specific.</li>
 </ul>
@@ -583,13 +583,13 @@ Use AI to brainstorm, outline, or lint code. <strong>Own</strong> the result: ve
 <section id="chunk-cell-options" class="slide level2">
 <h2>Chunk / cell options</h2>
 <p>Quarto syntax uses YAML-like <code>#|</code> comments:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href=""></a><span class="in">```r</span></span>
-<span id="cb8-2"><a href=""></a><span class="co">#| echo: false</span></span>
-<span id="cb8-3"><a href=""></a><span class="co">#| eval: true</span></span>
-<span id="cb8-4"><a href=""></a><span class="co">#| warning: false</span></span>
-<span id="cb8-5"><a href=""></a><span class="co">#| cache: false</span></span>
-<span id="cb8-6"><a href=""></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb8-7"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a></a><span class="in">```r</span></span>
+<span id="cb8-2"><a></a><span class="co">#| echo: false</span></span>
+<span id="cb8-3"><a></a><span class="co">#| eval: true</span></span>
+<span id="cb8-4"><a></a><span class="co">#| warning: false</span></span>
+<span id="cb8-5"><a></a><span class="co">#| cache: false</span></span>
+<span id="cb8-6"><a></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb8-7"><a></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Options you’ll use most often:</p>
 <ul>
 <li><code>eval</code>: run code?</li>
@@ -601,23 +601,23 @@ Use AI to brainstorm, outline, or lint code. <strong>Own</strong> the result: ve
 <section id="figures-in-code-cells" class="slide level2">
 <h2>Figures in code cells</h2>
 <p>Options for plots:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href=""></a><span class="in">```r</span></span>
-<span id="cb9-2"><a href=""></a><span class="co">#| fig-width: 6</span></span>
-<span id="cb9-3"><a href=""></a><span class="co">#| fig-height: 4</span></span>
-<span id="cb9-4"><a href=""></a><span class="co">#| fig-align: center</span></span>
-<span id="cb9-5"><a href=""></a><span class="co">#| fig-cap: "A scatterplot"</span></span>
-<span id="cb9-6"><a href=""></a><span class="fu">plot</span>(iris<span class="sc">$</span>Sepal.Length, iris<span class="sc">$</span>Sepal.Width)</span>
-<span id="cb9-7"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a></a><span class="in">```r</span></span>
+<span id="cb9-2"><a></a><span class="co">#| fig-width: 6</span></span>
+<span id="cb9-3"><a></a><span class="co">#| fig-height: 4</span></span>
+<span id="cb9-4"><a></a><span class="co">#| fig-align: center</span></span>
+<span id="cb9-5"><a></a><span class="co">#| fig-cap: "A scatterplot"</span></span>
+<span id="cb9-6"><a></a><span class="fu">plot</span>(iris<span class="sc">$</span>Sepal.Length, iris<span class="sc">$</span>Sepal.Width)</span>
+<span id="cb9-7"><a></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 <img data-src="lecture01_files/figure-revealjs/unnamed-chunk-5-1.png" width="576" class="r-stretch quarto-figure-center"><p class="caption">A scatterplot</p></section>
 <section id="printing-tables-with-knitrkable" class="slide level2">
 <h2>Printing tables with <code>knitr::kable()</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href=""></a><span class="in">```r</span></span>
-<span id="cb10-2"><a href=""></a><span class="co">#| echo: true</span></span>
-<span id="cb10-3"><a href=""></a><span class="co">#| fig-height: 5</span></span>
-<span id="cb10-4"><a href=""></a><span class="fu">data</span>(<span class="st">"iris"</span>)</span>
-<span id="cb10-5"><a href=""></a>knitr<span class="sc">::</span><span class="fu">kable</span>(iris[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,])</span>
-<span id="cb10-6"><a href=""></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a></a><span class="in">```r</span></span>
+<span id="cb10-2"><a></a><span class="co">#| echo: true</span></span>
+<span id="cb10-3"><a></a><span class="co">#| fig-height: 5</span></span>
+<span id="cb10-4"><a></a><span class="fu">data</span>(<span class="st">"iris"</span>)</span>
+<span id="cb10-5"><a></a>knitr<span class="sc">::</span><span class="fu">kable</span>(iris[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,])</span>
+<span id="cb10-6"><a></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top">
@@ -675,10 +675,10 @@ Use AI to brainstorm, outline, or lint code. <strong>Own</strong> the result: ve
 <section id="extended-tables-with-kableextra" class="slide level2">
 <h2>Extended tables with <code>kableExtra</code></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb11-2"><a href=""></a>mtcars[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>] <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href=""></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb11-4"><a href=""></a>  <span class="fu">kable_paper</span>(<span class="at">full_width =</span> T)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb11-2"><a></a>mtcars[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">8</span>] <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a></a>  <span class="fu">kable_paper</span>(<span class="at">full_width =</span> T)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="lightable-paper caption-top" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
 <thead>
@@ -979,12 +979,12 @@ Closes #12 (feature request: plotting utilities)</p>
 </section>
 <section id="git-in-6-commands" class="slide level2">
 <h2>Git in 6 commands</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href=""></a><span class="fu">git</span> status</span>
-<span id="cb12-2"><a href=""></a><span class="fu">git</span> add <span class="at">-A</span></span>
-<span id="cb12-3"><a href=""></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Explain what/why, not how"</span></span>
-<span id="cb12-4"><a href=""></a><span class="fu">git</span> pull <span class="at">--rebase</span></span>
-<span id="cb12-5"><a href=""></a><span class="fu">git</span> push</span>
-<span id="cb12-6"><a href=""></a><span class="fu">git</span> switch <span class="at">-c</span> feature/your-topic   <span class="co"># create a feature branch</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a></a><span class="fu">git</span> status</span>
+<span id="cb12-2"><a></a><span class="fu">git</span> add <span class="at">-A</span></span>
+<span id="cb12-3"><a></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Explain what/why, not how"</span></span>
+<span id="cb12-4"><a></a><span class="fu">git</span> pull <span class="at">--rebase</span></span>
+<span id="cb12-5"><a></a><span class="fu">git</span> push</span>
+<span id="cb12-6"><a></a><span class="fu">git</span> switch <span class="at">-c</span> feature/your-topic   <span class="co"># create a feature branch</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -1031,28 +1031,28 @@ What makes a good commit message? Write one for “fixed weird bug in script” 
 <div class="columns">
 <div class="column" style="width:33%;">
 <p><strong>R — renv</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a><span class="fu">install.packages</span>(<span class="st">"renv"</span>)</span>
-<span id="cb13-2"><a href=""></a>renv<span class="sc">::</span><span class="fu">init</span>()</span>
-<span id="cb13-3"><a href=""></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()   <span class="co"># lock versions</span></span>
-<span id="cb13-4"><a href=""></a>renv<span class="sc">::</span><span class="fu">restore</span>()    <span class="co"># reproduce elsewhere</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="fu">install.packages</span>(<span class="st">"renv"</span>)</span>
+<span id="cb13-2"><a></a>renv<span class="sc">::</span><span class="fu">init</span>()</span>
+<span id="cb13-3"><a></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()   <span class="co"># lock versions</span></span>
+<span id="cb13-4"><a></a>renv<span class="sc">::</span><span class="fu">restore</span>()    <span class="co"># reproduce elsewhere</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:34%;">
 <p><strong>Python — Conda (recommended)</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href=""></a><span class="co"># create &amp; activate</span></span>
-<span id="cb14-2"><a href=""></a><span class="ex">conda</span> create <span class="at">-n</span> bia python=3.11 pandas scikit-learn jupyterlab <span class="at">-c</span> conda-forge</span>
-<span id="cb14-3"><a href=""></a><span class="ex">conda</span> activate bia</span>
-<span id="cb14-4"><a href=""></a></span>
-<span id="cb14-5"><a href=""></a><span class="co"># share exact env</span></span>
-<span id="cb14-6"><a href=""></a><span class="ex">conda</span> env export <span class="at">--from-history</span> <span class="op">&gt;</span> environment.yml</span>
-<span id="cb14-7"><a href=""></a><span class="co"># reproduce elsewhere</span></span>
-<span id="cb14-8"><a href=""></a><span class="ex">conda</span> env create <span class="at">-f</span> environment.yml</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a></a><span class="co"># create &amp; activate</span></span>
+<span id="cb14-2"><a></a><span class="ex">conda</span> create <span class="at">-n</span> bia python=3.11 pandas scikit-learn jupyterlab <span class="at">-c</span> conda-forge</span>
+<span id="cb14-3"><a></a><span class="ex">conda</span> activate bia</span>
+<span id="cb14-4"><a></a></span>
+<span id="cb14-5"><a></a><span class="co"># share exact env</span></span>
+<span id="cb14-6"><a></a><span class="ex">conda</span> env export <span class="at">--from-history</span> <span class="op">&gt;</span> environment.yml</span>
+<span id="cb14-7"><a></a><span class="co"># reproduce elsewhere</span></span>
+<span id="cb14-8"><a></a><span class="ex">conda</span> env create <span class="at">-f</span> environment.yml</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:33%;">
 <p><strong>Python — Poetry (alternative)</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href=""></a><span class="co"># once</span></span>
-<span id="cb15-2"><a href=""></a><span class="ex">poetry</span> config virtualenvs.in-project true</span>
-<span id="cb15-3"><a href=""></a><span class="co"># in project</span></span>
-<span id="cb15-4"><a href=""></a><span class="ex">poetry</span> init</span>
-<span id="cb15-5"><a href=""></a><span class="ex">poetry</span> add pandas scikit-learn jupyter</span>
-<span id="cb15-6"><a href=""></a><span class="ex">poetry</span> install           <span class="co"># recreate from poetry.lock</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a></a><span class="co"># once</span></span>
+<span id="cb15-2"><a></a><span class="ex">poetry</span> config virtualenvs.in-project true</span>
+<span id="cb15-3"><a></a><span class="co"># in project</span></span>
+<span id="cb15-4"><a></a><span class="ex">poetry</span> init</span>
+<span id="cb15-5"><a></a><span class="ex">poetry</span> add pandas scikit-learn jupyter</span>
+<span id="cb15-6"><a></a><span class="ex">poetry</span> install           <span class="co"># recreate from poetry.lock</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
@@ -1076,13 +1076,13 @@ What makes a good commit message? Write one for “fixed weird bug in script” 
 <li>Record data provenance (source, timestamp)</li>
 <li>Use <code>.gitignore</code> to avoid committing large/secret files</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource gitignore number-lines code-with-copy"><code class="sourceCode"><span id="cb16-1"><a href=""></a># data &amp; local env</span>
-<span id="cb16-2"><a href=""></a>data/raw/*</span>
-<span id="cb16-3"><a href=""></a>!.gitkeep</span>
-<span id="cb16-4"><a href=""></a>.venv/</span>
-<span id="cb16-5"><a href=""></a>renv/library/</span>
-<span id="cb16-6"><a href=""></a>*.sqlite</span>
-<span id="cb16-7"><a href=""></a>*.parquet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource gitignore number-lines code-with-copy"><code class="sourceCode"><span id="cb16-1"><a></a># data &amp; local env</span>
+<span id="cb16-2"><a></a>data/raw/*</span>
+<span id="cb16-3"><a></a>!.gitkeep</span>
+<span id="cb16-4"><a></a>.venv/</span>
+<span id="cb16-5"><a></a>renv/library/</span>
+<span id="cb16-6"><a></a>*.sqlite</span>
+<span id="cb16-7"><a></a>*.parquet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="common-pitfalls-how-to-avoid-them" class="slide level2">
 <h2>Common Pitfalls &amp; How to Avoid Them</h2>
@@ -1390,6 +1390,7 @@ What makes a good commit message? Write one for “fixed weird bug in script” 
 <section class="slide level2">
 
 
+
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
@@ -1400,19 +1401,19 @@ What makes a good commit message? Write one for “fixed weird bug in script” 
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="lecture01_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="lecture01_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="lecture01_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="lecture01_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="lecture01_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="lecture01_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="lecture01_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="lecture01_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="lecture01_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="lecture01_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
