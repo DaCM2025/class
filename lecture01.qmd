@@ -189,7 +189,7 @@ project/
 ## Tooling Map
 
 - **R** (tidyverse, data.table) & **Python** (pandas, polars)
-- **SQL** for data retrieval/joins/aggregations (next week)
+- **SQL** for data retrieval/joins/aggregations (week 5)
 - **Git** + **GitHub** for versioning & collaboration
 - **Markdown/Jupyter/Quarto** for literate workflows
 - Optional helpers: **make**, **pre-commit**, **linters**
@@ -490,7 +490,7 @@ Instant feedback without full rebuilds.
 
 ## Why GitHub for this course?
 
-We will use GitHub to:  
+We will use GitHub to:   
 - Work in groups on projects   
 - Submit homeworks  
 - Develop programs  
@@ -754,6 +754,16 @@ poetry install           # recreate from poetry.lock
 Why lock its version?
 :::
 
+---
+
+## Nondeterminism in LLM
+
+> Reproducibility is a bedrock of scientific progress. However, it’s remarkably difficult to get reproducible results out of large language models.   
+> *Horace He in collaboration with others at Thinking Machines*
+
+::: callout-note
+Read the full article [here](https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/)
+:::
 
 ---
 

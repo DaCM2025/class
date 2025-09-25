@@ -67,7 +67,7 @@
     "href": "lecture01.html#tooling-map",
     "title": "Lecture 1 — Introduction & Tools",
     "section": "Tooling Map",
-    "text": "Tooling Map\n\nR (tidyverse, data.table) & Python (pandas, polars)\nSQL for data retrieval/joins/aggregations (next week)\nGit + GitHub for versioning & collaboration\nMarkdown/Jupyter/Quarto for literate workflows\nOptional helpers: make, pre-commit, linters\n\n\n\nR snippet\n# Vectorized transform\nlibrary(dplyr)\nset.seed(42)\ndf &lt;- tibble(x = rnorm(5), y = rnorm(5))\ndf |&gt;\n  mutate(z = x + y, grp = if_else(z &gt; 0, \"pos\", \"neg\"))\n\nPython snippet\nimport pandas as pd\nimport numpy as np\nrng = np.random.default_rng(42)\ndf = pd.DataFrame({\"x\": rng.normal(size=5), \"y\": rng.normal(size=5)})\ndf.assign(z=lambda d: d.x + d.y,\n          grp=lambda d: np.where(d.z &gt; 0, \"pos\", \"neg\"))\n\n\n\n\n\n\n\nCaution\n\n\nAre these codes reproducible? Why/why not?"
+    "text": "Tooling Map\n\nR (tidyverse, data.table) & Python (pandas, polars)\nSQL for data retrieval/joins/aggregations (week 5)\nGit + GitHub for versioning & collaboration\nMarkdown/Jupyter/Quarto for literate workflows\nOptional helpers: make, pre-commit, linters\n\n\n\nR snippet\n# Vectorized transform\nlibrary(dplyr)\nset.seed(42)\ndf &lt;- tibble(x = rnorm(5), y = rnorm(5))\ndf |&gt;\n  mutate(z = x + y, grp = if_else(z &gt; 0, \"pos\", \"neg\"))\n\nPython snippet\nimport pandas as pd\nimport numpy as np\nrng = np.random.default_rng(42)\ndf = pd.DataFrame({\"x\": rng.normal(size=5), \"y\": rng.normal(size=5)})\ndf.assign(z=lambda d: d.x + d.y,\n          grp=lambda d: np.where(d.z &gt; 0, \"pos\", \"neg\"))\n\n\n\n\n\n\n\nCaution\n\n\nAre these codes reproducible? Why/why not?"
   },
   {
     "objectID": "lecture01.html#what-is-quarto",
@@ -306,6 +306,13 @@
     "title": "Lecture 1 — Introduction & Tools",
     "section": "Environments (determinism)",
     "text": "Environments (determinism)\n\n\nR — renv\ninstall.packages(\"renv\")\nrenv::init()\nrenv::snapshot()   # lock versions\nrenv::restore()    # reproduce elsewhere\n\nPython — Conda (recommended)\n# create & activate\nconda create -n bia python=3.11 pandas scikit-learn jupyterlab -c conda-forge\nconda activate bia\n\n# share exact env\nconda env export --from-history &gt; environment.yml\n# reproduce elsewhere\nconda env create -f environment.yml\n\nPython — Poetry (alternative)\n# once\npoetry config virtualenvs.in-project true\n# in project\npoetry init\npoetry add pandas scikit-learn jupyter\npoetry install           # recreate from poetry.lock\n\n\n\n\n\n\n\nNote\n\n\nExercise (1′): List one package you rely on in R and in Python. Why lock its version?"
+  },
+  {
+    "objectID": "lecture01.html#nondeterminism-in-llm",
+    "href": "lecture01.html#nondeterminism-in-llm",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Nondeterminism in LLM",
+    "text": "Nondeterminism in LLM\n\nReproducibility is a bedrock of scientific progress. However, it’s remarkably difficult to get reproducible results out of large language models.\nHorace He in collaboration with others at Thinking Machines\n\n\n\n\n\n\n\nNote\n\n\nRead the full article here"
   },
   {
     "objectID": "lecture01.html#data-contracts-file-hygiene",
