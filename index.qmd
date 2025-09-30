@@ -4,4 +4,5 @@ page-layout: full
 ---
 
 - [Lecture 1 — Introduction & Tools](lecture01.html)
+- [Lecture 2 — Programming Foundations](lecture02.html)
 

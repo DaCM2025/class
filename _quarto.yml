@@ -4,6 +4,7 @@ project:
   render:
     - index.qmd
     - lecture01.qmd
+    - lecture02.qmd
 
 format:
   revealjs:

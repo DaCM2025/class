@@ -1,5 +1,460 @@
 [
   {
+    "objectID": "lecture02.html#big-picture",
+    "href": "lecture02.html#big-picture",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Big picture",
+    "text": "Big picture\n\nLLMs (ChatGPT, Gemini, Claude, LLaMA): great for ideation, scaffolding code, refactoring; not ground truth.\nQuarto = literate programming hub: one doc, code+text+figures → HTML/PDF/slides.\nGit/GitHub: version control + collaboration (branches, PRs, reviews).\nReproducibility: lock environments, script everything, document decisions."
+  },
+  {
+    "objectID": "lecture02.html#llms-use-wisely",
+    "href": "lecture02.html#llms-use-wisely",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "LLMs — use wisely",
+    "text": "LLMs — use wisely\n\nStrengths: productivity, learning, boilerplate, code review.\nRisks: hallucinations, missing context, ethics/licensing.\nGood habits: give clear prompts + context, ask for tests, verify outputs."
+  },
+  {
+    "objectID": "lecture02.html#quarto-essentials",
+    "href": "lecture02.html#quarto-essentials",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Quarto essentials",
+    "text": "Quarto essentials\n\nMarkdown + YAML header (title, format, options).\nCode chunks (R/Python), chunk options: echo, eval, warning, fig-*.\nFigures & tables: knitr::kable(), kableExtra; equations (Mathpix helpful).\nLive preview; keep content modular."
+  },
+  {
+    "objectID": "lecture02.html#gitgithub-workflow",
+    "href": "lecture02.html#gitgithub-workflow",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Git/GitHub workflow",
+    "text": "Git/GitHub workflow\n\nSmall commits with clear messages.\nBranch → PR → review → merge.\nHandle conflicts; use issues/templates.\n“New habits”: automate repeated steps; write READMEs."
+  },
+  {
+    "objectID": "lecture02.html#reproducibility-kit",
+    "href": "lecture02.html#reproducibility-kit",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Reproducibility kit",
+    "text": "Reproducibility kit\n\nR: renv::init(); snapshot(); restore()\nPython: venv/Poetry/Conda + lockfile\nDeterminism: pin versions; set seeds; record data sources."
+  },
+  {
+    "objectID": "lecture02.html#from-last-time-tasks",
+    "href": "lecture02.html#from-last-time-tasks",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "From last time — tasks",
+    "text": "From last time — tasks\n\nInstall: Git, GitHub account, Quarto, R (+renv), Python (venv/Conda).\nCreate a starter repo with a Quarto doc; push to GitHub.\nTry one mini-exercise (R / Python / Quarto / GitHub).\nOptional bonus: present a short solution next practical."
+  },
+  {
+    "objectID": "lecture02.html#primary-scalar-types",
+    "href": "lecture02.html#primary-scalar-types",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Primary (scalar) types",
+    "text": "Primary (scalar) types\n\nRPython\n\n\n\ndouble (real): -4, 12.4532, 6\ninteger: 2L, 12L\nlogical: TRUE, FALSE (also T, F)\ncharacter: \"a\", \"Bonjour\"\n(also: complex, raw)\n\n\ntypeof(12.5); typeof(2L); typeof(TRUE); typeof(\"hi\")\n\n\n\n\nint: -4, 6\nfloat: 12.4532\nbool: True, False\nstr: 'a', \"Bonjour\"\n(also: complex, bytes)\n\n\ntype(12.5), type(2), type(True), type(\"hi\")"
+  },
+  {
+    "objectID": "lecture02.html#reserved-special-values",
+    "href": "lecture02.html#reserved-special-values",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Reserved / special values",
+    "text": "Reserved / special values\n\nRPython\n\n\n\nMissing: NA, typed variants NA_real_, NA_integer_, NA_character_, …\nInfinity / NaN: Inf, NaN\nNull object: NULL\nControl words: if, else, repeat, while, function, for, in, next, break\n\n\nc(NA, Inf, NaN, NULL)\n\n\n\n\nMissing: None (object), numerical missing often math.nan or numpy.nan / pandas.NA\nInfinity / NaN: math.inf, float('inf'), math.nan\nKeywords: if, else, for, while, def, in, break, continue, class, …\n\n\nimport math\n[None, math.inf, math.nan]"
+  },
+  {
+    "objectID": "lecture02.html#inspecting-and-coercing-types",
+    "href": "lecture02.html#inspecting-and-coercing-types",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Inspecting and coercing types",
+    "text": "Inspecting and coercing types\n\nR: typeof, is.*, as.*Python: type, isinstance, casting\n\n\n\ntypeof(2L)              # \"integer\"\nis.double(2L)           # FALSE\nas.double(2L)           # 2\n\n\n\n\ntype(2) is int          # True\nisinstance(2.0, float)  # True\nint(2.9), float(\"3.1\"), str(True)"
+  },
+  {
+    "objectID": "lecture02.html#homogeneous-vs-heterogeneous-structures",
+    "href": "lecture02.html#homogeneous-vs-heterogeneous-structures",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Homogeneous vs heterogeneous structures",
+    "text": "Homogeneous vs heterogeneous structures\n\n\n\n\n\n\n\n\n\n\nDimension\nR homogeneous\nR heterogeneous\nPython homogeneous\nPython heterogeneous\n\n\n\n\n1\natomic vector\nlist\nNumPy array\nlist, tuple\n\n\n2\nmatrix\ndata.frame / tibble\nNumPy ndarray (2D)\npandas DataFrame\n\n\nn\narray\n—\nNumPy ndarray (nD)\n—\n\n\n\n\nRule of thumb: R vectors are homogeneous; Python lists are heterogeneous. For homogeneous numerics in Python, use NumPy."
+  },
+  {
+    "objectID": "lecture02.html#vectors-r-vs-lists-arrays-python",
+    "href": "lecture02.html#vectors-r-vs-lists-arrays-python",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Vectors (R) vs Lists / Arrays (Python)",
+    "text": "Vectors (R) vs Lists / Arrays (Python)\n\nR — atomic vectorPython — list (heterogeneous)Python — NumPy array (homogeneous)\n\n\n\nx &lt;- c(1, 2, 8, 10)\nlength(x); typeof(x)\n\n\n\n\nx = [1, 2, 8, 10]\nlen(x), type(x)\n\n\n\n\nimport numpy as np\nx = np.array([1, 2, 8, 10])\nx.dtype, x.shape"
+  },
+  {
+    "objectID": "lecture02.html#assignment",
+    "href": "lecture02.html#assignment",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Assignment",
+    "text": "Assignment\n\nRPython\n\n\n\ngrand_slam_win &lt;- c(16, 19, 20, 0, 0)\n\n\n\n\ngrand_slam_win = [16, 19, 20, 0, 0]"
+  },
+  {
+    "objectID": "lecture02.html#subsetting-key-differences",
+    "href": "lecture02.html#subsetting-key-differences",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Subsetting — key differences",
+    "text": "Subsetting — key differences\n\nIndex origin: R is 1-based, Python is 0-based.\nNegative indices: R -i excludes element i; Python -i indexes from the end.\nLogical indexing: R uses logical vectors; Python uses list comprehensions / boolean masks (NumPy/pandas).\n\n\nRPython (list)Python (NumPy)\n\n\n\nx &lt;- c(10, 20, 30, 40)\nx[1]           # 10\nx[-1]          # drop first\nx[c(TRUE,FALSE,TRUE,FALSE)]  # logical mask\n\n\n\n\nx = [10, 20, 30, 40]\nx[0]           # 10\nx[-1]          # last element (40)\n# logical mask via comprehension\n[xi for i, xi in enumerate(x) if i in (0,2)]\n\n\n\n\nimport numpy as np\nx = np.array([10,20,30,40])\nx[[0,2]]\nmask = np.array([True, False, True, False])\nx[mask]"
+  },
+  {
+    "objectID": "lecture02.html#coercion-in-homogeneous-containers",
+    "href": "lecture02.html#coercion-in-homogeneous-containers",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Coercion in homogeneous containers",
+    "text": "Coercion in homogeneous containers\n\nR vector coercion: logical &lt; integer &lt; double &lt; character.\nPython list: no automatic coercion.\nNumPy array: coerces to common dtype.\n\n\nRPython (list)Python (NumPy)\n\n\n\nc(TRUE, 12, 0.5)  # coerces to double\n\n\n\n\n[True, 12, 0.5]   # stays mixed types\n\n\n\n\nimport numpy as np\nnp.array([True, 12, 0.5])    # dtype: float64"
+  },
+  {
+    "objectID": "lecture02.html#attributes-names",
+    "href": "lecture02.html#attributes-names",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Attributes & names",
+    "text": "Attributes & names\n\nRPython (pandas)\n\n\n\ngrand_slam_win &lt;- c(16, 19, 20, 0, 0)\nnames(grand_slam_win) &lt;- c(\"Novak Djokovic\",\"Rafael Nadal\",\"Roger Federer\",\"Daniil Medvedev\",\"Dominic Thiem\")\nattr(grand_slam_win, \"date\") &lt;- \"2019-09-30\"\nattributes(grand_slam_win)\n\n\n\n\nimport pandas as pd\ns = pd.Series([16,19,20,0,0], index=[\n    \"Novak Djokovic\",\"Rafael Nadal\",\"Roger Federer\",\"Daniil Medvedev\",\"Dominic Thiem\"])\ns.attrs[\"date\"] = \"2019-09-30\"\ns.attrs"
+  },
+  {
+    "objectID": "lecture02.html#sequences",
+    "href": "lecture02.html#sequences",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Sequences",
+    "text": "Sequences\n\nRPython\n\n\n\n1:3\nseq_len(3)\nseq(1, 2.8, by = 0.4)\nseq(1, 2.8, length.out = 6)\nrep(c(1,2), times = 3, each = 1)\n\n\n\n\nlist(range(1,4))\nlist(range(3,0,-1))\n# numpy linspace/arange\n#| eval: false\nimport numpy as np\nnp.linspace(1, 2.8, 6)\nnp.arange(1, 2.9, 0.4)\n# repetition\n[1,2]*3"
+  },
+  {
+    "objectID": "lecture02.html#useful-vector-ops",
+    "href": "lecture02.html#useful-vector-ops",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Useful vector ops",
+    "text": "Useful vector ops\n\nRPython\n\n\n\nlength(grand_slam_win)\nsum(grand_slam_win)\nmean(grand_slam_win)\norder(grand_slam_win)\nsort(grand_slam_win)\n\n\n\n\nx = [16,19,20,0,0]\nlen(x), sum(x)\nsorted(x)\n# mean via statistics or numpy\n#| eval: false\nimport statistics as st\nst.mean(x)"
+  },
+  {
+    "objectID": "lecture02.html#matrices-2d-arrays",
+    "href": "lecture02.html#matrices-2d-arrays",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Matrices / 2D arrays",
+    "text": "Matrices / 2D arrays\n\nR — matrixPython — numpy.ndarray\n\n\n\nM &lt;- matrix(1:12, nrow = 3, ncol = 4)\nM; is.matrix(M); dim(M); nrow(M); ncol(M)\nt(M)\n# Elementwise vs matrix mult\nM * M\nM %*% t(M)\n\n\n\n\nimport numpy as np\nM = np.arange(1,13).reshape(3,4)\nM, M.shape\nM.T\nM * M          # elementwise\nM @ M.T        # matrix mult"
+  },
+  {
+    "objectID": "lecture02.html#lists-r-vs-dictlist-python",
+    "href": "lecture02.html#lists-r-vs-dictlist-python",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Lists (R) vs dict/list (Python)",
+    "text": "Lists (R) vs dict/list (Python)\n\nR — list (heterogeneous)Python — dict / list\n\n\n\nnum_vec &lt;- c(188, 140)\nchar_vec &lt;- c(\"Height\", \"Weight\", \"Length\")\nlogic_vec &lt;- rep(TRUE, 8)\nmy_mat &lt;- matrix(seq_len(10), nrow = 2, ncol = 5)\nmy_list &lt;- list(number = num_vec, character = char_vec, logic = logic_vec, matrix = my_mat)\ntypeof(my_list)\nmy_list[[\"matrix\"]][,3]\n\n\n\n\nmy_dict = {\n  \"number\": [188, 140],\n  \"character\": [\"Height\",\"Weight\",\"Length\"],\n  \"logic\": [True]*8,\n  \"matrix\": [[1,2,3,4,5],[6,7,8,9,10]]\n}\nmy_dict[\"matrix\"][0][2]"
+  },
+  {
+    "objectID": "lecture02.html#data-frames-tibbles-vs-pandas-dataframe",
+    "href": "lecture02.html#data-frames-tibbles-vs-pandas-dataframe",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Data frames / tibbles vs pandas DataFrame",
+    "text": "Data frames / tibbles vs pandas DataFrame\n\nRPython\n\n\n\nplayers &lt;- c(\"Novak Djokovic\",\"Rafael Nadal\",\"Roger Federer\",\"Daniil Medvedev\",\"Dominic Thiem\")\ngrand_slam_win &lt;- c(16,19,20,0,0)\ndate_of_birth &lt;- c(\"1987-05-22\",\"1986-06-03\",\"1981-08-08\",\"1996-02-11\",\"1993-09-03\")\n(tennis &lt;- data.frame(date_of_birth, grand_slam_win, row.names = players))\nis.data.frame(tennis)\nstr(tennis)\n\n\n\n\nimport pandas as pd\nplayers = [\"Novak Djokovic\",\"Rafael Nadal\",\"Roger Federer\",\"Daniil Medvedev\",\"Dominic Thiem\"]\ndf = pd.DataFrame({\n    \"date_of_birth\": [\"1987-05-22\",\"1986-06-03\",\"1981-08-08\",\"1996-02-11\",\"1993-09-03\"],\n    \"grand_slam_win\": [16,19,20,0,0]\n}, index=players)\ndf.info()\ndf.loc[:, [\"grand_slam_win\", \"date_of_birth\"]]"
+  },
+  {
+    "objectID": "lecture02.html#subsetting-data-frames",
+    "href": "lecture02.html#subsetting-data-frames",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Subsetting data frames",
+    "text": "Subsetting data frames\n\nRPython\n\n\n\n# Like a list\ntenis_cols &lt;- tennis[c(\"grand_slam_win\", \"date_of_birth\")]\n# Like a matrix\nsame_cols &lt;- tennis[, c(\"grand_slam_win\", \"date_of_birth\")]\n\n\n\n\ncols = df[[\"grand_slam_win\", \"date_of_birth\"]]  # column subset\nrowcol = df.loc[[\"Rafael Nadal\", \"Roger Federer\"], [\"grand_slam_win\"]]"
+  },
+  {
+    "objectID": "lecture02.html#dates",
+    "href": "lecture02.html#dates",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Dates",
+    "text": "Dates\n\nRPython\n\n\n\nplayers_dob &lt;- as.Date(c(\"22 May 1987\",\"3 Jun 1986\",\"8 Aug 1981\",\"11 Feb 1996\",\"3 Sep 1993\"), format = \"%d %b %Y\")\nplayers_dob\n\n\n\n\nimport pandas as pd\npd.to_datetime([\"22 May 1987\",\"3 Jun 1986\",\"8 Aug 1981\",\"11 Feb 1996\",\"3 Sep 1993\"], format=\"%d %b %Y\")"
+  },
+  {
+    "objectID": "lecture02.html#mini-exercises-quick-wins",
+    "href": "lecture02.html#mini-exercises-quick-wins",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini-exercises (quick wins)",
+    "text": "Mini-exercises (quick wins)\n\nIndexing: Let x &lt;- 3 * seq_len(4) (R) / x = [3*i for i in range(1,5)] (Py). Select the 2nd element via (a) positive, (b) negative, (c) logical (or comprehension) indexing.\nSorting: Sort x in descending order using (a) indices and (b) a built-in sorter.\nCoercion: In R, evaluate c(TRUE, 2, \"3\") — what happens? In Python, compare [True, 2, \"3\"] and np.array([True, 2, \"3\"]).\nMatrix ops: Create a 3×3 matrix / array and compute its transpose and A %*% A (R) / A @ A (Py).\n\n\nOptional: Show your answers in a short .qmd or notebook."
+  },
+  {
+    "objectID": "lecture02.html#challenge-exercise-r-python",
+    "href": "lecture02.html#challenge-exercise-r-python",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Challenge exercise (R & Python)",
+    "text": "Challenge exercise (R & Python)\nTennis leaderboard\n\nBuild a table with players, DoB, wins.\nAdd a computed column: age in years (use as.Date(Sys.Date()) / pd.Timestamp.today()), then sort by age descending.\nPlot wins vs age.\n\nHints:\n\nR: mutate, lubridate::time_length(interval, 'years'), plot() or ggplot2.\nPython: pd.to_datetime, age via dt, df.sort_values, and matplotlib."
+  },
+  {
+    "objectID": "lecture02.html#appendix-python-execution-in-knitr",
+    "href": "lecture02.html#appendix-python-execution-in-knitr",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Appendix — Python execution in knitr",
+    "text": "Appendix — Python execution in knitr\nIf Python chunks don’t execute:\n\nEnsure reticulate sees the right interpreter:\nreticulate::py_config()\nPoint to an environment that has numpy / pandas if used:\nreticulate::use_condaenv(\"dacm\", required = TRUE)\nOr disable execution of Python chunks during render with chunk option #| eval: false."
+  },
+  {
+    "objectID": "lecture02.html#appendix-cheatsheet",
+    "href": "lecture02.html#appendix-cheatsheet",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Appendix — Cheatsheet",
+    "text": "Appendix — Cheatsheet\n\nIndexing: R 1-based; Python 0-based.\nNegative indices: R excludes; Python counts from end.\nHomogeneous numerics: R vectors; Python NumPy arrays.\nTabular: R data.frame/tibble; Python pandas DataFrame.\nMissing: R NA; Python None/NaN/pd.NA (context-dependent).\nMatrix mult: R %*%; Python @ (NumPy/pandas)."
+  },
+  {
+    "objectID": "lecture02.html#two-families",
+    "href": "lecture02.html#two-families",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Two families",
+    "text": "Two families\n\nChoices: decide a path based on conditions.\nLoops: repeat a block of code.\n\nWe’ll contrast R and Python patterns side-by-side."
+  },
+  {
+    "objectID": "lecture02.html#logical-operators-scalars",
+    "href": "lecture02.html#logical-operators-scalars",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Logical operators — scalars",
+    "text": "Logical operators — scalars\n\nRPython\n\n\n&gt;, &lt;, &gt;=, &lt;=, ==, !=, !, &&, ||\n\n4 &gt; 3\n1 &gt;= 1\n!(2 &gt; 1)\nTRUE && TRUE\n(1 &gt; 1) || (2 &lt; 3)\n\n\n&& and || are short-circuit and only inspect the first element.\n\n\n\n&gt;, &lt;, &gt;=, &lt;=, ==, !=, not, and, or\n\n4 &gt; 3\n1 &gt;= 1\nnot (2 &gt; 1)\n(True and True), ((1 &gt; 1) or (2 &lt; 3))"
+  },
+  {
+    "objectID": "lecture02.html#logical-operators-vectorsarrays",
+    "href": "lecture02.html#logical-operators-vectorsarrays",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Logical operators — vectors/arrays",
+    "text": "Logical operators — vectors/arrays\n\nRPython (NumPy/pandas)\n\n\nUse elementwise & and | for vectors/matrices; all(), any(), xor().\n\nc(TRUE, FALSE) | c(TRUE, TRUE)\nc(TRUE, TRUE) & c(TRUE, FALSE)\nxor(TRUE, TRUE)\nall(c(TRUE, FALSE, FALSE))\nany(c(TRUE, FALSE, FALSE))\n# Short-circuit vs elementwise\nc(TRUE, FALSE) | c(TRUE, FALSE)\n# NOTE: c(TRUE,FALSE) || c(TRUE,FALSE) uses only first element\n\n\n\nUse & and | for elementwise logic with parentheses; np.all, np.any.\n\nimport numpy as np\nA = np.array([True, False])\nB = np.array([True, True])\n(A | B), (A & B)\n\n\nIn pandas/NumPy: do not use and/or with arrays; use &/| and wrap comparisons in parentheses."
+  },
+  {
+    "objectID": "lecture02.html#truthiness-pitfalls",
+    "href": "lecture02.html#truthiness-pitfalls",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Truthiness pitfalls",
+    "text": "Truthiness pitfalls\n\nR: if(c(TRUE,FALSE)) → warning: condition length &gt; 1; only first used.\nPython (lists): any non-empty list is truthy: if [False]: → True.\nNumPy/pandas: if np.array([True, False]) → error (ambiguous). Use .any() / .all().\n\n\nimport numpy as np\nx = np.array([True, False])\n# if x:  # ValueError: ambiguous truth value\nif x.any():\n    print(\"has a True\")"
+  },
+  {
+    "objectID": "lecture02.html#selection-operators",
+    "href": "lecture02.html#selection-operators",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Selection operators",
+    "text": "Selection operators"
+  },
+  {
+    "objectID": "lecture02.html#if-basic",
+    "href": "lecture02.html#if-basic",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "if — basic",
+    "text": "if — basic\n\nRPython\n\n\n\nx &lt;- -4\nif (x &lt; 0) {\n  x &lt;- -x\n}\nif (x %% 2 == 0) {\n  cat(x, \"is even\\n\")\n}\n\n\n\n\nx = -4\nif x &lt; 0:\n    x = -x\nif x % 2 == 0:\n    print(f\"{x} is even\")"
+  },
+  {
+    "objectID": "lecture02.html#if-else",
+    "href": "lecture02.html#if-else",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "if / else",
+    "text": "if / else\n\nRPython\n\n\n\nx &lt;- 3\nif (x %% 2 == 0) {\n  cat(\"even\\n\")\n} else {\n  cat(\"odd\\n\")\n}\n\n\n\n\nx = 3\nif x % 2 == 0:\n    print(\"even\")\nelse:\n    print(\"odd\")"
+  },
+  {
+    "objectID": "lecture02.html#if-else-if-else",
+    "href": "lecture02.html#if-else-if-else",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "if / else if / else",
+    "text": "if / else if / else\n\nRPython (elif)\n\n\n\nx &lt;- 0\nif (x == 0) {\n  cat(\"zero\\n\")\n} else if (x %% 2 == 0) {\n  cat(\"even\\n\")\n} else {\n  cat(\"odd\\n\")\n}\n\n\n\n\nx = 0\nif x == 0:\n    print(\"zero\")\nelif x % 2 == 0:\n    print(\"even\")\nelse:\n    print(\"odd\")"
+  },
+  {
+    "objectID": "lecture02.html#vectorised-conditionals",
+    "href": "lecture02.html#vectorised-conditionals",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Vectorised conditionals",
+    "text": "Vectorised conditionals\n\nR — ifelsePython — numpy.where / pandas\n\n\n\nx &lt;- 1:10\nifelse(x %% 2 == 0, \"even\", \"odd\")\n\n\n\n\nimport numpy as np, pandas as pd\nx = np.arange(1,11)\nnp.where(x % 2 == 0, \"even\", \"odd\")\n# pandas Series\ns = pd.Series(range(1,11))\ns.where(s % 2 == 0, other=\"odd\").fillna(\"even\")"
+  },
+  {
+    "objectID": "lecture02.html#switch-r-vs-matchcase-python-3.10",
+    "href": "lecture02.html#switch-r-vs-matchcase-python-3.10",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "switch (R) vs match/case (Python ≥3.10)",
+    "text": "switch (R) vs match/case (Python ≥3.10)\n\nR — switchPython — matchPython (pre-3.10) — dict dispatch\n\n\n\noperator &lt;- \"+\"\nswitch(operator,\n  \"+\" = 20 + 5,\n  \"-\" = 20 - 5,\n  \"*\" = 20 * 5,\n  \"/\" = 20 / 5,\n  stop(\"Unknown operator\")\n)\n\n\n\n\noperator = \"+\"\nmatch operator:\n    case \"+\":\n        20 + 5\n    case \"-\":\n        20 - 5\n    case \"*\":\n        20 * 5\n    case \"/\":\n        20 / 5\n    case _:\n        raise ValueError(\"Unknown operator\")\n\n\n\n\nops = {\n    \"+\": lambda a,b: a+b,\n    \"-\": lambda a,b: a-b,\n    \"*\": lambda a,b: a*b,\n    \"/\": lambda a,b: a/b\n}\nops.get(\"+\", lambda a,b: None)(20,5)"
+  },
+  {
+    "objectID": "lecture02.html#loops-overview",
+    "href": "lecture02.html#loops-overview",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Loops — overview",
+    "text": "Loops — overview\n\nR: for, while, repeat, with break, next.\nPython: for (over iterables), while, with break, continue, and the lesser-known for … else / while … else."
+  },
+  {
+    "objectID": "lecture02.html#for-loops",
+    "href": "lecture02.html#for-loops",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "for loops",
+    "text": "for loops\n\nRPython\n\n\n\nfor (number in 1:6) {\n  print(number)\n}\nfor (i in 1:10) {\n  if (i %% 2 == 0) next\n  print(i)\n}\n\n\n\n\nfor number in range(1,7):\n    print(number)\nfor i in range(1,11):\n    if i % 2 == 0:\n        continue\n    print(i)"
+  },
+  {
+    "objectID": "lecture02.html#while-loops",
+    "href": "lecture02.html#while-loops",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "while loops",
+    "text": "while loops\n\nRPython\n\n\n\ni &lt;- 1\nwhile (i &lt;= 6) {\n  print(i)\n  i &lt;- i + 1\n}\n\n\n\n\ni = 1\nwhile i &lt;= 6:\n    print(i)\n    i += 1"
+  },
+  {
+    "objectID": "lecture02.html#infinite-loops-safety",
+    "href": "lecture02.html#infinite-loops-safety",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Infinite loops & safety",
+    "text": "Infinite loops & safety\n\nEasy to create by mistake.\nPrefer clear termination; add guards and break.\n\n\nR — repeatPython — guarded while\n\n\n\ncounter &lt;- 0\nrepeat {\n  counter &lt;- counter + 1\n  if (counter &gt;= 3) break\n}\n\n\n\n\ncounter = 0\nwhile True:\n    counter += 1\n    if counter &gt;= 3:\n        break"
+  },
+  {
+    "objectID": "lecture02.html#pythons-for-else",
+    "href": "lecture02.html#pythons-for-else",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Python’s for … else",
+    "text": "Python’s for … else\nThe else runs only if the loop did not break.\n\nfor n in range(2, 10):\n    for x in range(2, n):\n        if n % x == 0:\n            break\n    else:\n        print(n, \"is prime\")"
+  },
+  {
+    "objectID": "lecture02.html#vectorisation-apply-family",
+    "href": "lecture02.html#vectorisation-apply-family",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Vectorisation & apply-family",
+    "text": "Vectorisation & apply-family\n\nRPython\n\n\n\nPrefer vectorised ops / builtins (rowMeans, colSums, …).\napply(X, MARGIN, FUN, …) for arrays; lapply/sapply for lists; or purrr::map*.\n\n\nset.seed(321)\nA &lt;- matrix(rexp(30), ncol = 3, nrow = 10)\ncolMeans(A)\napply(A, 2, mean)\n\n\n\n\nPrefer NumPy vectorisation; in pandas use column-wise ops; DataFrame.apply as last resort.\n\n\nimport numpy as np, pandas as pd\nA = np.random.exponential(size=(10,3))\nA.mean(axis=0)         # column means"
+  },
+  {
+    "objectID": "lecture02.html#performance-sketch",
+    "href": "lecture02.html#performance-sketch",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Performance sketch",
+    "text": "Performance sketch\n\nRPython\n\n\n\n# install.packages(\"microbenchmark\")  # if needed\n# microbenchmark::microbenchmark(\n#   for(i in 1:ncol(A)){},\n#   apply(A, 2, mean),\n#   colMeans(A)\n# )\n\n\nRule: prefer builtins and vectorised code.\n\n\n\n\n# import timeit\n# timeit.timeit(\"sum(range(1000))\", number=10000)\n\n\nRule: prefer vectorised NumPy/pandas ops over Python-level loops."
+  },
+  {
+    "objectID": "lecture02.html#miniexercises-quick",
+    "href": "lecture02.html#miniexercises-quick",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini‑exercises (quick)",
+    "text": "Mini‑exercises (quick)\n\nShort‑circuit: What do these return? In R: c(T,F) | c(T,F) vs c(T,F) || c(T,F). In Python/NumPy: (A | B) vs (A or B) with boolean arrays.\nFizzBuzz: Print numbers 1–20; for multiples of 3 print Fizz, of 5 Buzz, of both FizzBuzz.\nMasking: Given x &lt;- 1:10 / x = np.arange(1,11), replace odds by NA/np.nan using vectorised tools.\nSwitch/match: Implement a tiny calculator using R switch and Python match."
+  },
+  {
+    "objectID": "lecture02.html#challenge-find-the-first-even-square-1000",
+    "href": "lecture02.html#challenge-find-the-first-even-square-1000",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Challenge — Find the first even square > 1000",
+    "text": "Challenge — Find the first even square &gt; 1000\nWrite two versions (R & Python):\n\nA loop-based solution with a break when found.\nA vectorised solution.\n\nStretch: benchmark both approaches."
+  },
+  {
+    "objectID": "lecture02.html#appendix-running-python-in-this-deck",
+    "href": "lecture02.html#appendix-running-python-in-this-deck",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Appendix — Running Python in this deck",
+    "text": "Appendix — Running Python in this deck\nRender with R/knitr + reticulate and point to your env:\n\ninstall.packages(\"reticulate\")\nreticulate::use_condaenv(\"dacm\", required = TRUE)\nreticulate::py_config()\n\nIf a chunk should not execute during render, add #| eval: false to that chunk."
+  },
+  {
+    "objectID": "lecture02.html#cheatsheet",
+    "href": "lecture02.html#cheatsheet",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Cheatsheet",
+    "text": "Cheatsheet\n\nR elementwise: &, |; short-circuit: &&, || (first element only).\nPython booleans: and, or, not; elementwise with NumPy/pandas: &, | (+ parentheses!).\nif/elif/else (Py) ~ if/else if/else (R).\nVectorised conditionals: ifelse (R), np.where/Series.where (Py).\nMulti-way: switch (R), match/case or dict dispatch (Py).\nLoops: for, while, repeat (R); for, while, for … else (Py)."
+  },
+  {
+    "objectID": "lecture02.html#everything-is-a-function-call-and-a-firstclass-object",
+    "href": "lecture02.html#everything-is-a-function-call-and-a-firstclass-object",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "“Everything is a function call” (and a first‑class object)",
+    "text": "“Everything is a function call” (and a first‑class object)\n\nRPython\n\n\n\nEvaluate a constant:\n\n\n18.10\n\n\nNames / quoted names:\n\n\nsqrt\n`+`\n\n\nFunction call:\n\n\n1.1 + 2.1\n`+`(1.1, 2.1)\n\n\n\n\nEvaluate a constant, names, and call:\n\n\n18.10\nabs\n(1.1).__add__(2.1)\n\n\nOperators are methods/functions under the hood (see operator module), and functions are first‑class values."
+  },
+  {
+    "objectID": "lecture02.html#function-components",
+    "href": "lecture02.html#function-components",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Function components",
+    "text": "Function components\n\nRPython\n\n\n\nArguments, body, environment.\n\n\nmy_div &lt;- function(numerator, denominator) {\n  div &lt;- numerator / denominator\n  return(div)\n}\nformals(my_div)\nbody(my_div)\nenvironment(my_div)\n\n\n\n\nParameters, body, globals/closure.\n\n\ndef my_div(numerator, denominator):\n    div = numerator / denominator\n    return div\nmy_div.__code__.co_varnames, my_div.__defaults__, my_div.__closure__"
+  },
+  {
+    "objectID": "lecture02.html#returns",
+    "href": "lecture02.html#returns",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Returns",
+    "text": "Returns\n\nRPython\n\n\nLast expression is returned if return() omitted.\n\nf &lt;- function(x) { x + 1 }\nf(2)\n\n\n\nMust return explicitly (else returns None).\n\ndef f(x):\n    x + 1\nprint(f(2))  # None"
+  },
+  {
+    "objectID": "lecture02.html#passing-arguments",
+    "href": "lecture02.html#passing-arguments",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Passing arguments",
+    "text": "Passing arguments\n\nR — matching rulesPython — calling conventions\n\n\n\nPositional, exact by name, partial (prefix) matching.\n\n\nmy_div(1, 2)\nmy_div(numerator = 1, denominator = 2)\nmy_div(n = 1, d = 2)  # partial match (works but discouraged)\n\n\n\n\nPositional, keyword, defaults, *args, **kwargs.\nKeyword‑only params (after *), positional‑only (before /).\n\n\ndef g(a, b=1, *args, scale=1, **kw):\n    return (a + b) * scale\n\ng(1, 2, scale=3)\n\ndef h(x, /, y, *, z=0):  # pos‑only x; keyword‑only z\n    return x + y + z\nh(1, 2, z=3)"
+  },
+  {
+    "objectID": "lecture02.html#assignment-vs-argument-binding-in-r",
+    "href": "lecture02.html#assignment-vs-argument-binding-in-r",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Assignment vs argument binding in R",
+    "text": "Assignment vs argument binding in R\n\nBoth = and &lt;- assign values, but inside calls = binds arguments.\n\n\nmy_div(numerator = 2, denominator = 1)\nnumerator             # error: object 'numerator' not found\nmy_div(numerator &lt;- 2, denominator = 1)  # assigns globally first\nnumerator             # now exists in workspace"
+  },
+  {
+    "objectID": "lecture02.html#type-checks-friendly-failures",
+    "href": "lecture02.html#type-checks-friendly-failures",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Type checks & friendly failures",
+    "text": "Type checks & friendly failures\n\nRPython\n\n\n\nmy_div &lt;- function(numerator, denominator) {\n  if (any(!is.numeric(numerator), !is.numeric(denominator))) {\n    stop(\"`numerator` and `denominator` must be numeric\")\n  }\n  numerator / denominator\n}\nmy_div(\"numerator\", \"denominator\")\n\n\n\n\nclass NotNumericError(TypeError):\n    pass\n\ndef my_div(numerator, denominator):\n    from numbers import Number\n    if not isinstance(numerator, Number) or not isinstance(denominator, Number):\n        raise NotNumericError(\"numerator and denominator must be numeric\")\n    return numerator / denominator\n# my_div(\"numerator\", \"denominator\")  # raises"
+  },
+  {
+    "objectID": "lecture02.html#warnings-messages-vs-warnings-logging",
+    "href": "lecture02.html#warnings-messages-vs-warnings-logging",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Warnings / messages vs warnings / logging",
+    "text": "Warnings / messages vs warnings / logging\n\nRPython\n\n\n\nwarning(\"Size mismatch; recycling may occur\")\nmessage(\"Starting the division…\")\n\n\n\n\nimport warnings, logging\nwarnings.warn(\"Size mismatch; check inputs\")\nlogging.basicConfig(level=logging.INFO)\nlogging.info(\"Starting the division…\")"
+  },
+  {
+    "objectID": "lecture02.html#dimensions-vectorisation",
+    "href": "lecture02.html#dimensions-vectorisation",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Dimensions & vectorisation",
+    "text": "Dimensions & vectorisation\n\nRPython (NumPy)\n\n\n\nA &lt;- matrix(1:9, ncol = 3)\nB &lt;- matrix(10:18, ncol = 3)\nA / B  # vectorised elementwise\n\n\n\n\nimport numpy as np\nA = np.arange(1,10).reshape(3,3)\nB = np.arange(10,19).reshape(3,3)\nA / B  # elementwise"
+  },
+  {
+    "objectID": "lecture02.html#robust-my_div-shape-checks",
+    "href": "lecture02.html#robust-my_div-shape-checks",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Robust my_div (shape checks)",
+    "text": "Robust my_div (shape checks)\n\nRPython (NumPy)\n\n\n\nmy_div &lt;- function(numerator, denominator) {\n  if (any(!is.numeric(numerator), !is.numeric(denominator))) {\n    stop(\"`numerator` and `denominator` must be numeric\")\n  }\n  if (!identical(dim(numerator), dim(denominator))) {\n    # fall back to length check for vectors\n    if (is.null(dim(numerator)) && is.null(dim(denominator))) {\n      if (length(numerator) != length(denominator))\n        stop(\"Lengths must match for vectors\")\n    } else {\n      stop(\"Dimensions must match for arrays/matrices\")\n    }\n  }\n  numerator / denominator\n}\n\n\n\n\nimport numpy as np\n\ndef my_div(numerator, denominator):\n    a = np.asarray(numerator)\n    b = np.asarray(denominator)\n    if a.shape != b.shape:\n        raise ValueError(\"Shapes must match\")\n    return a / b"
+  },
+  {
+    "objectID": "lecture02.html#scope-r-environments-vs-python-legb",
+    "href": "lecture02.html#scope-r-environments-vs-python-legb",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Scope: R environments vs Python LEGB",
+    "text": "Scope: R environments vs Python LEGB\n\nR — lexical scopingPython — LEGB & global/nonlocal\n\n\n\nDynamic lookup: names resolved when function runs.\nName masking: inner names shadow outer names.\n\n\nf &lt;- function() x * x\nf()            # error, x not found\nx &lt;- 10\nf()            # now 100\n\n\nx &lt;- 10\nf &lt;- function(){ x &lt;- 1; x * x }\nf()            # 1\n\n\nInspect environments:\n\n\nenvironment()\nglobalenv()\nemptyenv()\n\n\n\n\nx = 10\n\ndef f():\n    x = 1   # local shadows global\n    return x * x\nf()\n\ny = 0\n\ndef bump():\n    global y\n    y += 1\nbump(); y\n\n\ndef make_adder(k):\n    def add(x):\n        return x + k  # closes over k (enclosing)\n    return add\nadd5 = make_adder(5)\nadd5(3)"
+  },
+  {
+    "objectID": "lecture02.html#closures-higherorder-functions",
+    "href": "lecture02.html#closures-higherorder-functions",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Closures & higher‑order functions",
+    "text": "Closures & higher‑order functions\n\nRPython\n\n\n\nmake_adder &lt;- function(k) {\n  function(x) x + k\n}\nadd5 &lt;- make_adder(5)\nadd5(3)\n# Map over a vector\nlapply(1:5, add5)\n\n\n\n\nfrom functools import partial\n\ndef add(x, y):\n    return x + y\nadd5 = partial(add, 5)\nlist(map(add5, range(1,6)))"
+  },
+  {
+    "objectID": "lecture02.html#composition-piping",
+    "href": "lecture02.html#composition-piping",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Composition & piping",
+    "text": "Composition & piping\n\nRPython\n\n\n\nBase pipe |&gt; and magrittr %&gt;%.\n\n\n`%big%` &lt;- function(x, y) 10 * x * y  # custom infix\n1 %big% 2\n\n# composition via nesting / piping\nsqrt(log1p(9))\n9 |&gt;\n  log1p() |&gt;\n  sqrt()\n\n\n\n\nNest calls or write a tiny compose.\n\n\nfrom math import sqrt, log1p\n\ndef compose(f, g):\n    return lambda x: f(g(x))\n\nh = compose(sqrt, log1p)\nh(9)"
+  },
+  {
+    "objectID": "lecture02.html#documentation",
+    "href": "lecture02.html#documentation",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Documentation",
+    "text": "Documentation\n\nR — roxygen2 style (snippet)Python — docstring + type hints\n\n\n#' Divide two numbers\n#'\n#' @param numerator,denominator Numeric scalars or vectors.\n#' @return Numeric result.\n#' @examples\n#' my_div(4, 2)\nmy_div &lt;- function(numerator, denominator) numerator / denominator\n\n\n\nfrom typing import Union\nNumber = Union[int, float]\n\ndef my_div(numerator: Number, denominator: Number) -&gt; float:\n    \"\"\"Divide two numbers.\n\n    Args:\n        numerator: dividend\n        denominator: divisor\n    Returns:\n        The quotient as float.\n    \"\"\"\n    return numerator / denominator"
+  },
+  {
+    "objectID": "lecture02.html#testing-unit-tests",
+    "href": "lecture02.html#testing-unit-tests",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Testing (unit tests)",
+    "text": "Testing (unit tests)\n\nR — testthat (minimal)Python — pytest (minimal)\n\n\n# install.packages(\"testthat\")\n# test_that(\"my_div works\", {\n#   expect_equal(my_div(4,2), 2)\n#   expect_error(my_div(\"a\", 2))\n# })\n\n\n# def test_my_div():\n#     assert my_div(4,2) == 2\n#     import pytest\n#     with pytest.raises(Exception):\n#         my_div(\"a\", 2)"
+  },
+  {
+    "objectID": "lecture02.html#miniexercises-quick-1",
+    "href": "lecture02.html#miniexercises-quick-1",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini‑exercises (quick)",
+    "text": "Mini‑exercises (quick)\n\nSafe divide: Write safe_div in R & Python that returns NA/math.nan when denominator is 0 and emits a warning.\nPrefix matching: In R, define f &lt;- function(numerator, denominator) {...} and call it via partial names. Why is this risky? Rewrite to avoid it.\nDefault args: Show the difference between R’s lazily evaluated defaults and Python’s eager defaults by creating a timestamp default.\nClosure: Write make_multiplier(k) then compute by 2 and by 10 for a vector."
+  },
+  {
+    "objectID": "lecture02.html#challenge-column-summary-function",
+    "href": "lecture02.html#challenge-column-summary-function",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Challenge — Column summary function",
+    "text": "Challenge — Column summary function\nWrite a function that returns a 2‑column table (mean, sd) for all numeric columns.\n\nR: Input: data.frame/tibble. Use vapply/sapply or purrr::map_dfr. Error if no numeric columns.\nPython: Input: pandas.DataFrame. Use select_dtypes(include=\"number\") then agg.\n\nStretch: add an argument na_rm / skipna and test it."
+  },
+  {
+    "objectID": "lecture02.html#appendix-python-in-this-deck-pitfalls",
+    "href": "lecture02.html#appendix-python-in-this-deck-pitfalls",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Appendix — Python in this deck & pitfalls",
+    "text": "Appendix — Python in this deck & pitfalls\nRender with R/knitr + reticulate and point to your env:\n\ninstall.packages(\"reticulate\")\nreticulate::use_condaenv(\"dacm\", required = TRUE)\nreticulate::py_config()\n\nPython gotcha — mutable defaults:\n\n# Bad\n# def append_item(x, lst=[]):\n#     lst.append(x); return lst\n# Good\n# def append_item(x, lst=None):\n#     if lst is None: lst = []\n#     lst.append(x); return lst\n\nR note — lazy defaults: evaluated when first used, not at definition."
+  },
+  {
+    "objectID": "lecture02.html#cheatsheet-1",
+    "href": "lecture02.html#cheatsheet-1",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Cheatsheet",
+    "text": "Cheatsheet\n\nR returns last expr; Python needs return.\nR: positional/exact/partial arg matching; Python: positional/keyword, *args/**kwargs, / & * markers.\nR errors/warnings/messages vs Python exceptions/warnings/logging.\nR lexical scoping & environments vs Python LEGB with global/nonlocal.\nVectorise: R builtins; Python use NumPy/pandas.\nComposition: R |&gt;/%&gt;% & custom %op%; Python nesting/compose/method chaining."
+  },
+  {
     "objectID": "lecture01.html#welcome",
     "href": "lecture01.html#welcome",
     "title": "Lecture 1 — Introduction & Tools",

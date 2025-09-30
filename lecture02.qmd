@@ -1,0 +1,1634 @@
+---
+title: "Lecture 2 — Programming Foundations"
+subtitle: "Data & Code Management: From Collection to Application"
+author: "Samuel Orso"
+date: "2025-10-02"
+format:
+  revealjs:
+    theme: [default, dracula]
+    css: theme_dacm.css
+    slide-number: true
+    toc: true
+    toc-depth: 1
+    code-overflow: wrap
+    code-line-numbers: true
+    anchor-sections: true
+    hash: true
+    footer: "HEC Lausanne · Business Analytics · Thu 9:00–12:00"
+    navigation-mode: vertical
+    auto-animate: true
+    controls: true
+    progress: true
+    preview-links: auto
+    logo: logo_dacm.svg
+execute:
+  echo: true
+  eval: false
+---
+
+## Big picture
+- **LLMs (ChatGPT, Gemini, Claude, LLaMA):** great for ideation, scaffolding code, refactoring; **not** ground truth.
+- **Quarto = literate programming hub:** one doc, code+text+figures → HTML/PDF/slides.
+- **Git/GitHub:** version control + collaboration (branches, PRs, reviews).
+- **Reproducibility:** lock environments, script everything, document decisions.
+
+---
+
+## LLMs — use wisely
+- Strengths: productivity, learning, boilerplate, code review.
+- Risks: hallucinations, missing context, ethics/licensing.
+- Good habits: give **clear prompts + context**, ask for tests, **verify outputs**.
+
+---
+
+## Quarto essentials
+- Markdown + **YAML** header (title, format, options).
+- Code chunks (R/Python), chunk options: `echo`, `eval`, `warning`, `fig-*`.
+- Figures & tables: `knitr::kable()`, `kableExtra`; equations (Mathpix helpful).
+- Live preview; keep content modular.
+
+---
+
+## Git/GitHub workflow
+1. Small commits with clear messages.
+2. Branch → PR → review → merge.
+3. Handle conflicts; use issues/templates.
+4. “New habits”: automate repeated steps; write READMEs.
+
+---
+
+## Reproducibility kit
+- **R:** `renv::init(); snapshot(); restore()`
+- **Python:** venv/Poetry/Conda + lockfile
+- Determinism: pin versions; set seeds; record data sources.
+
+
+---
+
+## From last time — tasks
+- Install: Git, GitHub account, Quarto, R (+renv), Python (venv/Conda).
+- Create a **starter repo** with a Quarto doc; push to GitHub.
+- Try one mini-exercise (R / Python / Quarto / GitHub).
+- Optional bonus: present a short solution next practical.
+
+---
+
+# Data structures
+
+![](images/lego-3388163_1280.png){fig-align=center}
+
+::: callout-note
+**Today:** Primary types, vectors/lists, matrices/arrays, data frames/tibbles, pandas DataFrame, dates, subsetting, coercion rules, and common ops — **in both R and Python.**
+:::
+
+
+---
+
+## Primary (scalar) types
+
+::: panel-tabset
+
+### R
+
+* **double (real)**: `-4`, `12.4532`, `6`
+* **integer**: `2L`, `12L`
+* **logical**: `TRUE`, `FALSE` (also `T`, `F`)
+* **character**: `"a"`, `"Bonjour"`
+* *(also: **complex**, **raw**)*
+
+```{r}
+typeof(12.5); typeof(2L); typeof(TRUE); typeof("hi")
+```
+
+### Python
+
+* **int**: `-4`, `6`
+* **float**: `12.4532`
+* **bool**: `True`, `False`
+* **str**: `'a'`, `"Bonjour"`
+* *(also: **complex**, **bytes**)*
+
+```{python}
+type(12.5), type(2), type(True), type("hi")
+```
+
+:::
+
+---
+
+## Reserved / special values
+
+::: panel-tabset
+
+### R
+
+* Missing: `NA`, typed variants `NA_real_`, `NA_integer_`, `NA_character_`, ...
+* Infinity / NaN: `Inf`, `NaN`
+* Null object: `NULL`
+* Control words: `if`, `else`, `repeat`, `while`, `function`, `for`, `in`, `next`, `break`
+
+```{r}
+c(NA, Inf, NaN, NULL)
+```
+
+### Python
+
+* Missing: `None` (object), numerical missing often `math.nan` or `numpy.nan` / `pandas.NA`
+* Infinity / NaN: `math.inf`, `float('inf')`, `math.nan`
+* Keywords: `if`, `else`, `for`, `while`, `def`, `in`, `break`, `continue`, `class`, ...
+
+```{python}
+import math
+[None, math.inf, math.nan]
+```
+
+:::
+
+---
+
+## Inspecting and coercing types
+
+::: panel-tabset
+
+### R: `typeof`, `is.*`, `as.*`
+
+```{r}
+typeof(2L)              # "integer"
+is.double(2L)           # FALSE
+as.double(2L)           # 2
+```
+
+### Python: `type`, `isinstance`, casting
+
+```{python}
+type(2) is int          # True
+isinstance(2.0, float)  # True
+int(2.9), float("3.1"), str(True)
+```
+
+:::
+
+---
+
+## Homogeneous vs heterogeneous structures
+
+| Dimension | R homogeneous     | R heterogeneous         | Python homogeneous     | Python heterogeneous |
+| --------- | ----------------- | ----------------------- | ---------------------- | -------------------- |
+| 1         | **atomic vector** | **list**                | **NumPy array**        | **list**, **tuple**  |
+| 2         | **matrix**        | **data.frame / tibble** | **NumPy ndarray (2D)** | **pandas DataFrame** |
+| n         | **array**         | —                       | **NumPy ndarray (nD)** | —                    |
+
+> **Rule of thumb:** R **vectors** are homogeneous; Python **lists** are heterogeneous. For homogeneous numerics in Python, use **NumPy**.
+
+---
+
+## Vectors (R) vs Lists / Arrays (Python)
+
+::: panel-tabset
+
+### R — atomic vector
+
+```{r}
+x <- c(1, 2, 8, 10)
+length(x); typeof(x)
+```
+
+### Python — list (heterogeneous)
+
+```{python}
+x = [1, 2, 8, 10]
+len(x), type(x)
+```
+
+### Python — NumPy array (homogeneous)
+
+```{python}
+#| eval: false
+import numpy as np
+x = np.array([1, 2, 8, 10])
+x.dtype, x.shape
+```
+
+:::
+
+---
+
+## Assignment
+
+::: panel-tabset
+
+### R
+
+```{r}
+grand_slam_win <- c(16, 19, 20, 0, 0)
+```
+
+### Python
+
+```{python}
+grand_slam_win = [16, 19, 20, 0, 0]
+```
+
+:::
+
+---
+
+## Subsetting — key differences
+
+* **Index origin:** R is **1-based**, Python is **0-based**.
+* **Negative indices:** R `-i` **excludes** element *i*; Python `-i` indexes from the **end**.
+* **Logical indexing:** R uses logical vectors; Python uses list comprehensions / boolean masks (NumPy/pandas).
+
+::: panel-tabset
+
+### R
+
+```{r}
+x <- c(10, 20, 30, 40)
+x[1]           # 10
+x[-1]          # drop first
+x[c(TRUE,FALSE,TRUE,FALSE)]  # logical mask
+```
+
+### Python (list)
+
+```{python}
+x = [10, 20, 30, 40]
+x[0]           # 10
+x[-1]          # last element (40)
+# logical mask via comprehension
+[xi for i, xi in enumerate(x) if i in (0,2)]
+```
+
+### Python (NumPy)
+
+```{python}
+#| eval: false
+import numpy as np
+x = np.array([10,20,30,40])
+x[[0,2]]
+mask = np.array([True, False, True, False])
+x[mask]
+```
+
+:::
+
+---
+
+## Coercion in homogeneous containers
+
+* **R vector coercion:** `logical < integer < double < character`.
+* **Python list:** no automatic coercion.
+* **NumPy array:** coerces to common `dtype`.
+
+::: panel-tabset
+
+### R
+
+```{r}
+c(TRUE, 12, 0.5)  # coerces to double
+```
+
+### Python (list)
+
+```{python}
+[True, 12, 0.5]   # stays mixed types
+```
+
+### Python (NumPy)
+
+```{python}
+#| eval: false
+import numpy as np
+np.array([True, 12, 0.5])    # dtype: float64
+```
+
+:::
+
+---
+
+## Attributes & names
+
+::: panel-tabset
+
+### R
+
+```{r}
+grand_slam_win <- c(16, 19, 20, 0, 0)
+names(grand_slam_win) <- c("Novak Djokovic","Rafael Nadal","Roger Federer","Daniil Medvedev","Dominic Thiem")
+attr(grand_slam_win, "date") <- "2019-09-30"
+attributes(grand_slam_win)
+```
+
+### Python (pandas)
+
+```{python}
+#| eval: false
+import pandas as pd
+s = pd.Series([16,19,20,0,0], index=[
+    "Novak Djokovic","Rafael Nadal","Roger Federer","Daniil Medvedev","Dominic Thiem"])
+s.attrs["date"] = "2019-09-30"
+s.attrs
+```
+
+:::
+
+---
+
+## Sequences
+
+::: panel-tabset
+
+### R
+
+```{r}
+1:3
+seq_len(3)
+seq(1, 2.8, by = 0.4)
+seq(1, 2.8, length.out = 6)
+rep(c(1,2), times = 3, each = 1)
+```
+
+### Python
+
+```{python}
+list(range(1,4))
+list(range(3,0,-1))
+# numpy linspace/arange
+#| eval: false
+import numpy as np
+np.linspace(1, 2.8, 6)
+np.arange(1, 2.9, 0.4)
+# repetition
+[1,2]*3
+```
+
+:::
+
+---
+
+## Useful vector ops
+
+::: panel-tabset
+
+### R
+
+```{r}
+length(grand_slam_win)
+sum(grand_slam_win)
+mean(grand_slam_win)
+order(grand_slam_win)
+sort(grand_slam_win)
+```
+
+### Python
+
+```{python}
+x = [16,19,20,0,0]
+len(x), sum(x)
+sorted(x)
+# mean via statistics or numpy
+#| eval: false
+import statistics as st
+st.mean(x)
+```
+
+:::
+
+---
+
+## Matrices / 2D arrays
+
+::: panel-tabset
+
+### R — `matrix`
+
+```{r}
+M <- matrix(1:12, nrow = 3, ncol = 4)
+M; is.matrix(M); dim(M); nrow(M); ncol(M)
+t(M)
+# Elementwise vs matrix mult
+M * M
+M %*% t(M)
+```
+
+### Python — `numpy.ndarray`
+
+```{python}
+#| eval: false
+import numpy as np
+M = np.arange(1,13).reshape(3,4)
+M, M.shape
+M.T
+M * M          # elementwise
+M @ M.T        # matrix mult
+```
+
+:::
+
+---
+
+## Lists (R) vs dict/list (Python)
+
+::: panel-tabset
+
+### R — list (heterogeneous)
+
+```{r}
+num_vec <- c(188, 140)
+char_vec <- c("Height", "Weight", "Length")
+logic_vec <- rep(TRUE, 8)
+my_mat <- matrix(seq_len(10), nrow = 2, ncol = 5)
+my_list <- list(number = num_vec, character = char_vec, logic = logic_vec, matrix = my_mat)
+typeof(my_list)
+my_list[["matrix"]][,3]
+```
+
+### Python — dict / list
+
+```{python}
+my_dict = {
+  "number": [188, 140],
+  "character": ["Height","Weight","Length"],
+  "logic": [True]*8,
+  "matrix": [[1,2,3,4,5],[6,7,8,9,10]]
+}
+my_dict["matrix"][0][2]
+```
+
+:::
+
+---
+
+## Data frames / tibbles vs pandas DataFrame
+
+::: panel-tabset
+
+### R
+
+```{r}
+players <- c("Novak Djokovic","Rafael Nadal","Roger Federer","Daniil Medvedev","Dominic Thiem")
+grand_slam_win <- c(16,19,20,0,0)
+date_of_birth <- c("1987-05-22","1986-06-03","1981-08-08","1996-02-11","1993-09-03")
+(tennis <- data.frame(date_of_birth, grand_slam_win, row.names = players))
+is.data.frame(tennis)
+str(tennis)
+```
+
+### Python
+
+```{python}
+#| eval: false
+import pandas as pd
+players = ["Novak Djokovic","Rafael Nadal","Roger Federer","Daniil Medvedev","Dominic Thiem"]
+df = pd.DataFrame({
+    "date_of_birth": ["1987-05-22","1986-06-03","1981-08-08","1996-02-11","1993-09-03"],
+    "grand_slam_win": [16,19,20,0,0]
+}, index=players)
+df.info()
+df.loc[:, ["grand_slam_win", "date_of_birth"]]
+```
+
+:::
+
+---
+
+## Subsetting data frames
+
+::: panel-tabset
+
+### R
+
+```{r}
+# Like a list
+tenis_cols <- tennis[c("grand_slam_win", "date_of_birth")]
+# Like a matrix
+same_cols <- tennis[, c("grand_slam_win", "date_of_birth")]
+```
+
+### Python
+
+```{python}
+#| eval: false
+cols = df[["grand_slam_win", "date_of_birth"]]  # column subset
+rowcol = df.loc[["Rafael Nadal", "Roger Federer"], ["grand_slam_win"]]
+```
+
+:::
+
+---
+
+## Dates
+
+::: panel-tabset
+
+### R
+
+```{r}
+players_dob <- as.Date(c("22 May 1987","3 Jun 1986","8 Aug 1981","11 Feb 1996","3 Sep 1993"), format = "%d %b %Y")
+players_dob
+```
+
+### Python
+
+```{python}
+#| eval: false
+import pandas as pd
+pd.to_datetime(["22 May 1987","3 Jun 1986","8 Aug 1981","11 Feb 1996","3 Sep 1993"], format="%d %b %Y")
+```
+
+:::
+
+---
+
+## Mini-exercises (quick wins)
+
+1. **Indexing:** Let `x <- 3 * seq_len(4)` (R) / `x = [3*i for i in range(1,5)]` (Py). Select the 2nd element via (a) positive, (b) negative, (c) logical (or comprehension) indexing.
+2. **Sorting:** Sort `x` in descending order using (a) indices and (b) a built-in sorter.
+3. **Coercion:** In R, evaluate `c(TRUE, 2, "3")` — what happens? In Python, compare `[True, 2, "3"]` and `np.array([True, 2, "3"])`.
+4. **Matrix ops:** Create a 3×3 matrix / array and compute its transpose and `A %*% A` (R) / `A @ A` (Py).
+
+> *Optional:* Show your answers in a short `.qmd` or notebook.
+
+---
+
+## Challenge exercise (R & Python)
+
+**Tennis leaderboard**
+
+* Build a table with players, DoB, wins.
+* Add a **computed** column: age in years (use `as.Date(Sys.Date())` / `pd.Timestamp.today()`), then sort by age descending.
+* Plot wins vs age.
+
+Hints:
+
+* R: `mutate`, `lubridate::time_length(interval, 'years')`, `plot()` or `ggplot2`.
+* Python: `pd.to_datetime`, age via `dt`, `df.sort_values`, and `matplotlib`.
+
+---
+
+## Appendix — Python execution in knitr
+
+If Python chunks don’t execute:
+
+1. Ensure `reticulate` sees the right interpreter:
+
+   ```r
+   reticulate::py_config()
+   ```
+2. Point to an environment that has `numpy` / `pandas` if used:
+
+   ```r
+   reticulate::use_condaenv("dacm", required = TRUE)
+   ```
+3. Or disable execution of Python chunks during render with chunk option `#| eval: false`.
+
+---
+
+## Appendix — Cheatsheet
+
+* **Indexing:** R 1-based; Python 0-based.
+* **Negative indices:** R excludes; Python counts from end.
+* **Homogeneous numerics:** R vectors; Python NumPy arrays.
+* **Tabular:** R data.frame/tibble; Python pandas DataFrame.
+* **Missing:** R `NA`; Python `None`/`NaN`/`pd.NA` (context-dependent).
+* **Matrix mult:** R `%*%`; Python `@` (NumPy/pandas).
+
+---
+
+# Control structures
+
+![](images/lego-674373_1280.jpg){fig-align=center}
+
+::: callout-note
+**Today:** Booleans & logical ops, choices (`if`/`else`, `switch`/`match`), loops (`for`, `while`, `repeat`), short-circuiting, vectorised conditionals, comprehension/map/apply, performance tips — **in R & Python.**
+:::
+
+---
+
+## Two families
+
+* **Choices:** decide a path based on conditions.
+* **Loops:** repeat a block of code.
+
+We’ll contrast R and Python patterns side-by-side.
+
+---
+
+## Logical operators — scalars
+
+::: panel-tabset
+
+### R
+
+`>`, `<`, `>=`, `<=`, `==`, `!=`, `!`, `&&`, `||`
+
+```{r}
+4 > 3
+1 >= 1
+!(2 > 1)
+TRUE && TRUE
+(1 > 1) || (2 < 3)
+```
+
+> `&&` and `||` are **short-circuit** and only inspect the **first** element.
+
+### Python
+
+`>`, `<`, `>=`, `<=`, `==`, `!=`, `not`, `and`, `or`
+
+```{python}
+4 > 3
+1 >= 1
+not (2 > 1)
+(True and True), ((1 > 1) or (2 < 3))
+```
+
+:::
+
+---
+
+## Logical operators — vectors/arrays
+
+::: panel-tabset
+
+### R
+
+Use elementwise `&` and `|` for vectors/matrices; `all()`, `any()`, `xor()`.
+
+```{r}
+c(TRUE, FALSE) | c(TRUE, TRUE)
+c(TRUE, TRUE) & c(TRUE, FALSE)
+xor(TRUE, TRUE)
+all(c(TRUE, FALSE, FALSE))
+any(c(TRUE, FALSE, FALSE))
+# Short-circuit vs elementwise
+c(TRUE, FALSE) | c(TRUE, FALSE)
+# NOTE: c(TRUE,FALSE) || c(TRUE,FALSE) uses only first element
+```
+
+### Python (NumPy/pandas)
+
+Use **`&`** and **`|`** for elementwise logic with **parentheses**; `np.all`, `np.any`.
+
+```{python}
+#| eval: false
+import numpy as np
+A = np.array([True, False])
+B = np.array([True, True])
+(A | B), (A & B)
+```
+
+> In pandas/NumPy: **do not** use `and`/`or` with arrays; use `&`/`|` and wrap comparisons in parentheses.
+
+:::
+
+---
+
+## Truthiness pitfalls
+
+* **R:** `if(c(TRUE,FALSE))` → warning: condition length > 1; only first used.
+* **Python (lists):** any non-empty list is truthy: `if [False]:` → True.
+* **NumPy/pandas:** `if np.array([True, False])` → error (ambiguous). Use `.any()` / `.all()`.
+
+```{python}
+#| eval: false
+import numpy as np
+x = np.array([True, False])
+# if x:  # ValueError: ambiguous truth value
+if x.any():
+    print("has a True")
+```
+
+---
+
+## Selection operators
+
+![](images/if_statement.png){fig-align=center width=600}
+
+---
+
+## `if` — basic
+
+::: panel-tabset
+
+### R
+
+```{r}
+x <- -4
+if (x < 0) {
+  x <- -x
+}
+if (x %% 2 == 0) {
+  cat(x, "is even\n")
+}
+```
+
+### Python
+
+```{python}
+x = -4
+if x < 0:
+    x = -x
+if x % 2 == 0:
+    print(f"{x} is even")
+```
+
+:::
+
+---
+
+## `if` / `else`
+
+::: panel-tabset
+
+### R
+
+```{r}
+x <- 3
+if (x %% 2 == 0) {
+  cat("even\n")
+} else {
+  cat("odd\n")
+}
+```
+
+### Python
+
+```{python}
+x = 3
+if x % 2 == 0:
+    print("even")
+else:
+    print("odd")
+```
+
+:::
+
+---
+
+## `if` / `else if` / `else`
+
+::: panel-tabset
+
+### R
+
+```{r}
+x <- 0
+if (x == 0) {
+  cat("zero\n")
+} else if (x %% 2 == 0) {
+  cat("even\n")
+} else {
+  cat("odd\n")
+}
+```
+
+### Python (`elif`)
+
+```{python}
+x = 0
+if x == 0:
+    print("zero")
+elif x % 2 == 0:
+    print("even")
+else:
+    print("odd")
+```
+
+:::
+
+---
+
+## Vectorised conditionals
+
+::: panel-tabset
+
+### R — `ifelse`
+
+```{r}
+x <- 1:10
+ifelse(x %% 2 == 0, "even", "odd")
+```
+
+### Python — `numpy.where` / pandas
+
+```{python}
+#| eval: false
+import numpy as np, pandas as pd
+x = np.arange(1,11)
+np.where(x % 2 == 0, "even", "odd")
+# pandas Series
+s = pd.Series(range(1,11))
+s.where(s % 2 == 0, other="odd").fillna("even")
+```
+
+:::
+
+---
+
+## `switch` (R) vs `match/case` (Python ≥3.10)
+
+::: panel-tabset
+
+### R — `switch`
+
+```{r}
+operator <- "+"
+switch(operator,
+  "+" = 20 + 5,
+  "-" = 20 - 5,
+  "*" = 20 * 5,
+  "/" = 20 / 5,
+  stop("Unknown operator")
+)
+```
+
+### Python — `match`
+
+```{python}
+#| eval: false
+operator = "+"
+match operator:
+    case "+":
+        20 + 5
+    case "-":
+        20 - 5
+    case "*":
+        20 * 5
+    case "/":
+        20 / 5
+    case _:
+        raise ValueError("Unknown operator")
+```
+
+### Python (pre-3.10) — dict dispatch
+
+```{python}
+ops = {
+    "+": lambda a,b: a+b,
+    "-": lambda a,b: a-b,
+    "*": lambda a,b: a*b,
+    "/": lambda a,b: a/b
+}
+ops.get("+", lambda a,b: None)(20,5)
+```
+
+:::
+
+---
+
+## Loops — overview
+
+* **R:** `for`, `while`, `repeat`, with `break`, `next`.
+* **Python:** `for` (over iterables), `while`, with `break`, `continue`, and the lesser-known **`for … else`** / **`while … else`**.
+
+---
+
+## `for` loops
+
+::: panel-tabset
+
+### R
+
+```{r}
+for (number in 1:6) {
+  print(number)
+}
+for (i in 1:10) {
+  if (i %% 2 == 0) next
+  print(i)
+}
+```
+
+### Python
+
+```{python}
+for number in range(1,7):
+    print(number)
+for i in range(1,11):
+    if i % 2 == 0:
+        continue
+    print(i)
+```
+
+:::
+
+---
+
+## `while` loops
+
+::: panel-tabset
+
+### R
+
+```{r}
+i <- 1
+while (i <= 6) {
+  print(i)
+  i <- i + 1
+}
+```
+
+### Python
+
+```{python}
+i = 1
+while i <= 6:
+    print(i)
+    i += 1
+```
+
+:::
+
+---
+
+## Infinite loops & safety
+
+* Easy to create by mistake.
+* Prefer **clear termination**; add guards and `break`.
+
+::: panel-tabset
+
+### R — `repeat`
+
+```{r}
+counter <- 0
+repeat {
+  counter <- counter + 1
+  if (counter >= 3) break
+}
+```
+
+### Python — guarded `while`
+
+```{python}
+counter = 0
+while True:
+    counter += 1
+    if counter >= 3:
+        break
+```
+
+:::
+
+---
+
+## Python’s `for … else`
+
+The `else` runs **only if** the loop **did not** `break`.
+
+```{python}
+#| eval: false
+for n in range(2, 10):
+    for x in range(2, n):
+        if n % x == 0:
+            break
+    else:
+        print(n, "is prime")
+```
+
+---
+
+## Vectorisation & apply-family
+
+::: panel-tabset
+
+### R
+
+* Prefer vectorised ops / builtins (`rowMeans`, `colSums`, …).
+* `apply(X, MARGIN, FUN, …)` for arrays; `lapply/sapply` for lists; or `purrr::map*`.
+
+```{r}
+set.seed(321)
+A <- matrix(rexp(30), ncol = 3, nrow = 10)
+colMeans(A)
+apply(A, 2, mean)
+```
+
+### Python
+
+* Prefer NumPy vectorisation; in pandas use column-wise ops; `DataFrame.apply` as last resort.
+
+```{python}
+#| eval: false
+import numpy as np, pandas as pd
+A = np.random.exponential(size=(10,3))
+A.mean(axis=0)         # column means
+```
+
+:::
+
+---
+
+## Performance sketch
+
+::: panel-tabset
+
+### R
+
+```{r}
+# install.packages("microbenchmark")  # if needed
+# microbenchmark::microbenchmark(
+#   for(i in 1:ncol(A)){},
+#   apply(A, 2, mean),
+#   colMeans(A)
+# )
+```
+
+> Rule: prefer builtins and vectorised code.
+
+### Python
+
+```{python}
+#| eval: false
+# import timeit
+# timeit.timeit("sum(range(1000))", number=10000)
+```
+
+> Rule: prefer vectorised NumPy/pandas ops over Python-level loops.
+
+:::
+
+---
+
+## Mini‑exercises (quick)
+
+1. **Short‑circuit:** What do these return? In R: `c(T,F) | c(T,F)` vs `c(T,F) || c(T,F)`. In Python/NumPy: `(A | B)` vs `(A or B)` with boolean arrays.
+2. **FizzBuzz:** Print numbers 1–20; for multiples of 3 print `Fizz`, of 5 `Buzz`, of both `FizzBuzz`.
+3. **Masking:** Given `x <- 1:10` / `x = np.arange(1,11)`, replace odds by `NA`/`np.nan` using vectorised tools.
+4. **Switch/match:** Implement a tiny calculator using R `switch` and Python `match`.
+
+---
+
+## Challenge — Find the first even square > 1000
+
+Write two versions (R & Python):
+
+* A loop-based solution with a `break` when found.
+* A vectorised solution.
+
+*Stretch:* benchmark both approaches.
+
+---
+
+## Appendix — Running Python in this deck
+
+Render with R/knitr + **reticulate** and point to your env:
+
+```{r}
+#| eval: false
+install.packages("reticulate")
+reticulate::use_condaenv("dacm", required = TRUE)
+reticulate::py_config()
+```
+
+If a chunk should **not** execute during render, add `#| eval: false` to that chunk.
+
+---
+
+## Cheatsheet
+
+* R elementwise: `&`, `|`; short-circuit: `&&`, `||` (first element only).
+* Python booleans: `and`, `or`, `not`; elementwise with NumPy/pandas: `&`, `|` (+ parentheses!).
+* `if`/`elif`/`else` (Py) ~ `if`/`else if`/`else` (R).
+* Vectorised conditionals: `ifelse` (R), `np.where`/`Series.where` (Py).
+* Multi-way: `switch` (R), `match/case` or dict dispatch (Py).
+* Loops: `for`, `while`, `repeat` (R); `for`, `while`, `for … else` (Py).
+
+---
+
+# Functions
+
+![](images/lego-674354_1280.jpg){fig-align=center width=600 height=400}
+
+::: callout-note
+**Today:** Function anatomy, arguments & matching, returns, errors/warnings/messages (vs Python exceptions), scope & environments (R) / LEGB (Python), higher‑order & closures, composition & piping, docs & tests — **R & Python side‑by‑side.**
+:::
+
+---
+
+## "Everything is a function call" (and a first‑class object)
+
+::: panel-tabset
+
+### R
+
+* Evaluate a constant:
+
+```{r}
+18.10
+```
+
+* Names / quoted names:
+
+```{r}
+sqrt
+`+`
+```
+
+* Function call:
+
+```{r}
+1.1 + 2.1
+`+`(1.1, 2.1)
+```
+
+### Python
+
+* Evaluate a constant, names, and call:
+
+```{python}
+18.10
+abs
+(1.1).__add__(2.1)
+```
+
+> Operators are methods/functions under the hood (see `operator` module), and functions are **first‑class** values.
+
+:::
+
+---
+
+## Function components
+
+::: panel-tabset
+
+### R
+
+* **Arguments**, **body**, **environment**.
+
+```{r}
+my_div <- function(numerator, denominator) {
+  div <- numerator / denominator
+  return(div)
+}
+formals(my_div)
+body(my_div)
+environment(my_div)
+```
+
+### Python
+
+* **Parameters**, **body**, **globals/closure**.
+
+```{python}
+def my_div(numerator, denominator):
+    div = numerator / denominator
+    return div
+my_div.__code__.co_varnames, my_div.__defaults__, my_div.__closure__
+```
+
+:::
+
+---
+
+## Returns
+
+::: panel-tabset
+
+### R
+
+Last expression is returned if `return()` omitted.
+
+```{r}
+f <- function(x) { x + 1 }
+f(2)
+```
+
+### Python
+
+Must `return` explicitly (else returns `None`).
+
+```{python}
+def f(x):
+    x + 1
+print(f(2))  # None
+```
+
+:::
+
+---
+
+## Passing arguments
+
+::: panel-tabset
+
+### R — matching rules
+
+* **Positional**, **exact by name**, **partial (prefix) matching**.
+
+```{r}
+my_div(1, 2)
+my_div(numerator = 1, denominator = 2)
+my_div(n = 1, d = 2)  # partial match (works but discouraged)
+```
+
+### Python — calling conventions
+
+* **Positional**, **keyword**, **defaults**, `*args`, `**kwargs`.
+* Keyword‑only params (after `*`), positional‑only (before `/`).
+
+```{python}
+def g(a, b=1, *args, scale=1, **kw):
+    return (a + b) * scale
+
+g(1, 2, scale=3)
+
+def h(x, /, y, *, z=0):  # pos‑only x; keyword‑only z
+    return x + y + z
+h(1, 2, z=3)
+```
+
+:::
+
+---
+
+## Assignment vs argument binding in R
+
+* Both `=` and `<-` assign values, but **inside calls** `=` binds **arguments**.
+
+```{r, error=TRUE}
+my_div(numerator = 2, denominator = 1)
+numerator             # error: object 'numerator' not found
+my_div(numerator <- 2, denominator = 1)  # assigns globally first
+numerator             # now exists in workspace
+```
+
+---
+
+## Type checks & friendly failures
+
+::: panel-tabset
+
+### R
+
+```{r, error=TRUE}
+my_div <- function(numerator, denominator) {
+  if (any(!is.numeric(numerator), !is.numeric(denominator))) {
+    stop("`numerator` and `denominator` must be numeric")
+  }
+  numerator / denominator
+}
+my_div("numerator", "denominator")
+```
+
+### Python
+
+```{python}
+class NotNumericError(TypeError):
+    pass
+
+def my_div(numerator, denominator):
+    from numbers import Number
+    if not isinstance(numerator, Number) or not isinstance(denominator, Number):
+        raise NotNumericError("numerator and denominator must be numeric")
+    return numerator / denominator
+# my_div("numerator", "denominator")  # raises
+```
+
+:::
+
+---
+
+## Warnings / messages vs warnings / logging
+
+::: panel-tabset
+
+### R
+
+```{r}
+warning("Size mismatch; recycling may occur")
+message("Starting the division…")
+```
+
+### Python
+
+```{python}
+import warnings, logging
+warnings.warn("Size mismatch; check inputs")
+logging.basicConfig(level=logging.INFO)
+logging.info("Starting the division…")
+```
+
+:::
+
+---
+
+## Dimensions & vectorisation
+
+::: panel-tabset
+
+### R
+
+```{r}
+A <- matrix(1:9, ncol = 3)
+B <- matrix(10:18, ncol = 3)
+A / B  # vectorised elementwise
+```
+
+### Python (NumPy)
+
+```{python}
+#| eval: false
+import numpy as np
+A = np.arange(1,10).reshape(3,3)
+B = np.arange(10,19).reshape(3,3)
+A / B  # elementwise
+```
+
+:::
+
+---
+
+## Robust `my_div` (shape checks)
+
+::: panel-tabset
+
+### R
+
+```{r}
+my_div <- function(numerator, denominator) {
+  if (any(!is.numeric(numerator), !is.numeric(denominator))) {
+    stop("`numerator` and `denominator` must be numeric")
+  }
+  if (!identical(dim(numerator), dim(denominator))) {
+    # fall back to length check for vectors
+    if (is.null(dim(numerator)) && is.null(dim(denominator))) {
+      if (length(numerator) != length(denominator))
+        stop("Lengths must match for vectors")
+    } else {
+      stop("Dimensions must match for arrays/matrices")
+    }
+  }
+  numerator / denominator
+}
+```
+
+### Python (NumPy)
+
+```{python}
+#| eval: false
+import numpy as np
+
+def my_div(numerator, denominator):
+    a = np.asarray(numerator)
+    b = np.asarray(denominator)
+    if a.shape != b.shape:
+        raise ValueError("Shapes must match")
+    return a / b
+```
+
+:::
+
+---
+
+## Scope: R environments vs Python LEGB
+
+::: panel-tabset
+
+### R — lexical scoping
+
+* **Dynamic lookup:** names resolved when function runs.
+* **Name masking:** inner names shadow outer names.
+
+```{r, error=TRUE}
+f <- function() x * x
+f()            # error, x not found
+x <- 10
+f()            # now 100
+```
+
+```{r}
+x <- 10
+f <- function(){ x <- 1; x * x }
+f()            # 1
+```
+
+* Inspect environments:
+
+```{r}
+environment()
+globalenv()
+emptyenv()
+```
+
+### Python — LEGB & `global`/`nonlocal`
+
+```{python}
+x = 10
+
+def f():
+    x = 1   # local shadows global
+    return x * x
+f()
+
+y = 0
+
+def bump():
+    global y
+    y += 1
+bump(); y
+
+
+def make_adder(k):
+    def add(x):
+        return x + k  # closes over k (enclosing)
+    return add
+add5 = make_adder(5)
+add5(3)
+```
+
+:::
+
+---
+
+## Closures & higher‑order functions
+
+::: panel-tabset
+
+### R
+
+```{r}
+make_adder <- function(k) {
+  function(x) x + k
+}
+add5 <- make_adder(5)
+add5(3)
+# Map over a vector
+lapply(1:5, add5)
+```
+
+### Python
+
+```{python}
+from functools import partial
+
+def add(x, y):
+    return x + y
+add5 = partial(add, 5)
+list(map(add5, range(1,6)))
+```
+
+:::
+
+---
+
+## Composition & piping
+
+::: panel-tabset
+
+### R
+
+* Base pipe `|>` and magrittr `%>%`.
+
+```{r}
+`%big%` <- function(x, y) 10 * x * y  # custom infix
+1 %big% 2
+
+# composition via nesting / piping
+sqrt(log1p(9))
+9 |>
+  log1p() |>
+  sqrt()
+```
+
+### Python
+
+* Nest calls or write a tiny `compose`.
+
+```{python}
+from math import sqrt, log1p
+
+def compose(f, g):
+    return lambda x: f(g(x))
+
+h = compose(sqrt, log1p)
+h(9)
+```
+
+:::
+
+---
+
+## Documentation
+
+::: panel-tabset
+
+### R — roxygen2 style (snippet)
+
+```r
+#' Divide two numbers
+#'
+#' @param numerator,denominator Numeric scalars or vectors.
+#' @return Numeric result.
+#' @examples
+#' my_div(4, 2)
+my_div <- function(numerator, denominator) numerator / denominator
+```
+
+### Python — docstring + type hints
+
+```{python}
+from typing import Union
+Number = Union[int, float]
+
+def my_div(numerator: Number, denominator: Number) -> float:
+    """Divide two numbers.
+
+    Args:
+        numerator: dividend
+        denominator: divisor
+    Returns:
+        The quotient as float.
+    """
+    return numerator / denominator
+```
+
+:::
+
+---
+
+## Testing (unit tests)
+
+::: panel-tabset
+
+### R — testthat (minimal)
+
+```r
+# install.packages("testthat")
+# test_that("my_div works", {
+#   expect_equal(my_div(4,2), 2)
+#   expect_error(my_div("a", 2))
+# })
+```
+
+### Python — pytest (minimal)
+
+```python
+# def test_my_div():
+#     assert my_div(4,2) == 2
+#     import pytest
+#     with pytest.raises(Exception):
+#         my_div("a", 2)
+```
+
+:::
+
+---
+
+## Mini‑exercises (quick)
+
+1. **Safe divide:** Write `safe_div` in R & Python that returns `NA`/`math.nan` when denominator is 0 and emits a warning.
+2. **Prefix matching:** In R, define `f <- function(numerator, denominator) {...}` and call it via partial names. Why is this risky? Rewrite to avoid it.
+3. **Default args:** Show the difference between R’s lazily evaluated defaults and Python’s **eager** defaults by creating a timestamp default.
+4. **Closure:** Write `make_multiplier(k)` then compute by 2 and by 10 for a vector.
+
+---
+
+## Challenge — Column summary function
+
+Write a function that returns a 2‑column table (mean, sd) for all **numeric** columns.
+
+* **R:** Input: `data.frame`/tibble. Use `vapply`/`sapply` or `purrr::map_dfr`. Error if no numeric columns.
+* **Python:** Input: `pandas.DataFrame`. Use `select_dtypes(include="number")` then `agg`.
+
+*Stretch:* add an argument `na_rm` / `skipna` and test it.
+
+---
+
+## Appendix — Python in this deck & pitfalls
+
+Render with R/knitr + **reticulate** and point to your env:
+
+```{r}
+#| eval: false
+install.packages("reticulate")
+reticulate::use_condaenv("dacm", required = TRUE)
+reticulate::py_config()
+```
+
+**Python gotcha — mutable defaults:**
+
+```{python}
+# Bad
+# def append_item(x, lst=[]):
+#     lst.append(x); return lst
+# Good
+# def append_item(x, lst=None):
+#     if lst is None: lst = []
+#     lst.append(x); return lst
+```
+
+**R note — lazy defaults:** evaluated when first used, not at definition.
+
+---
+
+## Cheatsheet
+
+* R returns last expr; Python needs `return`.
+* R: positional/exact/partial arg matching; Python: positional/keyword, `*args/**kwargs`, `/` & `*` markers.
+* R errors/warnings/messages vs Python exceptions/warnings/logging.
+* R lexical scoping & environments vs Python LEGB with `global`/`nonlocal`.
+* Vectorise: R builtins; Python use NumPy/pandas.
+* Composition: R `|>`/`%>%` & custom `%op%`; Python nesting/`compose`/method chaining.
