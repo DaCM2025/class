@@ -81,7 +81,6 @@ execute:
 **Today:** Primary types, vectors/lists, matrices/arrays, data frames/tibbles, pandas DataFrame, dates, subsetting, coercion rules, and common ops — **in both R and Python.**
 :::
 
-
 ---
 
 ## Primary (scalar) types
@@ -90,8 +89,8 @@ execute:
 
 ### R
 
-* **double (real)**: `-4`, `12.4532`, `6`
 * **integer**: `2L`, `12L`
+* **double (real)**: `-4`, `12.4532`, `6`
 * **logical**: `TRUE`, `FALSE` (also `T`, `F`)
 * **character**: `"a"`, `"Bonjour"`
 * *(also: **complex**, **raw**)*
@@ -167,6 +166,59 @@ int(2.9), float("3.1"), str(True)
 ```
 
 :::
+
+---
+
+## Nondeterminism in LLM
+
+> Floating-point arithmetic in GPUs exhibits non-associativity, meaning $(a+b)+c\neq a+(b+c)$ due to finite precision and rounding errors. This property directly impacts the computation of attention scores and logits in the transformer architecture, where parallel operations across multiple threads can yield different results based on execution order.   
+> *Horace He in collaboration with others at Thinking Machines*
+
+::: callout-note
+Read the full article [here](https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/)
+:::
+
+---
+
+## Testing floating-point non-associativity  
+
+What do you obtain if you run this in Python/R?
+
+```{bash}
+(0.1 + 1e20) - 1e20
+0.1 + (1e20 - 1e20)
+```
+
+
+If you replace 20 by another smaller integer, do you get the same result?
+At which integer do you start to get the same result? Why?
+
+---
+
+## Testing floating-point non-associativity
+
+::: panel-tabset
+### R
+```{r}
+options(digits = 22)
+f <- function(n) (0.1 + 10^n) - 10^n
+c(n20 = f(20), n16 = f(16), n15 = f(15), n14 = f(14))
+0.1 + (10^20 - 10^20)
+```
+
+### Python
+
+```{python}
+import math
+def f(n): return (0.1 + 10.0**n) - 10.0**n
+print({ 'n20': f(20), 'n16': f(16), 'n15': f(15), 'n14': f(14) })
+print(0.1 + (10.0**20 - 10.0**20))
+```
+
+:::
+
+**Key idea:** near large magnitudes, the ULP is so big that small addends vanish or round to the nearest ULP, breaking associativity.
+
 
 ---
 
@@ -354,8 +406,8 @@ rep(c(1,2), times = 3, each = 1)
 ```{python}
 list(range(1,4))
 list(range(3,0,-1))
+
 # numpy linspace/arange
-#| eval: false
 import numpy as np
 np.linspace(1, 2.8, 6)
 np.arange(1, 2.9, 0.4)
@@ -387,8 +439,8 @@ sort(grand_slam_win)
 x = [16,19,20,0,0]
 len(x), sum(x)
 sorted(x)
+
 # mean via statistics or numpy
-#| eval: false
 import statistics as st
 st.mean(x)
 ```
@@ -1069,21 +1121,6 @@ Write two versions (R & Python):
 * A vectorised solution.
 
 *Stretch:* benchmark both approaches.
-
----
-
-## Appendix — Running Python in this deck
-
-Render with R/knitr + **reticulate** and point to your env:
-
-```{r}
-#| eval: false
-install.packages("reticulate")
-reticulate::use_condaenv("dacm", required = TRUE)
-reticulate::py_config()
-```
-
-If a chunk should **not** execute during render, add `#| eval: false` to that chunk.
 
 ---
 

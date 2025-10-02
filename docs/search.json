@@ -46,7 +46,7 @@
     "href": "lecture02.html#primary-scalar-types",
     "title": "Lecture 2 — Programming Foundations",
     "section": "Primary (scalar) types",
-    "text": "Primary (scalar) types\n\nRPython\n\n\n\ndouble (real): -4, 12.4532, 6\ninteger: 2L, 12L\nlogical: TRUE, FALSE (also T, F)\ncharacter: \"a\", \"Bonjour\"\n(also: complex, raw)\n\n\ntypeof(12.5); typeof(2L); typeof(TRUE); typeof(\"hi\")\n\n\n\n\nint: -4, 6\nfloat: 12.4532\nbool: True, False\nstr: 'a', \"Bonjour\"\n(also: complex, bytes)\n\n\ntype(12.5), type(2), type(True), type(\"hi\")"
+    "text": "Primary (scalar) types\n\nRPython\n\n\n\ninteger: 2L, 12L\ndouble (real): -4, 12.4532, 6\nlogical: TRUE, FALSE (also T, F)\ncharacter: \"a\", \"Bonjour\"\n(also: complex, raw)\n\n\ntypeof(12.5); typeof(2L); typeof(TRUE); typeof(\"hi\")\n\n\n\n\nint: -4, 6\nfloat: 12.4532\nbool: True, False\nstr: 'a', \"Bonjour\"\n(also: complex, bytes)\n\n\ntype(12.5), type(2), type(True), type(\"hi\")"
   },
   {
     "objectID": "lecture02.html#reserved-special-values",
@@ -61,6 +61,27 @@
     "title": "Lecture 2 — Programming Foundations",
     "section": "Inspecting and coercing types",
     "text": "Inspecting and coercing types\n\nR: typeof, is.*, as.*Python: type, isinstance, casting\n\n\n\ntypeof(2L)              # \"integer\"\nis.double(2L)           # FALSE\nas.double(2L)           # 2\n\n\n\n\ntype(2) is int          # True\nisinstance(2.0, float)  # True\nint(2.9), float(\"3.1\"), str(True)"
+  },
+  {
+    "objectID": "lecture02.html#nondeterminism-in-llm",
+    "href": "lecture02.html#nondeterminism-in-llm",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Nondeterminism in LLM",
+    "text": "Nondeterminism in LLM\n\nFloating-point arithmetic in GPUs exhibits non-associativity, meaning \\((a+b)+c\\neq a+(b+c)\\) due to finite precision and rounding errors. This property directly impacts the computation of attention scores and logits in the transformer architecture, where parallel operations across multiple threads can yield different results based on execution order.\nHorace He in collaboration with others at Thinking Machines\n\n\n\n\n\n\n\nNote\n\n\nRead the full article here"
+  },
+  {
+    "objectID": "lecture02.html#testing-floating-point-non-associativity",
+    "href": "lecture02.html#testing-floating-point-non-associativity",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Testing floating-point non-associativity",
+    "text": "Testing floating-point non-associativity\nWhat do you obtain if you run this in Python/R?\n\n(0.1 + 1e20) - 1e20\n0.1 + (1e20 - 1e20)\n\nIf you replace 20 by another smaller integer, do you get the same result? At which integer do you start to get the same result? Why?"
+  },
+  {
+    "objectID": "lecture02.html#testing-floating-point-non-associativity-1",
+    "href": "lecture02.html#testing-floating-point-non-associativity-1",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Testing floating-point non-associativity",
+    "text": "Testing floating-point non-associativity\n\nRPython\n\n\n\noptions(digits = 22)\nf &lt;- function(n) (0.1 + 10^n) - 10^n\nc(n20 = f(20), n16 = f(16), n15 = f(15), n14 = f(14))\n0.1 + (10^20 - 10^20)\n\n\n\n\nimport math\ndef f(n): return (0.1 + 10.0**n) - 10.0**n\nprint({ 'n20': f(20), 'n16': f(16), 'n15': f(15), 'n14': f(14) })\nprint(0.1 + (10.0**20 - 10.0**20))\n\n\n\n\nKey idea: near large magnitudes, the ULP is so big that small addends vanish or round to the nearest ULP, breaking associativity."
   },
   {
     "objectID": "lecture02.html#homogeneous-vs-heterogeneous-structures",
@@ -109,14 +130,14 @@
     "href": "lecture02.html#sequences",
     "title": "Lecture 2 — Programming Foundations",
     "section": "Sequences",
-    "text": "Sequences\n\nRPython\n\n\n\n1:3\nseq_len(3)\nseq(1, 2.8, by = 0.4)\nseq(1, 2.8, length.out = 6)\nrep(c(1,2), times = 3, each = 1)\n\n\n\n\nlist(range(1,4))\nlist(range(3,0,-1))\n# numpy linspace/arange\n#| eval: false\nimport numpy as np\nnp.linspace(1, 2.8, 6)\nnp.arange(1, 2.9, 0.4)\n# repetition\n[1,2]*3"
+    "text": "Sequences\n\nRPython\n\n\n\n1:3\nseq_len(3)\nseq(1, 2.8, by = 0.4)\nseq(1, 2.8, length.out = 6)\nrep(c(1,2), times = 3, each = 1)\n\n\n\n\nlist(range(1,4))\nlist(range(3,0,-1))\n\n# numpy linspace/arange\nimport numpy as np\nnp.linspace(1, 2.8, 6)\nnp.arange(1, 2.9, 0.4)\n# repetition\n[1,2]*3"
   },
   {
     "objectID": "lecture02.html#useful-vector-ops",
     "href": "lecture02.html#useful-vector-ops",
     "title": "Lecture 2 — Programming Foundations",
     "section": "Useful vector ops",
-    "text": "Useful vector ops\n\nRPython\n\n\n\nlength(grand_slam_win)\nsum(grand_slam_win)\nmean(grand_slam_win)\norder(grand_slam_win)\nsort(grand_slam_win)\n\n\n\n\nx = [16,19,20,0,0]\nlen(x), sum(x)\nsorted(x)\n# mean via statistics or numpy\n#| eval: false\nimport statistics as st\nst.mean(x)"
+    "text": "Useful vector ops\n\nRPython\n\n\n\nlength(grand_slam_win)\nsum(grand_slam_win)\nmean(grand_slam_win)\norder(grand_slam_win)\nsort(grand_slam_win)\n\n\n\n\nx = [16,19,20,0,0]\nlen(x), sum(x)\nsorted(x)\n\n# mean via statistics or numpy\nimport statistics as st\nst.mean(x)"
   },
   {
     "objectID": "lecture02.html#matrices-2d-arrays",
@@ -313,13 +334,6 @@
     "title": "Lecture 2 — Programming Foundations",
     "section": "Challenge — Find the first even square > 1000",
     "text": "Challenge — Find the first even square &gt; 1000\nWrite two versions (R & Python):\n\nA loop-based solution with a break when found.\nA vectorised solution.\n\nStretch: benchmark both approaches."
-  },
-  {
-    "objectID": "lecture02.html#appendix-running-python-in-this-deck",
-    "href": "lecture02.html#appendix-running-python-in-this-deck",
-    "title": "Lecture 2 — Programming Foundations",
-    "section": "Appendix — Running Python in this deck",
-    "text": "Appendix — Running Python in this deck\nRender with R/knitr + reticulate and point to your env:\n\ninstall.packages(\"reticulate\")\nreticulate::use_condaenv(\"dacm\", required = TRUE)\nreticulate::py_config()\n\nIf a chunk should not execute during render, add #| eval: false to that chunk."
   },
   {
     "objectID": "lecture02.html#cheatsheet",
