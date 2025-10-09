@@ -203,6 +203,48 @@
     "text": "Appendix — Cheatsheet\n\nIndexing: R 1-based; Python 0-based.\nNegative indices: R excludes; Python counts from end.\nHomogeneous numerics: R vectors; Python NumPy arrays.\nTabular: R data.frame/tibble; Python pandas DataFrame.\nMissing: R NA; Python None/NaN/pd.NA (context-dependent).\nMatrix mult: R %*%; Python @ (NumPy/pandas)."
   },
   {
+    "objectID": "lecture02.html#mini-exercise-1-indexing",
+    "href": "lecture02.html#mini-exercise-1-indexing",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini-exercise 1: Indexing",
+    "text": "Mini-exercise 1: Indexing\nTask: Let x &lt;- 3 * seq_len(4) (R) / x = [3*i for i in range(1,5)] (Py). Select the 2nd element via (a) positive, (b) negative, (c) logical/comprehension.\n\nRPython\n\n\n\nx &lt;- 3 * seq_len(4)   # 3 6 9 12\nx[2]                   # (a) positive\nx[-c(1,3,4)]           # (b) negative (keep only 2)\nx[c(FALSE, TRUE, FALSE, FALSE)]  # (c) logical\n\n\n\n\nx = [3*i for i in range(1,5)]   # [3,6,9,12]\nx[1]                             # (a) positive (0-based)\nx[-3]                            # (b) negative index from end -&gt; element 2\n[xi for i, xi in enumerate(x) if i == 1]  # (c) comprehension"
+  },
+  {
+    "objectID": "lecture02.html#mini-exercise-2-sort-descending",
+    "href": "lecture02.html#mini-exercise-2-sort-descending",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini-exercise 2: Sort descending",
+    "text": "Mini-exercise 2: Sort descending\nTask: Sort x in descending order using (a) indices and (b) a built-in sorter.\n\nRPython\n\n\n\nx &lt;- 3 * seq_len(4)\nx[order(x, decreasing = TRUE)]   # via indices\nsort(x, decreasing = TRUE)       # via sorter\n\n\n\n\nx = [3,6,9,12]\n[xi for _, xi in sorted(enumerate(x), key=lambda t: t[1], reverse=True)]  # via indices\nsorted(x, reverse=True)                                                 # via sorter"
+  },
+  {
+    "objectID": "lecture02.html#mini-exercise-3-coercion",
+    "href": "lecture02.html#mini-exercise-3-coercion",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini-exercise 3: Coercion",
+    "text": "Mini-exercise 3: Coercion\nTask: In R, evaluate c(TRUE, 2, \"3\") — what happens? In Python, compare [True, 2, \"3\"] and np.array([True, 2, \"3\"]).\n\nRPython\n\n\n\nval &lt;- c(TRUE, 2, \"3\")\nval\ntypeof(val)  # \"character\"\n\n\n\n\n# Python list stays heterogeneous\nval = [True, 2, \"3\"]\nval, [type(v).__name__ for v in val]\n\n# NumPy coerces to a common dtype\n#| eval: false\nimport numpy as np\nnp.array([True, 2, \"3\"])  # dtype('&lt;U...') (string)"
+  },
+  {
+    "objectID": "lecture02.html#mini-exercise-4-matrix-ops",
+    "href": "lecture02.html#mini-exercise-4-matrix-ops",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini-exercise 4: Matrix ops",
+    "text": "Mini-exercise 4: Matrix ops\nTask: Create a 3×3 matrix / array and compute its transpose and A %*% A (R) / A @ A (Py).\n\nRPython\n\n\n\nA &lt;- matrix(1:9, 3, 3)\nA; t(A); A %*% A\n\n\n\n\nimport numpy as np\nA = np.arange(1,10).reshape(3,3)\nA, A.T, A @ A"
+  },
+  {
+    "objectID": "lecture02.html#challenge-tennis-leaderboard",
+    "href": "lecture02.html#challenge-tennis-leaderboard",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Challenge: Tennis leaderboard",
+    "text": "Challenge: Tennis leaderboard\nTask: Build table (players, DoB, wins); add age (years); sort by age desc; plot wins vs age.\n\nRPython\n\n\n\nplayers &lt;- c(\"Novak Djokovic\",\"Rafael Nadal\",\"Roger Federer\",\"Daniil Medvedev\",\"Dominic Thiem\")\ndob &lt;- as.Date(c(\"1987-05-22\",\"1986-06-03\",\"1981-08-08\",\"1996-02-11\",\"1993-09-03\"))\nwins &lt;- c(16,19,20,0,0)\n\ndf &lt;- data.frame(player = players, dob = dob, wins = wins, stringsAsFactors = FALSE)\nnow &lt;- Sys.Date()\ndf$age_years &lt;- as.numeric(difftime(now, df$dob, units = \"days\")) / 365.2425\n\ndf2 &lt;- df[order(-df$age_years), ]\nprint(df2)\n\nplot(df2$age_years, df2$wins, xlab = \"Age (years)\", ylab = \"Grand Slam wins\")\n\n\n\n\nimport pandas as pd\nfrom datetime import date\nplayers = [\"Novak Djokovic\",\"Rafael Nadal\",\"Roger Federer\",\"Daniil Medvedev\",\"Dominic Thiem\"]\ndf = pd.DataFrame({\n    \"player\": players,\n    \"dob\": pd.to_datetime([\"1987-05-22\",\"1986-06-03\",\"1981-08-08\",\"1996-02-11\",\"1993-09-03\"]),\n    \"wins\": [16,19,20,0,0]\n})\nnow = pd.Timestamp.today().normalize()\ndf[\"age_years\"] = (now - df[\"dob\"]).dt.days / 365.2425\n\ndf2 = df.sort_values(\"age_years\", ascending=False)\nprint(df2)\n\nax = df2.plot.scatter(x=\"age_years\", y=\"wins\")\nax.set_xlabel(\"Age (years)\"); ax.set_ylabel(\"Grand Slam wins\")"
+  },
+  {
+    "objectID": "lecture02.html#challenge-tennis-leaderboard---2nd-solution",
+    "href": "lecture02.html#challenge-tennis-leaderboard---2nd-solution",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Challenge: Tennis leaderboard - 2nd solution",
+    "text": "Challenge: Tennis leaderboard - 2nd solution\nTask: Build table (players, DoB, wins); add age (years); sort by age desc; plot wins vs age.\n\nR (dplyr / ggplot2)Python (pandas / matplotlib)\n\n\n\nlibrary(dplyr)\nlibrary(tibble)\nlibrary(ggplot2)\n\nref_date &lt;- as.Date(\"2025-10-08\")\n\nrankings &lt;- tribble(\n  ~rank, ~player,             ~country, ~points, ~dob,          ~gs_titles,\n      1, \"Carlos Alcaraz\",    \"ESP\",     11540,  as.Date(\"2003-05-05\"), 6,\n      2, \"Jannik Sinner\",     \"ITA\",     10950,  as.Date(\"2001-08-16\"), 4,\n      3, \"Alexander Zverev\",  \"GER\",      5980,  as.Date(\"1997-04-20\"), 0,\n      4, \"Taylor Fritz\",      \"USA\",      4995,  as.Date(\"1997-10-28\"), 0,\n      5, \"Novak Djokovic\",    \"SRB\",      4830,  as.Date(\"1987-05-22\"), 24\n) |&gt;\n  mutate(age = floor(as.numeric(ref_date - dob) / 365.2425))\n\nrankings\n\n# Simple points bar chart\nrankings |&gt;\n  ggplot(aes(x = reorder(player, points), y = points)) +\n  geom_col() +\n  coord_flip() +\n  labs(x = NULL, y = \"Ranking points\",\n       title = \"ATP Singles — Top 5 (week of 2025‑10‑06)\") +\n  theme_minimal(base_size = 12)\n\n# Optional: Grand Slam titles lollipop\nrankings |&gt;\n  ggplot(aes(x = reorder(player, gs_titles), y = gs_titles)) +\n  geom_segment(aes(xend = player, y = 0, yend = gs_titles)) +\n  geom_point(size = 3) +\n  coord_flip() +\n  labs(x = NULL, y = \"Grand Slam singles titles\",\n       title = \"Grand Slam titles (singles)\") +\n  theme_minimal(base_size = 12)\n\n\n\n\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom datetime import datetime\n\nref_date = datetime(2025, 10, 8)\n\ndata = {\n    \"rank\":   [1, 2, 3, 4, 5],\n    \"player\": [\"Carlos Alcaraz\",\"Jannik Sinner\",\"Alexander Zverev\",\"Taylor Fritz\",\"Novak Djokovic\"],\n    \"country\":[\"ESP\",\"ITA\",\"GER\",\"USA\",\"SRB\"],\n    \"points\": [11540, 10950, 5980, 4995, 4830],\n    \"dob\":    pd.to_datetime([\"2003-05-05\",\"2001-08-16\",\"1997-04-20\",\"1997-10-28\",\"1987-05-22\"]),\n    \"gs_titles\": [6, 4, 0, 0, 24]\n}\nrankings = pd.DataFrame(data)\nrankings[\"age\"] = (ref_date - rankings[\"dob\"]).dt.days // 365.2425\nrankings\n\n# Points bar chart (horizontal)\nax = rankings.sort_values(\"points\").plot(kind=\"barh\", x=\"player\", y=\"points\", legend=False)\nax.set_xlabel(\"Ranking points\")\nax.set_title(\"ATP Singles — Top 5 (week of 2025‑10‑06)\")\nplt.tight_layout(); plt.show()\n\n# Optional: Grand Slam titles lollipop-style\nordered = rankings.sort_values(\"gs_titles\")\nplt.figure()\nfor i, (p, v) in enumerate(zip(ordered[\"player\"], ordered[\"gs_titles\"])):\n    plt.plot([0, v], [i, i])\n    plt.plot(v, i, marker=\"o\")\nplt.yticks(range(len(ordered)), ordered[\"player\"])\nplt.xlabel(\"Grand Slam singles titles\")\nplt.title(\"Grand Slam titles (singles)\")\nplt.tight_layout(); plt.show()"
+  },
+  {
     "objectID": "lecture02.html#two-families",
     "href": "lecture02.html#two-families",
     "title": "Lecture 2 — Programming Foundations",
@@ -343,6 +385,41 @@
     "text": "Cheatsheet\n\nR elementwise: &, |; short-circuit: &&, || (first element only).\nPython booleans: and, or, not; elementwise with NumPy/pandas: &, | (+ parentheses!).\nif/elif/else (Py) ~ if/else if/else (R).\nVectorised conditionals: ifelse (R), np.where/Series.where (Py).\nMulti-way: switch (R), match/case or dict dispatch (Py).\nLoops: for, while, repeat (R); for, while, for … else (Py)."
   },
   {
+    "objectID": "lecture02.html#mini-exercise-1-shortcircuit-vs-elementwise",
+    "href": "lecture02.html#mini-exercise-1-shortcircuit-vs-elementwise",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini-exercise 1: Short‑circuit vs elementwise",
+    "text": "Mini-exercise 1: Short‑circuit vs elementwise\nTask: What do these return? In R: c(T,F) | c(T,F) vs c(T,F) || c(T,F). In Python/NumPy: (A | B) vs (A or B) with boolean arrays.\n\nRPython / NumPy\n\n\n\nc(T,F) | c(T,F)        # elementwise OR -&gt; TRUE FALSE\nc(T,F) || c(T,F)       # an error with recent R; previously used only first element -&gt; TRUE\n\n\n\n\n# Python lists\n[True, False] or [True, False]\n\n# Elementwise with NumPy\n#| eval: false\nimport numpy as np\nA = np.array([True, False]); B = np.array([True, False])\nA | B, A & B"
+  },
+  {
+    "objectID": "lecture02.html#mini-exercise-2-fizzbuzz-120",
+    "href": "lecture02.html#mini-exercise-2-fizzbuzz-120",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini-exercise 2: FizzBuzz (1–20)",
+    "text": "Mini-exercise 2: FizzBuzz (1–20)\nTask: Print numbers 1–20; for multiples of 3 print Fizz, of 5 Buzz, of both FizzBuzz.\n\nRPython\n\n\n\nfor (i in 1:20) {\n  if (i %% 15 == 0) cat(\"FizzBuzz\\n\")\n  else if (i %% 3 == 0) cat(\"Fizz\\n\")\n  else if (i %% 5 == 0) cat(\"Buzz\\n\")\n  else cat(i, \"\\n\")\n}\n\n\n\n\nfor i in range(1, 21):\n    if i % 15 == 0: print(\"FizzBuzz\")\n    elif i % 3 == 0: print(\"Fizz\")\n    elif i % 5 == 0: print(\"Buzz\")\n    else: print(i)"
+  },
+  {
+    "objectID": "lecture02.html#mini-exercise-3-masking-odds-to-nanan",
+    "href": "lecture02.html#mini-exercise-3-masking-odds-to-nanan",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini-exercise 3: Masking odds to NA/NaN",
+    "text": "Mini-exercise 3: Masking odds to NA/NaN\nTask: Given x &lt;- 1:10 / x = np.arange(1,11), replace odds by NA/np.nan using vectorised tools.\n\nRPython\n\n\n\nx &lt;- 1:10\nx[x %% 2 == 1] &lt;- NA_integer_\nx\n\n\n\n\nimport numpy as np\nx = np.arange(1,11, dtype=float)\nx[x % 2 == 1] = np.nan\nx"
+  },
+  {
+    "objectID": "lecture02.html#mini-exercise-4-tiny-calculator-switchmatch",
+    "href": "lecture02.html#mini-exercise-4-tiny-calculator-switchmatch",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini-exercise 4: Tiny calculator (switch/match)",
+    "text": "Mini-exercise 4: Tiny calculator (switch/match)\nTask: Implement a tiny calculator using R switch and Python match.\n\nRPython\n\n\n\ncalc &lt;- function(a, b, op) switch(op,\n  \"+\" = a + b,\n  \"-\" = a - b,\n  \"*\" = a * b,\n  \"/\" = a / b,\n  stop(\"unknown op\")\n)\ncalc(20,5,\"+\")\n\n\n\n\n# Python 3.10+\nimport sys\nif sys.version_info &gt;= (3,10):\n    def calc(a,b,op):\n        match op:\n            case \"+\": return a + b\n            case \"-\": return a - b\n            case \"*\": return a * b\n            case \"/\": return a / b\n            case _: raise ValueError(\"unknown op\")\n    calc(20,5,\"+\")\nelse:\n    ops = {\"+\": lambda a,b: a+b, \"-\": lambda a,b: a-b, \"*\": lambda a,b: a*b, \"/\": lambda a,b: a/b}\n    ops[\"+\"](20,5)"
+  },
+  {
+    "objectID": "lecture02.html#challenge-first-even-square-1000",
+    "href": "lecture02.html#challenge-first-even-square-1000",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Challenge: First even square > 1000",
+    "text": "Challenge: First even square &gt; 1000\nTask: Write two versions (R & Python):\n\nA loop-based solution with a break when found.\nA vectorised solution.\n\n\nRPython\n\n\n\n# Loop solution\nn &lt;- 1\nrepeat {\n  s &lt;- n^2\n  if (s &gt; 1000 && s %% 2 == 0) { ans &lt;- list(n=n, s=s); break }\n  n &lt;- n + 1\n}\nans\n\n# Vectorised solution\nn &lt;- seq_len(100)\nsq &lt;- n^2\ncbind(n, sq)[which(sq &gt; 1000 & sq %% 2 == 0)[1], ]\n\n\n\n\n# Loop solution\nn = 1\nwhile True:\n    s = n*n\n    if s &gt; 1000 and s % 2 == 0:\n        ans = {\"n\": n, \"s\": s}\n        break\n    n += 1\nans\n\n# Vectorised (NumPy)\n#| eval: false\nimport numpy as np\nn = np.arange(1, 101)\nsq = n**2\nidx = np.where((sq &gt; 1000) & (sq % 2 == 0))[0][0]\nint(n[idx]), int(sq[idx])"
+  },
+  {
     "objectID": "lecture02.html#everything-is-a-function-call-and-a-firstclass-object",
     "href": "lecture02.html#everything-is-a-function-call-and-a-firstclass-object",
     "title": "Lecture 2 — Programming Foundations",
@@ -445,14 +522,7 @@
     "href": "lecture02.html#miniexercises-quick-1",
     "title": "Lecture 2 — Programming Foundations",
     "section": "Mini‑exercises (quick)",
-    "text": "Mini‑exercises (quick)\n\nSafe divide: Write safe_div in R & Python that returns NA/math.nan when denominator is 0 and emits a warning.\nPrefix matching: In R, define f &lt;- function(numerator, denominator) {...} and call it via partial names. Why is this risky? Rewrite to avoid it.\nDefault args: Show the difference between R’s lazily evaluated defaults and Python’s eager defaults by creating a timestamp default.\nClosure: Write make_multiplier(k) then compute by 2 and by 10 for a vector."
-  },
-  {
-    "objectID": "lecture02.html#challenge-column-summary-function",
-    "href": "lecture02.html#challenge-column-summary-function",
-    "title": "Lecture 2 — Programming Foundations",
-    "section": "Challenge — Column summary function",
-    "text": "Challenge — Column summary function\nWrite a function that returns a 2‑column table (mean, sd) for all numeric columns.\n\nR: Input: data.frame/tibble. Use vapply/sapply or purrr::map_dfr. Error if no numeric columns.\nPython: Input: pandas.DataFrame. Use select_dtypes(include=\"number\") then agg.\n\nStretch: add an argument na_rm / skipna and test it."
+    "text": "Mini‑exercises (quick)\n\nSafe divide: Write safe_div in R & Python that returns NA/math.nan when denominator is 0 and emits a warning.\nPrefix matching: In R, define f &lt;- function(numerator, denominator) {...} and call it via partial names. Why is this risky? Rewrite to avoid it."
   },
   {
     "objectID": "lecture02.html#appendix-python-in-this-deck-pitfalls",
@@ -467,6 +537,20 @@
     "title": "Lecture 2 — Programming Foundations",
     "section": "Cheatsheet",
     "text": "Cheatsheet\n\nR returns last expr; Python needs return.\nR: positional/exact/partial arg matching; Python: positional/keyword, *args/**kwargs, / & * markers.\nR errors/warnings/messages vs Python exceptions/warnings/logging.\nR lexical scoping & environments vs Python LEGB with global/nonlocal.\nVectorise: R builtins; Python use NumPy/pandas.\nComposition: R |&gt;/%&gt;% & custom %op%; Python nesting/compose/method chaining."
+  },
+  {
+    "objectID": "lecture02.html#mini-exercise-1-safe-divide",
+    "href": "lecture02.html#mini-exercise-1-safe-divide",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini-exercise 1: Safe divide",
+    "text": "Mini-exercise 1: Safe divide\nTask: Write safe_div in R & Python that returns NA/math.nan when denominator is 0 and emits a warning.\n\nRPython\n\n\n\nsafe_div &lt;- function(a, b) {\n  ifelse(b == 0, {\n    warning(\"denominator is 0; returning NA\")\n    NA_real_\n  }, a / b)\n}\nsafe_div(c(1,2,3), c(1,0,2))\n\n\n# alternatively\nsafe_div &lt;- function(a, b) {\n  if(any(b == 0)) {\n    warning(\"denominator is 0; returning NA\")\n  }\n  \n  x &lt;- rep(NA_real_, length(a))\n  x[b != 0] &lt;- a[b != 0] / b[b != 0]\n  \n  return(x)\n}\n\n\n\n\nimport math, warnings\n\ndef safe_div(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        warnings.warn(\"denominator is 0; returning NaN\")\n        return math.nan\n\nprint(safe_div(1,1))\nprint(safe_div(2,0))"
+  },
+  {
+    "objectID": "lecture02.html#mini-exercise-2-prefix-matching-r-safer-calls",
+    "href": "lecture02.html#mini-exercise-2-prefix-matching-r-safer-calls",
+    "title": "Lecture 2 — Programming Foundations",
+    "section": "Mini-exercise 2: Prefix matching (R) & safer calls",
+    "text": "Mini-exercise 2: Prefix matching (R) & safer calls\nTask: In R, define f &lt;- function(numerator, denominator) {...} and call it via partial names. Why is this risky? Rewrite to avoid it.\n\nRPython\n\n\n\nf &lt;- function(numerator, denominator) numerator / denominator\nf(n = 1, d = 2)              # works via partial matching (risky)\n\n# Make it safer:\noptions(warnPartialMatchArgs = TRUE)  # warn on partial matching\nf(numerator = 1, denominator = 2)     # explicit names\n\n\n\n\n# Not applicable (Python has no partial name matching for keywords).\npass"
   },
   {
     "objectID": "lecture01.html#welcome",
@@ -880,5 +964,61 @@
     "title": "Lecture 1 — Introduction & Tools",
     "section": "Q&A",
     "text": "Q&A\nThanks!\nOptional: After class, try converting one old analysis to Quarto and push it to GitHub with a short README."
+  },
+  {
+    "objectID": "lecture01.html#solution-1-r",
+    "href": "lecture01.html#solution-1-r",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (1): R",
+    "text": "Solution (1): R\n# exercise1.R\nx &lt;- c(3, 7, 9, 2, 5)\nm &lt;- mean(x)\nmessage(paste(\"The mean is\", m))"
+  },
+  {
+    "objectID": "lecture01.html#solution-2-python",
+    "href": "lecture01.html#solution-2-python",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (2): Python",
+    "text": "Solution (2): Python\n# exercise2.py\nnums = [3, 7, 9, 2, 5]\navg = sum(nums) / len(nums)\nprint(f\"The average is {avg}\")"
+  },
+  {
+    "objectID": "lecture01.html#solution-3-quarto",
+    "href": "lecture01.html#solution-3-quarto",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (3): Quarto",
+    "text": "Solution (3): Quarto\n---\ntitle: \"Exercise 3\"\nauthor: \"Your Name\"\nformat: html\n---\n\n```r\n\"Hello R!\"\n```\n\n```python\nprint(\"Hello Python!\")\n```"
+  },
+  {
+    "objectID": "lecture01.html#solution-4-github",
+    "href": "lecture01.html#solution-4-github",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (4): GitHub",
+    "text": "Solution (4): GitHub\n# In a fresh folder:\ngit init\ngit branch -M main\ngit remote add origin https://github.com/&lt;user&gt;/first-exercises.git\n\n# Add files\ngit add exercise1.R exercise2.py exercise3.qmd README.md\ngit commit -m \"Add first three exercises\"\ngit push -u origin main\nExample README.md:\n# first-exercises\n- `exercise1.R`: vector + mean (R)\n- `exercise2.py`: list + average (Python)\n- `exercise3.qmd`: R & Python chunks (Quarto)"
+  },
+  {
+    "objectID": "lecture01.html#solution-5-r-data",
+    "href": "lecture01.html#solution-5-r-data",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (5): R + Data",
+    "text": "Solution (5): R + Data\n# exercise5.R\n# A. summary by cylinders\naggregate(mpg ~ cyl, data = mtcars, FUN = mean)\n\n# Using dplyr (optional)\n# library(dplyr)\n# mtcars |&gt;\n#   group_by(cyl) |&gt;\n#   summarise(mean_mpg = mean(mpg))\n\n# B. scatterplot mpg vs hp\nplot(mtcars$hp, mtcars$mpg,\n     xlab = \"Horsepower (hp)\", ylab = \"Miles per gallon (mpg)\",\n     main = \"mtcars: mpg vs hp\")"
+  },
+  {
+    "objectID": "lecture01.html#solution-6-python-visualization",
+    "href": "lecture01.html#solution-6-python-visualization",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (6): Python + Visualization",
+    "text": "Solution (6): Python + Visualization\n# exercise6.py\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom sklearn.datasets import load_iris\n\n# Load iris\niris_bunch = load_iris(as_frame=True)\ndf = iris_bunch.frame  # columns: sepal length (cm), sepal width (cm), ...\ndf[\"species\"] = df[\"target\"].map(dict(enumerate(iris_bunch.target_names)))\n\n# Average petal length per species\navg_petal = df.groupby(\"species\")[\"petal length (cm)\"].mean()\nprint(avg_petal)\n\n# Histogram of sepal lengths\nplt.figure()\ndf[\"sepal length (cm)\"].hist()\nplt.title(\"Histogram: Sepal Length\")\nplt.xlabel(\"Sepal length (cm)\")\nplt.ylabel(\"Count\")\nplt.tight_layout()\nplt.show()"
+  },
+  {
+    "objectID": "lecture01.html#solution-7-quarto-reproducibility",
+    "href": "lecture01.html#solution-7-quarto-reproducibility",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (7): Quarto + Reproducibility",
+    "text": "Solution (7): Quarto + Reproducibility\n---\ntitle: \"Exercise 7\"\nauthor: \"Your Name\"\nformat:\n  html: default\n  pdf: default\n---\n\nThis document shows basic R summaries and a Python plot.\n\n```r\nsummary(mtcars)\n```\n\n```python\nimport matplotlib.pyplot as plt\nfrom sklearn.datasets import load_iris\niris = load_iris(as_frame=True).frame\nplt.figure()\nplt.scatter(iris[\"sepal length (cm)\"], iris[\"sepal width (cm)\"])\nplt.title(\"Iris: Sepal length vs width\")\nplt.xlabel(\"Sepal length (cm)\")\nplt.ylabel(\"Sepal width (cm)\")\nplt.tight_layout()\nplt.show()\n```\nRender:\nquarto render exercise7.qmd --to html\nquarto render exercise7.qmd --to pdf   # requires LaTeX"
+  },
+  {
+    "objectID": "lecture01.html#solution-8-all-together",
+    "href": "lecture01.html#solution-8-all-together",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (8): All Together 🎯",
+    "text": "Solution (8): All Together 🎯\n---\ntitle: \"Exercise 8 (Capstone)\"\nauthor: \"Your Name\"\nformat: html\n---\n\nThis Quarto file combines R + Python and is tracked on GitHub.\n\n```r\nmean(mtcars$mpg)\n```\n\n```python\nfrom sklearn.datasets import load_iris\nimport matplotlib.pyplot as plt\niris = load_iris(as_frame=True).frame\nplt.figure()\nplt.scatter(iris[\"sepal length (cm)\"], iris[\"sepal width (cm)\"])\nplt.title(\"Iris: Sepal length vs width\")\nplt.xlabel(\"Sepal length (cm)\")\nplt.ylabel(\"Sepal width (cm)\")\nplt.tight_layout()\nplt.show()\n```\nPush results:\nquarto render exercise8.qmd\ngit add exercise8.qmd exercise8.html\ngit commit -m \"Add capstone exercise with R+Python\"\ngit push"
   }
 ]

@@ -850,6 +850,236 @@ Samuel Orso
 <li><strong>Matrix mult:</strong> R <code>%*%</code>; Python <code>@</code> (NumPy/pandas).</li>
 </ul>
 </section>
+<section id="mini-exercise-1-indexing" class="slide level2">
+<h2>Mini-exercise 1: Indexing</h2>
+<p><strong>Task:</strong> Let <code>x &lt;- 3 * seq_len(4)</code> (R) / <code>x = [3*i for i in range(1,5)]</code> (Py). Select the 2nd element via (a) positive, (b) negative, (c) logical/comprehension.</p>
+<div class="panel-tabset">
+<ul id="tabset-17" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-17-1">R</a></li><li><a href="#tabset-17-2">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-17-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a>x <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">seq_len</span>(<span class="dv">4</span>)   <span class="co"># 3 6 9 12</span></span>
+<span id="cb39-2"><a></a>x[<span class="dv">2</span>]                   <span class="co"># (a) positive</span></span>
+<span id="cb39-3"><a></a>x[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">4</span>)]           <span class="co"># (b) negative (keep only 2)</span></span>
+<span id="cb39-4"><a></a>x[<span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>)]  <span class="co"># (c) logical</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-17-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a></a>x <span class="op">=</span> [<span class="dv">3</span><span class="op">*</span>i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">5</span>)]   <span class="co"># [3,6,9,12]</span></span>
+<span id="cb40-2"><a></a>x[<span class="dv">1</span>]                             <span class="co"># (a) positive (0-based)</span></span>
+<span id="cb40-3"><a></a>x[<span class="op">-</span><span class="dv">3</span>]                            <span class="co"># (b) negative index from end -&gt; element 2</span></span>
+<span id="cb40-4"><a></a>[xi <span class="cf">for</span> i, xi <span class="kw">in</span> <span class="bu">enumerate</span>(x) <span class="cf">if</span> i <span class="op">==</span> <span class="dv">1</span>]  <span class="co"># (c) comprehension</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="mini-exercise-2-sort-descending" class="slide level2">
+<h2>Mini-exercise 2: Sort descending</h2>
+<p><strong>Task:</strong> Sort <code>x</code> in descending order using (a) indices and (b) a built-in sorter.</p>
+<div class="panel-tabset">
+<ul id="tabset-18" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-18-1">R</a></li><li><a href="#tabset-18-2">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-18-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a></a>x <span class="ot">&lt;-</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">seq_len</span>(<span class="dv">4</span>)</span>
+<span id="cb41-2"><a></a>x[<span class="fu">order</span>(x, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)]   <span class="co"># via indices</span></span>
+<span id="cb41-3"><a></a><span class="fu">sort</span>(x, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)       <span class="co"># via sorter</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-18-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a></a>x <span class="op">=</span> [<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">12</span>]</span>
+<span id="cb42-2"><a></a>[xi <span class="cf">for</span> _, xi <span class="kw">in</span> <span class="bu">sorted</span>(<span class="bu">enumerate</span>(x), key<span class="op">=</span><span class="kw">lambda</span> t: t[<span class="dv">1</span>], reverse<span class="op">=</span><span class="va">True</span>)]  <span class="co"># via indices</span></span>
+<span id="cb42-3"><a></a><span class="bu">sorted</span>(x, reverse<span class="op">=</span><span class="va">True</span>)                                                 <span class="co"># via sorter</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="mini-exercise-3-coercion" class="slide level2">
+<h2>Mini-exercise 3: Coercion</h2>
+<p><strong>Task:</strong> In R, evaluate <code>c(TRUE, 2, "3")</code> — what happens? In Python, compare <code>[True, 2, "3"]</code> and <code>np.array([True, 2, "3"])</code>.</p>
+<div class="panel-tabset">
+<ul id="tabset-19" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-19-1">R</a></li><li><a href="#tabset-19-2">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-19-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a></a>val <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="dv">2</span>, <span class="st">"3"</span>)</span>
+<span id="cb43-2"><a></a>val</span>
+<span id="cb43-3"><a></a><span class="fu">typeof</span>(val)  <span class="co"># "character"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-19-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a></a><span class="co"># Python list stays heterogeneous</span></span>
+<span id="cb44-2"><a></a>val <span class="op">=</span> [<span class="va">True</span>, <span class="dv">2</span>, <span class="st">"3"</span>]</span>
+<span id="cb44-3"><a></a>val, [<span class="bu">type</span>(v).<span class="va">__name__</span> <span class="cf">for</span> v <span class="kw">in</span> val]</span>
+<span id="cb44-4"><a></a></span>
+<span id="cb44-5"><a></a><span class="co"># NumPy coerces to a common dtype</span></span>
+<span id="cb44-6"><a></a><span class="co">#| eval: false</span></span>
+<span id="cb44-7"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb44-8"><a></a>np.array([<span class="va">True</span>, <span class="dv">2</span>, <span class="st">"3"</span>])  <span class="co"># dtype('&lt;U...') (string)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="mini-exercise-4-matrix-ops" class="slide level2">
+<h2>Mini-exercise 4: Matrix ops</h2>
+<p><strong>Task:</strong> Create a 3×3 matrix / array and compute its transpose and <code>A %*% A</code> (R) / <code>A @ A</code> (Py).</p>
+<div class="panel-tabset">
+<ul id="tabset-20" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-20-1">R</a></li><li><a href="#tabset-20-2">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-20-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb45-2"><a></a>A; <span class="fu">t</span>(A); A <span class="sc">%*%</span> A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-20-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb46-2"><a></a>A <span class="op">=</span> np.arange(<span class="dv">1</span>,<span class="dv">10</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)</span>
+<span id="cb46-3"><a></a>A, A.T, A <span class="op">@</span> A</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="challenge-tennis-leaderboard" class="slide level2">
+<h2>Challenge: Tennis leaderboard</h2>
+<p><strong>Task:</strong> Build table (players, DoB, wins); add <strong>age (years)</strong>; sort by age desc; plot wins vs age.</p>
+<div class="panel-tabset">
+<ul id="tabset-21" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-21-1">R</a></li><li><a href="#tabset-21-2">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-21-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a></a>players <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Novak Djokovic"</span>,<span class="st">"Rafael Nadal"</span>,<span class="st">"Roger Federer"</span>,<span class="st">"Daniil Medvedev"</span>,<span class="st">"Dominic Thiem"</span>)</span>
+<span id="cb47-2"><a></a>dob <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">"1987-05-22"</span>,<span class="st">"1986-06-03"</span>,<span class="st">"1981-08-08"</span>,<span class="st">"1996-02-11"</span>,<span class="st">"1993-09-03"</span>))</span>
+<span id="cb47-3"><a></a>wins <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">0</span>,<span class="dv">0</span>)</span>
+<span id="cb47-4"><a></a></span>
+<span id="cb47-5"><a></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">player =</span> players, <span class="at">dob =</span> dob, <span class="at">wins =</span> wins, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb47-6"><a></a>now <span class="ot">&lt;-</span> <span class="fu">Sys.Date</span>()</span>
+<span id="cb47-7"><a></a>df<span class="sc">$</span>age_years <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">difftime</span>(now, df<span class="sc">$</span>dob, <span class="at">units =</span> <span class="st">"days"</span>)) <span class="sc">/</span> <span class="fl">365.2425</span></span>
+<span id="cb47-8"><a></a></span>
+<span id="cb47-9"><a></a>df2 <span class="ot">&lt;-</span> df[<span class="fu">order</span>(<span class="sc">-</span>df<span class="sc">$</span>age_years), ]</span>
+<span id="cb47-10"><a></a><span class="fu">print</span>(df2)</span>
+<span id="cb47-11"><a></a></span>
+<span id="cb47-12"><a></a><span class="fu">plot</span>(df2<span class="sc">$</span>age_years, df2<span class="sc">$</span>wins, <span class="at">xlab =</span> <span class="st">"Age (years)"</span>, <span class="at">ylab =</span> <span class="st">"Grand Slam wins"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-21-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb48-2"><a></a><span class="im">from</span> datetime <span class="im">import</span> date</span>
+<span id="cb48-3"><a></a>players <span class="op">=</span> [<span class="st">"Novak Djokovic"</span>,<span class="st">"Rafael Nadal"</span>,<span class="st">"Roger Federer"</span>,<span class="st">"Daniil Medvedev"</span>,<span class="st">"Dominic Thiem"</span>]</span>
+<span id="cb48-4"><a></a>df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb48-5"><a></a>    <span class="st">"player"</span>: players,</span>
+<span id="cb48-6"><a></a>    <span class="st">"dob"</span>: pd.to_datetime([<span class="st">"1987-05-22"</span>,<span class="st">"1986-06-03"</span>,<span class="st">"1981-08-08"</span>,<span class="st">"1996-02-11"</span>,<span class="st">"1993-09-03"</span>]),</span>
+<span id="cb48-7"><a></a>    <span class="st">"wins"</span>: [<span class="dv">16</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">0</span>,<span class="dv">0</span>]</span>
+<span id="cb48-8"><a></a>})</span>
+<span id="cb48-9"><a></a>now <span class="op">=</span> pd.Timestamp.today().normalize()</span>
+<span id="cb48-10"><a></a>df[<span class="st">"age_years"</span>] <span class="op">=</span> (now <span class="op">-</span> df[<span class="st">"dob"</span>]).dt.days <span class="op">/</span> <span class="fl">365.2425</span></span>
+<span id="cb48-11"><a></a></span>
+<span id="cb48-12"><a></a>df2 <span class="op">=</span> df.sort_values(<span class="st">"age_years"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb48-13"><a></a><span class="bu">print</span>(df2)</span>
+<span id="cb48-14"><a></a></span>
+<span id="cb48-15"><a></a>ax <span class="op">=</span> df2.plot.scatter(x<span class="op">=</span><span class="st">"age_years"</span>, y<span class="op">=</span><span class="st">"wins"</span>)</span>
+<span id="cb48-16"><a></a>ax.set_xlabel(<span class="st">"Age (years)"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"Grand Slam wins"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="challenge-tennis-leaderboard---2nd-solution" class="slide level2">
+<h2>Challenge: Tennis leaderboard - 2nd solution</h2>
+<p><strong>Task:</strong> Build table (players, DoB, wins); add <strong>age (years)</strong>; sort by age desc; plot wins vs age.</p>
+<div class="panel-tabset">
+<ul id="tabset-22" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-22-1">R (dplyr / ggplot2)</a></li><li><a href="#tabset-22-2">Python (pandas / matplotlib)</a></li></ul>
+<div class="tab-content">
+<div id="tabset-22-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb49-2"><a></a><span class="fu">library</span>(tibble)</span>
+<span id="cb49-3"><a></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb49-4"><a></a></span>
+<span id="cb49-5"><a></a>ref_date <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="st">"2025-10-08"</span>)</span>
+<span id="cb49-6"><a></a></span>
+<span id="cb49-7"><a></a>rankings <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb49-8"><a></a>  <span class="sc">~</span>rank, <span class="sc">~</span>player,             <span class="sc">~</span>country, <span class="sc">~</span>points, <span class="sc">~</span>dob,          <span class="sc">~</span>gs_titles,</span>
+<span id="cb49-9"><a></a>      <span class="dv">1</span>, <span class="st">"Carlos Alcaraz"</span>,    <span class="st">"ESP"</span>,     <span class="dv">11540</span>,  <span class="fu">as.Date</span>(<span class="st">"2003-05-05"</span>), <span class="dv">6</span>,</span>
+<span id="cb49-10"><a></a>      <span class="dv">2</span>, <span class="st">"Jannik Sinner"</span>,     <span class="st">"ITA"</span>,     <span class="dv">10950</span>,  <span class="fu">as.Date</span>(<span class="st">"2001-08-16"</span>), <span class="dv">4</span>,</span>
+<span id="cb49-11"><a></a>      <span class="dv">3</span>, <span class="st">"Alexander Zverev"</span>,  <span class="st">"GER"</span>,      <span class="dv">5980</span>,  <span class="fu">as.Date</span>(<span class="st">"1997-04-20"</span>), <span class="dv">0</span>,</span>
+<span id="cb49-12"><a></a>      <span class="dv">4</span>, <span class="st">"Taylor Fritz"</span>,      <span class="st">"USA"</span>,      <span class="dv">4995</span>,  <span class="fu">as.Date</span>(<span class="st">"1997-10-28"</span>), <span class="dv">0</span>,</span>
+<span id="cb49-13"><a></a>      <span class="dv">5</span>, <span class="st">"Novak Djokovic"</span>,    <span class="st">"SRB"</span>,      <span class="dv">4830</span>,  <span class="fu">as.Date</span>(<span class="st">"1987-05-22"</span>), <span class="dv">24</span></span>
+<span id="cb49-14"><a></a>) <span class="sc">|&gt;</span></span>
+<span id="cb49-15"><a></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="fu">floor</span>(<span class="fu">as.numeric</span>(ref_date <span class="sc">-</span> dob) <span class="sc">/</span> <span class="fl">365.2425</span>))</span>
+<span id="cb49-16"><a></a></span>
+<span id="cb49-17"><a></a>rankings</span>
+<span id="cb49-18"><a></a></span>
+<span id="cb49-19"><a></a><span class="co"># Simple points bar chart</span></span>
+<span id="cb49-20"><a></a>rankings <span class="sc">|&gt;</span></span>
+<span id="cb49-21"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(player, points), <span class="at">y =</span> points)) <span class="sc">+</span></span>
+<span id="cb49-22"><a></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb49-23"><a></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb49-24"><a></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Ranking points"</span>,</span>
+<span id="cb49-25"><a></a>       <span class="at">title =</span> <span class="st">"ATP Singles — Top 5 (week of 2025‑10‑06)"</span>) <span class="sc">+</span></span>
+<span id="cb49-26"><a></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span>
+<span id="cb49-27"><a></a></span>
+<span id="cb49-28"><a></a><span class="co"># Optional: Grand Slam titles lollipop</span></span>
+<span id="cb49-29"><a></a>rankings <span class="sc">|&gt;</span></span>
+<span id="cb49-30"><a></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(player, gs_titles), <span class="at">y =</span> gs_titles)) <span class="sc">+</span></span>
+<span id="cb49-31"><a></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">xend =</span> player, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> gs_titles)) <span class="sc">+</span></span>
+<span id="cb49-32"><a></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb49-33"><a></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb49-34"><a></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Grand Slam singles titles"</span>,</span>
+<span id="cb49-35"><a></a>       <span class="at">title =</span> <span class="st">"Grand Slam titles (singles)"</span>) <span class="sc">+</span></span>
+<span id="cb49-36"><a></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-22-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb50-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb50-3"><a></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb50-4"><a></a></span>
+<span id="cb50-5"><a></a>ref_date <span class="op">=</span> datetime(<span class="dv">2025</span>, <span class="dv">10</span>, <span class="dv">8</span>)</span>
+<span id="cb50-6"><a></a></span>
+<span id="cb50-7"><a></a>data <span class="op">=</span> {</span>
+<span id="cb50-8"><a></a>    <span class="st">"rank"</span>:   [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>],</span>
+<span id="cb50-9"><a></a>    <span class="st">"player"</span>: [<span class="st">"Carlos Alcaraz"</span>,<span class="st">"Jannik Sinner"</span>,<span class="st">"Alexander Zverev"</span>,<span class="st">"Taylor Fritz"</span>,<span class="st">"Novak Djokovic"</span>],</span>
+<span id="cb50-10"><a></a>    <span class="st">"country"</span>:[<span class="st">"ESP"</span>,<span class="st">"ITA"</span>,<span class="st">"GER"</span>,<span class="st">"USA"</span>,<span class="st">"SRB"</span>],</span>
+<span id="cb50-11"><a></a>    <span class="st">"points"</span>: [<span class="dv">11540</span>, <span class="dv">10950</span>, <span class="dv">5980</span>, <span class="dv">4995</span>, <span class="dv">4830</span>],</span>
+<span id="cb50-12"><a></a>    <span class="st">"dob"</span>:    pd.to_datetime([<span class="st">"2003-05-05"</span>,<span class="st">"2001-08-16"</span>,<span class="st">"1997-04-20"</span>,<span class="st">"1997-10-28"</span>,<span class="st">"1987-05-22"</span>]),</span>
+<span id="cb50-13"><a></a>    <span class="st">"gs_titles"</span>: [<span class="dv">6</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">24</span>]</span>
+<span id="cb50-14"><a></a>}</span>
+<span id="cb50-15"><a></a>rankings <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb50-16"><a></a>rankings[<span class="st">"age"</span>] <span class="op">=</span> (ref_date <span class="op">-</span> rankings[<span class="st">"dob"</span>]).dt.days <span class="op">//</span> <span class="fl">365.2425</span></span>
+<span id="cb50-17"><a></a>rankings</span>
+<span id="cb50-18"><a></a></span>
+<span id="cb50-19"><a></a><span class="co"># Points bar chart (horizontal)</span></span>
+<span id="cb50-20"><a></a>ax <span class="op">=</span> rankings.sort_values(<span class="st">"points"</span>).plot(kind<span class="op">=</span><span class="st">"barh"</span>, x<span class="op">=</span><span class="st">"player"</span>, y<span class="op">=</span><span class="st">"points"</span>, legend<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb50-21"><a></a>ax.set_xlabel(<span class="st">"Ranking points"</span>)</span>
+<span id="cb50-22"><a></a>ax.set_title(<span class="st">"ATP Singles — Top 5 (week of 2025‑10‑06)"</span>)</span>
+<span id="cb50-23"><a></a>plt.tight_layout()<span class="op">;</span> plt.show()</span>
+<span id="cb50-24"><a></a></span>
+<span id="cb50-25"><a></a><span class="co"># Optional: Grand Slam titles lollipop-style</span></span>
+<span id="cb50-26"><a></a>ordered <span class="op">=</span> rankings.sort_values(<span class="st">"gs_titles"</span>)</span>
+<span id="cb50-27"><a></a>plt.figure()</span>
+<span id="cb50-28"><a></a><span class="cf">for</span> i, (p, v) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(ordered[<span class="st">"player"</span>], ordered[<span class="st">"gs_titles"</span>])):</span>
+<span id="cb50-29"><a></a>    plt.plot([<span class="dv">0</span>, v], [i, i])</span>
+<span id="cb50-30"><a></a>    plt.plot(v, i, marker<span class="op">=</span><span class="st">"o"</span>)</span>
+<span id="cb50-31"><a></a>plt.yticks(<span class="bu">range</span>(<span class="bu">len</span>(ordered)), ordered[<span class="st">"player"</span>])</span>
+<span id="cb50-32"><a></a>plt.xlabel(<span class="st">"Grand Slam singles titles"</span>)</span>
+<span id="cb50-33"><a></a>plt.title(<span class="st">"Grand Slam titles (singles)"</span>)</span>
+<span id="cb50-34"><a></a>plt.tight_layout()<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section class="slide level2">
 
 </section></section>
@@ -882,28 +1112,28 @@ Samuel Orso
 <section id="logical-operators-scalars" class="slide level2">
 <h2>Logical operators — scalars</h2>
 <div class="panel-tabset">
-<ul id="tabset-17" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-17-1">R</a></li><li><a href="#tabset-17-2">Python</a></li></ul>
+<ul id="tabset-23" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-23-1">R</a></li><li><a href="#tabset-23-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-17-1">
+<div id="tabset-23-1">
 <p><code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>==</code>, <code>!=</code>, <code>!</code>, <code>&amp;&amp;</code>, <code>||</code></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a></a><span class="dv">4</span> <span class="sc">&gt;</span> <span class="dv">3</span></span>
-<span id="cb39-2"><a></a><span class="dv">1</span> <span class="sc">&gt;=</span> <span class="dv">1</span></span>
-<span id="cb39-3"><a></a><span class="sc">!</span>(<span class="dv">2</span> <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
-<span id="cb39-4"><a></a><span class="cn">TRUE</span> <span class="sc">&amp;&amp;</span> <span class="cn">TRUE</span></span>
-<span id="cb39-5"><a></a>(<span class="dv">1</span> <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">||</span> (<span class="dv">2</span> <span class="sc">&lt;</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a></a><span class="dv">4</span> <span class="sc">&gt;</span> <span class="dv">3</span></span>
+<span id="cb51-2"><a></a><span class="dv">1</span> <span class="sc">&gt;=</span> <span class="dv">1</span></span>
+<span id="cb51-3"><a></a><span class="sc">!</span>(<span class="dv">2</span> <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
+<span id="cb51-4"><a></a><span class="cn">TRUE</span> <span class="sc">&amp;&amp;</span> <span class="cn">TRUE</span></span>
+<span id="cb51-5"><a></a>(<span class="dv">1</span> <span class="sc">&gt;</span> <span class="dv">1</span>) <span class="sc">||</span> (<span class="dv">2</span> <span class="sc">&lt;</span> <span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <blockquote>
 <p><code>&amp;&amp;</code> and <code>||</code> are <strong>short-circuit</strong> and only inspect the <strong>first</strong> element.</p>
 </blockquote>
 </div>
-<div id="tabset-17-2">
+<div id="tabset-23-2">
 <p><code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>==</code>, <code>!=</code>, <code>not</code>, <code>and</code>, <code>or</code></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a></a><span class="dv">4</span> <span class="op">&gt;</span> <span class="dv">3</span></span>
-<span id="cb40-2"><a></a><span class="dv">1</span> <span class="op">&gt;=</span> <span class="dv">1</span></span>
-<span id="cb40-3"><a></a><span class="kw">not</span> (<span class="dv">2</span> <span class="op">&gt;</span> <span class="dv">1</span>)</span>
-<span id="cb40-4"><a></a>(<span class="va">True</span> <span class="kw">and</span> <span class="va">True</span>), ((<span class="dv">1</span> <span class="op">&gt;</span> <span class="dv">1</span>) <span class="kw">or</span> (<span class="dv">2</span> <span class="op">&lt;</span> <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a></a><span class="dv">4</span> <span class="op">&gt;</span> <span class="dv">3</span></span>
+<span id="cb52-2"><a></a><span class="dv">1</span> <span class="op">&gt;=</span> <span class="dv">1</span></span>
+<span id="cb52-3"><a></a><span class="kw">not</span> (<span class="dv">2</span> <span class="op">&gt;</span> <span class="dv">1</span>)</span>
+<span id="cb52-4"><a></a>(<span class="va">True</span> <span class="kw">and</span> <span class="va">True</span>), ((<span class="dv">1</span> <span class="op">&gt;</span> <span class="dv">1</span>) <span class="kw">or</span> (<span class="dv">2</span> <span class="op">&lt;</span> <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -912,28 +1142,28 @@ Samuel Orso
 <section id="logical-operators-vectorsarrays" class="slide level2">
 <h2>Logical operators — vectors/arrays</h2>
 <div class="panel-tabset">
-<ul id="tabset-18" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-18-1">R</a></li><li><a href="#tabset-18-2">Python (NumPy/pandas)</a></li></ul>
+<ul id="tabset-24" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-24-1">R</a></li><li><a href="#tabset-24-2">Python (NumPy/pandas)</a></li></ul>
 <div class="tab-content">
-<div id="tabset-18-1">
+<div id="tabset-24-1">
 <p>Use elementwise <code>&amp;</code> and <code>|</code> for vectors/matrices; <code>all()</code>, <code>any()</code>, <code>xor()</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a></a><span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>) <span class="sc">|</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>)</span>
-<span id="cb41-2"><a></a><span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>) <span class="sc">&amp;</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
-<span id="cb41-3"><a></a><span class="fu">xor</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>)</span>
-<span id="cb41-4"><a></a><span class="fu">all</span>(<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>))</span>
-<span id="cb41-5"><a></a><span class="fu">any</span>(<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>))</span>
-<span id="cb41-6"><a></a><span class="co"># Short-circuit vs elementwise</span></span>
-<span id="cb41-7"><a></a><span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>) <span class="sc">|</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
-<span id="cb41-8"><a></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: c(TRUE,FALSE) || c(TRUE,FALSE) uses only first element</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a></a><span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>) <span class="sc">|</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb53-2"><a></a><span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>) <span class="sc">&amp;</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb53-3"><a></a><span class="fu">xor</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb53-4"><a></a><span class="fu">all</span>(<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>))</span>
+<span id="cb53-5"><a></a><span class="fu">any</span>(<span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>))</span>
+<span id="cb53-6"><a></a><span class="co"># Short-circuit vs elementwise</span></span>
+<span id="cb53-7"><a></a><span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>) <span class="sc">|</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb53-8"><a></a><span class="co"># </span><span class="al">NOTE</span><span class="co">: c(TRUE,FALSE) || c(TRUE,FALSE) uses only first element</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-18-2">
+<div id="tabset-24-2">
 <p>Use <strong><code>&amp;</code></strong> and <strong><code>|</code></strong> for elementwise logic with <strong>parentheses</strong>; <code>np.all</code>, <code>np.any</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb42-2"><a></a>A <span class="op">=</span> np.array([<span class="va">True</span>, <span class="va">False</span>])</span>
-<span id="cb42-3"><a></a>B <span class="op">=</span> np.array([<span class="va">True</span>, <span class="va">True</span>])</span>
-<span id="cb42-4"><a></a>(A <span class="op">|</span> B), (A <span class="op">&amp;</span> B)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb54-2"><a></a>A <span class="op">=</span> np.array([<span class="va">True</span>, <span class="va">False</span>])</span>
+<span id="cb54-3"><a></a>B <span class="op">=</span> np.array([<span class="va">True</span>, <span class="va">True</span>])</span>
+<span id="cb54-4"><a></a>(A <span class="op">|</span> B), (A <span class="op">&amp;</span> B)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <blockquote>
 <p>In pandas/NumPy: <strong>do not</strong> use <code>and</code>/<code>or</code> with arrays; use <code>&amp;</code>/<code>|</code> and wrap comparisons in parentheses.</p>
@@ -950,11 +1180,11 @@ Samuel Orso
 <li><strong>NumPy/pandas:</strong> <code>if np.array([True, False])</code> → error (ambiguous). Use <code>.any()</code> / <code>.all()</code>.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb43-2"><a></a>x <span class="op">=</span> np.array([<span class="va">True</span>, <span class="va">False</span>])</span>
-<span id="cb43-3"><a></a><span class="co"># if x:  # ValueError: ambiguous truth value</span></span>
-<span id="cb43-4"><a></a><span class="cf">if</span> x.<span class="bu">any</span>():</span>
-<span id="cb43-5"><a></a>    <span class="bu">print</span>(<span class="st">"has a True"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb55-2"><a></a>x <span class="op">=</span> np.array([<span class="va">True</span>, <span class="va">False</span>])</span>
+<span id="cb55-3"><a></a><span class="co"># if x:  # ValueError: ambiguous truth value</span></span>
+<span id="cb55-4"><a></a><span class="cf">if</span> x.<span class="bu">any</span>():</span>
+<span id="cb55-5"><a></a>    <span class="bu">print</span>(<span class="st">"has a True"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="selection-operators" class="slide level2">
@@ -964,26 +1194,26 @@ Samuel Orso
 <section id="if-basic" class="slide level2">
 <h2><code>if</code> — basic</h2>
 <div class="panel-tabset">
-<ul id="tabset-19" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-19-1">R</a></li><li><a href="#tabset-19-2">Python</a></li></ul>
+<ul id="tabset-25" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-25-1">R</a></li><li><a href="#tabset-25-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-19-1">
+<div id="tabset-25-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a></a>x <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">4</span></span>
-<span id="cb44-2"><a></a><span class="cf">if</span> (x <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
-<span id="cb44-3"><a></a>  x <span class="ot">&lt;-</span> <span class="sc">-</span>x</span>
-<span id="cb44-4"><a></a>}</span>
-<span id="cb44-5"><a></a><span class="cf">if</span> (x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb44-6"><a></a>  <span class="fu">cat</span>(x, <span class="st">"is even</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb44-7"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a></a>x <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">4</span></span>
+<span id="cb56-2"><a></a><span class="cf">if</span> (x <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
+<span id="cb56-3"><a></a>  x <span class="ot">&lt;-</span> <span class="sc">-</span>x</span>
+<span id="cb56-4"><a></a>}</span>
+<span id="cb56-5"><a></a><span class="cf">if</span> (x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb56-6"><a></a>  <span class="fu">cat</span>(x, <span class="st">"is even</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb56-7"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-19-2">
+<div id="tabset-25-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a></a>x <span class="op">=</span> <span class="op">-</span><span class="dv">4</span></span>
-<span id="cb45-2"><a></a><span class="cf">if</span> x <span class="op">&lt;</span> <span class="dv">0</span>:</span>
-<span id="cb45-3"><a></a>    x <span class="op">=</span> <span class="op">-</span>x</span>
-<span id="cb45-4"><a></a><span class="cf">if</span> x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb45-5"><a></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss"> is even"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a></a>x <span class="op">=</span> <span class="op">-</span><span class="dv">4</span></span>
+<span id="cb57-2"><a></a><span class="cf">if</span> x <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb57-3"><a></a>    x <span class="op">=</span> <span class="op">-</span>x</span>
+<span id="cb57-4"><a></a><span class="cf">if</span> x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb57-5"><a></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>x<span class="sc">}</span><span class="ss"> is even"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -992,25 +1222,25 @@ Samuel Orso
 <section id="if-else" class="slide level2">
 <h2><code>if</code> / <code>else</code></h2>
 <div class="panel-tabset">
-<ul id="tabset-20" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-20-1">R</a></li><li><a href="#tabset-20-2">Python</a></li></ul>
+<ul id="tabset-26" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-26-1">R</a></li><li><a href="#tabset-26-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-20-1">
+<div id="tabset-26-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a></a>x <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb46-2"><a></a><span class="cf">if</span> (x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb46-3"><a></a>  <span class="fu">cat</span>(<span class="st">"even</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb46-4"><a></a>} <span class="cf">else</span> {</span>
-<span id="cb46-5"><a></a>  <span class="fu">cat</span>(<span class="st">"odd</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb46-6"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a></a>x <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb58-2"><a></a><span class="cf">if</span> (x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb58-3"><a></a>  <span class="fu">cat</span>(<span class="st">"even</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb58-4"><a></a>} <span class="cf">else</span> {</span>
+<span id="cb58-5"><a></a>  <span class="fu">cat</span>(<span class="st">"odd</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb58-6"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-20-2">
+<div id="tabset-26-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a></a>x <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb47-2"><a></a><span class="cf">if</span> x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb47-3"><a></a>    <span class="bu">print</span>(<span class="st">"even"</span>)</span>
-<span id="cb47-4"><a></a><span class="cf">else</span>:</span>
-<span id="cb47-5"><a></a>    <span class="bu">print</span>(<span class="st">"odd"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a></a>x <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb59-2"><a></a><span class="cf">if</span> x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb59-3"><a></a>    <span class="bu">print</span>(<span class="st">"even"</span>)</span>
+<span id="cb59-4"><a></a><span class="cf">else</span>:</span>
+<span id="cb59-5"><a></a>    <span class="bu">print</span>(<span class="st">"odd"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1019,29 +1249,29 @@ Samuel Orso
 <section id="if-else-if-else" class="slide level2">
 <h2><code>if</code> / <code>else if</code> / <code>else</code></h2>
 <div class="panel-tabset">
-<ul id="tabset-21" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-21-1">R</a></li><li><a href="#tabset-21-2">Python (<code>elif</code>)</a></li></ul>
+<ul id="tabset-27" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-27-1">R</a></li><li><a href="#tabset-27-2">Python (<code>elif</code>)</a></li></ul>
 <div class="tab-content">
-<div id="tabset-21-1">
+<div id="tabset-27-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a></a>x <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb48-2"><a></a><span class="cf">if</span> (x <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb48-3"><a></a>  <span class="fu">cat</span>(<span class="st">"zero</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb48-4"><a></a>} <span class="cf">else</span> <span class="cf">if</span> (x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb48-5"><a></a>  <span class="fu">cat</span>(<span class="st">"even</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb48-6"><a></a>} <span class="cf">else</span> {</span>
-<span id="cb48-7"><a></a>  <span class="fu">cat</span>(<span class="st">"odd</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb48-8"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a></a>x <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb60-2"><a></a><span class="cf">if</span> (x <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb60-3"><a></a>  <span class="fu">cat</span>(<span class="st">"zero</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb60-4"><a></a>} <span class="cf">else</span> <span class="cf">if</span> (x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb60-5"><a></a>  <span class="fu">cat</span>(<span class="st">"even</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb60-6"><a></a>} <span class="cf">else</span> {</span>
+<span id="cb60-7"><a></a>  <span class="fu">cat</span>(<span class="st">"odd</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb60-8"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-21-2">
+<div id="tabset-27-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a></a>x <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb49-2"><a></a><span class="cf">if</span> x <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb49-3"><a></a>    <span class="bu">print</span>(<span class="st">"zero"</span>)</span>
-<span id="cb49-4"><a></a><span class="cf">elif</span> x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb49-5"><a></a>    <span class="bu">print</span>(<span class="st">"even"</span>)</span>
-<span id="cb49-6"><a></a><span class="cf">else</span>:</span>
-<span id="cb49-7"><a></a>    <span class="bu">print</span>(<span class="st">"odd"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a></a>x <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb61-2"><a></a><span class="cf">if</span> x <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb61-3"><a></a>    <span class="bu">print</span>(<span class="st">"zero"</span>)</span>
+<span id="cb61-4"><a></a><span class="cf">elif</span> x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb61-5"><a></a>    <span class="bu">print</span>(<span class="st">"even"</span>)</span>
+<span id="cb61-6"><a></a><span class="cf">else</span>:</span>
+<span id="cb61-7"><a></a>    <span class="bu">print</span>(<span class="st">"odd"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1050,22 +1280,22 @@ Samuel Orso
 <section id="vectorised-conditionals" class="slide level2">
 <h2>Vectorised conditionals</h2>
 <div class="panel-tabset">
-<ul id="tabset-22" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-22-1">R — <code>ifelse</code></a></li><li><a href="#tabset-22-2">Python — <code>numpy.where</code> / pandas</a></li></ul>
+<ul id="tabset-28" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-28-1">R — <code>ifelse</code></a></li><li><a href="#tabset-28-2">Python — <code>numpy.where</code> / pandas</a></li></ul>
 <div class="tab-content">
-<div id="tabset-22-1">
+<div id="tabset-28-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb50-2"><a></a><span class="fu">ifelse</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"even"</span>, <span class="st">"odd"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb62-2"><a></a><span class="fu">ifelse</span>(x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>, <span class="st">"even"</span>, <span class="st">"odd"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-22-2">
+<div id="tabset-28-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd</span>
-<span id="cb51-2"><a></a>x <span class="op">=</span> np.arange(<span class="dv">1</span>,<span class="dv">11</span>)</span>
-<span id="cb51-3"><a></a>np.where(x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>, <span class="st">"even"</span>, <span class="st">"odd"</span>)</span>
-<span id="cb51-4"><a></a><span class="co"># pandas Series</span></span>
-<span id="cb51-5"><a></a>s <span class="op">=</span> pd.Series(<span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">11</span>))</span>
-<span id="cb51-6"><a></a>s.where(s <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>, other<span class="op">=</span><span class="st">"odd"</span>).fillna(<span class="st">"even"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd</span>
+<span id="cb63-2"><a></a>x <span class="op">=</span> np.arange(<span class="dv">1</span>,<span class="dv">11</span>)</span>
+<span id="cb63-3"><a></a>np.where(x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>, <span class="st">"even"</span>, <span class="st">"odd"</span>)</span>
+<span id="cb63-4"><a></a><span class="co"># pandas Series</span></span>
+<span id="cb63-5"><a></a>s <span class="op">=</span> pd.Series(<span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">11</span>))</span>
+<span id="cb63-6"><a></a>s.where(s <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>, other<span class="op">=</span><span class="st">"odd"</span>).fillna(<span class="st">"even"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1074,45 +1304,45 @@ Samuel Orso
 <section id="switch-r-vs-matchcase-python-3.10" class="slide level2">
 <h2><code>switch</code> (R) vs <code>match/case</code> (Python ≥3.10)</h2>
 <div class="panel-tabset">
-<ul id="tabset-23" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-23-1">R — <code>switch</code></a></li><li><a href="#tabset-23-2">Python — <code>match</code></a></li><li><a href="#tabset-23-3">Python (pre-3.10) — dict dispatch</a></li></ul>
+<ul id="tabset-29" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-29-1">R — <code>switch</code></a></li><li><a href="#tabset-29-2">Python — <code>match</code></a></li><li><a href="#tabset-29-3">Python (pre-3.10) — dict dispatch</a></li></ul>
 <div class="tab-content">
-<div id="tabset-23-1">
+<div id="tabset-29-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a></a>operator <span class="ot">&lt;-</span> <span class="st">"+"</span></span>
-<span id="cb52-2"><a></a><span class="cf">switch</span>(operator,</span>
-<span id="cb52-3"><a></a>  <span class="st">"+"</span> <span class="ot">=</span> <span class="dv">20</span> <span class="sc">+</span> <span class="dv">5</span>,</span>
-<span id="cb52-4"><a></a>  <span class="st">"-"</span> <span class="ot">=</span> <span class="dv">20</span> <span class="sc">-</span> <span class="dv">5</span>,</span>
-<span id="cb52-5"><a></a>  <span class="st">"*"</span> <span class="ot">=</span> <span class="dv">20</span> <span class="sc">*</span> <span class="dv">5</span>,</span>
-<span id="cb52-6"><a></a>  <span class="st">"/"</span> <span class="ot">=</span> <span class="dv">20</span> <span class="sc">/</span> <span class="dv">5</span>,</span>
-<span id="cb52-7"><a></a>  <span class="fu">stop</span>(<span class="st">"Unknown operator"</span>)</span>
-<span id="cb52-8"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a></a>operator <span class="ot">&lt;-</span> <span class="st">"+"</span></span>
+<span id="cb64-2"><a></a><span class="cf">switch</span>(operator,</span>
+<span id="cb64-3"><a></a>  <span class="st">"+"</span> <span class="ot">=</span> <span class="dv">20</span> <span class="sc">+</span> <span class="dv">5</span>,</span>
+<span id="cb64-4"><a></a>  <span class="st">"-"</span> <span class="ot">=</span> <span class="dv">20</span> <span class="sc">-</span> <span class="dv">5</span>,</span>
+<span id="cb64-5"><a></a>  <span class="st">"*"</span> <span class="ot">=</span> <span class="dv">20</span> <span class="sc">*</span> <span class="dv">5</span>,</span>
+<span id="cb64-6"><a></a>  <span class="st">"/"</span> <span class="ot">=</span> <span class="dv">20</span> <span class="sc">/</span> <span class="dv">5</span>,</span>
+<span id="cb64-7"><a></a>  <span class="fu">stop</span>(<span class="st">"Unknown operator"</span>)</span>
+<span id="cb64-8"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-23-2">
+<div id="tabset-29-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a></a>operator <span class="op">=</span> <span class="st">"+"</span></span>
-<span id="cb53-2"><a></a><span class="cf">match</span> operator:</span>
-<span id="cb53-3"><a></a>    <span class="cf">case</span> <span class="st">"+"</span>:</span>
-<span id="cb53-4"><a></a>        <span class="dv">20</span> <span class="op">+</span> <span class="dv">5</span></span>
-<span id="cb53-5"><a></a>    <span class="cf">case</span> <span class="st">"-"</span>:</span>
-<span id="cb53-6"><a></a>        <span class="dv">20</span> <span class="op">-</span> <span class="dv">5</span></span>
-<span id="cb53-7"><a></a>    <span class="cf">case</span> <span class="st">"*"</span>:</span>
-<span id="cb53-8"><a></a>        <span class="dv">20</span> <span class="op">*</span> <span class="dv">5</span></span>
-<span id="cb53-9"><a></a>    <span class="cf">case</span> <span class="st">"/"</span>:</span>
-<span id="cb53-10"><a></a>        <span class="dv">20</span> <span class="op">/</span> <span class="dv">5</span></span>
-<span id="cb53-11"><a></a>    <span class="cf">case</span> _:</span>
-<span id="cb53-12"><a></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Unknown operator"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a></a>operator <span class="op">=</span> <span class="st">"+"</span></span>
+<span id="cb65-2"><a></a><span class="cf">match</span> operator:</span>
+<span id="cb65-3"><a></a>    <span class="cf">case</span> <span class="st">"+"</span>:</span>
+<span id="cb65-4"><a></a>        <span class="dv">20</span> <span class="op">+</span> <span class="dv">5</span></span>
+<span id="cb65-5"><a></a>    <span class="cf">case</span> <span class="st">"-"</span>:</span>
+<span id="cb65-6"><a></a>        <span class="dv">20</span> <span class="op">-</span> <span class="dv">5</span></span>
+<span id="cb65-7"><a></a>    <span class="cf">case</span> <span class="st">"*"</span>:</span>
+<span id="cb65-8"><a></a>        <span class="dv">20</span> <span class="op">*</span> <span class="dv">5</span></span>
+<span id="cb65-9"><a></a>    <span class="cf">case</span> <span class="st">"/"</span>:</span>
+<span id="cb65-10"><a></a>        <span class="dv">20</span> <span class="op">/</span> <span class="dv">5</span></span>
+<span id="cb65-11"><a></a>    <span class="cf">case</span> _:</span>
+<span id="cb65-12"><a></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Unknown operator"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-23-3">
+<div id="tabset-29-3">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a></a>ops <span class="op">=</span> {</span>
-<span id="cb54-2"><a></a>    <span class="st">"+"</span>: <span class="kw">lambda</span> a,b: a<span class="op">+</span>b,</span>
-<span id="cb54-3"><a></a>    <span class="st">"-"</span>: <span class="kw">lambda</span> a,b: a<span class="op">-</span>b,</span>
-<span id="cb54-4"><a></a>    <span class="st">"*"</span>: <span class="kw">lambda</span> a,b: a<span class="op">*</span>b,</span>
-<span id="cb54-5"><a></a>    <span class="st">"/"</span>: <span class="kw">lambda</span> a,b: a<span class="op">/</span>b</span>
-<span id="cb54-6"><a></a>}</span>
-<span id="cb54-7"><a></a>ops.get(<span class="st">"+"</span>, <span class="kw">lambda</span> a,b: <span class="va">None</span>)(<span class="dv">20</span>,<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a></a>ops <span class="op">=</span> {</span>
+<span id="cb66-2"><a></a>    <span class="st">"+"</span>: <span class="kw">lambda</span> a,b: a<span class="op">+</span>b,</span>
+<span id="cb66-3"><a></a>    <span class="st">"-"</span>: <span class="kw">lambda</span> a,b: a<span class="op">-</span>b,</span>
+<span id="cb66-4"><a></a>    <span class="st">"*"</span>: <span class="kw">lambda</span> a,b: a<span class="op">*</span>b,</span>
+<span id="cb66-5"><a></a>    <span class="st">"/"</span>: <span class="kw">lambda</span> a,b: a<span class="op">/</span>b</span>
+<span id="cb66-6"><a></a>}</span>
+<span id="cb66-7"><a></a>ops.get(<span class="st">"+"</span>, <span class="kw">lambda</span> a,b: <span class="va">None</span>)(<span class="dv">20</span>,<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1128,27 +1358,27 @@ Samuel Orso
 <section id="for-loops" class="slide level2">
 <h2><code>for</code> loops</h2>
 <div class="panel-tabset">
-<ul id="tabset-24" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-24-1">R</a></li><li><a href="#tabset-24-2">Python</a></li></ul>
+<ul id="tabset-30" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-30-1">R</a></li><li><a href="#tabset-30-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-24-1">
+<div id="tabset-30-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a></a><span class="cf">for</span> (number <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) {</span>
-<span id="cb55-2"><a></a>  <span class="fu">print</span>(number)</span>
-<span id="cb55-3"><a></a>}</span>
-<span id="cb55-4"><a></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
-<span id="cb55-5"><a></a>  <span class="cf">if</span> (i <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) <span class="cf">next</span></span>
-<span id="cb55-6"><a></a>  <span class="fu">print</span>(i)</span>
-<span id="cb55-7"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a></a><span class="cf">for</span> (number <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) {</span>
+<span id="cb67-2"><a></a>  <span class="fu">print</span>(number)</span>
+<span id="cb67-3"><a></a>}</span>
+<span id="cb67-4"><a></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
+<span id="cb67-5"><a></a>  <span class="cf">if</span> (i <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) <span class="cf">next</span></span>
+<span id="cb67-6"><a></a>  <span class="fu">print</span>(i)</span>
+<span id="cb67-7"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-24-2">
+<div id="tabset-30-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a></a><span class="cf">for</span> number <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">7</span>):</span>
-<span id="cb56-2"><a></a>    <span class="bu">print</span>(number)</span>
-<span id="cb56-3"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">11</span>):</span>
-<span id="cb56-4"><a></a>    <span class="cf">if</span> i <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb56-5"><a></a>        <span class="cf">continue</span></span>
-<span id="cb56-6"><a></a>    <span class="bu">print</span>(i)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a></a><span class="cf">for</span> number <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">7</span>):</span>
+<span id="cb68-2"><a></a>    <span class="bu">print</span>(number)</span>
+<span id="cb68-3"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">11</span>):</span>
+<span id="cb68-4"><a></a>    <span class="cf">if</span> i <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb68-5"><a></a>        <span class="cf">continue</span></span>
+<span id="cb68-6"><a></a>    <span class="bu">print</span>(i)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1157,23 +1387,23 @@ Samuel Orso
 <section id="while-loops" class="slide level2">
 <h2><code>while</code> loops</h2>
 <div class="panel-tabset">
-<ul id="tabset-25" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-25-1">R</a></li><li><a href="#tabset-25-2">Python</a></li></ul>
+<ul id="tabset-31" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-31-1">R</a></li><li><a href="#tabset-31-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-25-1">
+<div id="tabset-31-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb57-2"><a></a><span class="cf">while</span> (i <span class="sc">&lt;=</span> <span class="dv">6</span>) {</span>
-<span id="cb57-3"><a></a>  <span class="fu">print</span>(i)</span>
-<span id="cb57-4"><a></a>  i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb57-5"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb69-2"><a></a><span class="cf">while</span> (i <span class="sc">&lt;=</span> <span class="dv">6</span>) {</span>
+<span id="cb69-3"><a></a>  <span class="fu">print</span>(i)</span>
+<span id="cb69-4"><a></a>  i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb69-5"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-25-2">
+<div id="tabset-31-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a></a>i <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb58-2"><a></a><span class="cf">while</span> i <span class="op">&lt;=</span> <span class="dv">6</span>:</span>
-<span id="cb58-3"><a></a>    <span class="bu">print</span>(i)</span>
-<span id="cb58-4"><a></a>    i <span class="op">+=</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a></a>i <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb70-2"><a></a><span class="cf">while</span> i <span class="op">&lt;=</span> <span class="dv">6</span>:</span>
+<span id="cb70-3"><a></a>    <span class="bu">print</span>(i)</span>
+<span id="cb70-4"><a></a>    i <span class="op">+=</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1186,24 +1416,24 @@ Samuel Orso
 <li>Prefer <strong>clear termination</strong>; add guards and <code>break</code>.</li>
 </ul>
 <div class="panel-tabset">
-<ul id="tabset-26" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-26-1">R — <code>repeat</code></a></li><li><a href="#tabset-26-2">Python — guarded <code>while</code></a></li></ul>
+<ul id="tabset-32" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-32-1">R — <code>repeat</code></a></li><li><a href="#tabset-32-2">Python — guarded <code>while</code></a></li></ul>
 <div class="tab-content">
-<div id="tabset-26-1">
+<div id="tabset-32-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a></a>counter <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb59-2"><a></a><span class="cf">repeat</span> {</span>
-<span id="cb59-3"><a></a>  counter <span class="ot">&lt;-</span> counter <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb59-4"><a></a>  <span class="cf">if</span> (counter <span class="sc">&gt;=</span> <span class="dv">3</span>) <span class="cf">break</span></span>
-<span id="cb59-5"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a></a>counter <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb71-2"><a></a><span class="cf">repeat</span> {</span>
+<span id="cb71-3"><a></a>  counter <span class="ot">&lt;-</span> counter <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb71-4"><a></a>  <span class="cf">if</span> (counter <span class="sc">&gt;=</span> <span class="dv">3</span>) <span class="cf">break</span></span>
+<span id="cb71-5"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-26-2">
+<div id="tabset-32-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a></a>counter <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb60-2"><a></a><span class="cf">while</span> <span class="va">True</span>:</span>
-<span id="cb60-3"><a></a>    counter <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb60-4"><a></a>    <span class="cf">if</span> counter <span class="op">&gt;=</span> <span class="dv">3</span>:</span>
-<span id="cb60-5"><a></a>        <span class="cf">break</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a></a>counter <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb72-2"><a></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb72-3"><a></a>    counter <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb72-4"><a></a>    <span class="cf">if</span> counter <span class="op">&gt;=</span> <span class="dv">3</span>:</span>
+<span id="cb72-5"><a></a>        <span class="cf">break</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1213,39 +1443,39 @@ Samuel Orso
 <h2>Python’s <code>for … else</code></h2>
 <p>The <code>else</code> runs <strong>only if</strong> the loop <strong>did not</strong> <code>break</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a></a><span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">10</span>):</span>
-<span id="cb61-2"><a></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, n):</span>
-<span id="cb61-3"><a></a>        <span class="cf">if</span> n <span class="op">%</span> x <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb61-4"><a></a>            <span class="cf">break</span></span>
-<span id="cb61-5"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb61-6"><a></a>        <span class="bu">print</span>(n, <span class="st">"is prime"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a></a><span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">10</span>):</span>
+<span id="cb73-2"><a></a>    <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, n):</span>
+<span id="cb73-3"><a></a>        <span class="cf">if</span> n <span class="op">%</span> x <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb73-4"><a></a>            <span class="cf">break</span></span>
+<span id="cb73-5"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb73-6"><a></a>        <span class="bu">print</span>(n, <span class="st">"is prime"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="vectorisation-apply-family" class="slide level2">
 <h2>Vectorisation &amp; apply-family</h2>
 <div class="panel-tabset">
-<ul id="tabset-27" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-27-1">R</a></li><li><a href="#tabset-27-2">Python</a></li></ul>
+<ul id="tabset-33" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-33-1">R</a></li><li><a href="#tabset-33-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-27-1">
+<div id="tabset-33-1">
 <ul>
 <li>Prefer vectorised ops / builtins (<code>rowMeans</code>, <code>colSums</code>, …).</li>
 <li><code>apply(X, MARGIN, FUN, …)</code> for arrays; <code>lapply/sapply</code> for lists; or <code>purrr::map*</code>.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a></a><span class="fu">set.seed</span>(<span class="dv">321</span>)</span>
-<span id="cb62-2"><a></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rexp</span>(<span class="dv">30</span>), <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">10</span>)</span>
-<span id="cb62-3"><a></a><span class="fu">colMeans</span>(A)</span>
-<span id="cb62-4"><a></a><span class="fu">apply</span>(A, <span class="dv">2</span>, mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a></a><span class="fu">set.seed</span>(<span class="dv">321</span>)</span>
+<span id="cb74-2"><a></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rexp</span>(<span class="dv">30</span>), <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">10</span>)</span>
+<span id="cb74-3"><a></a><span class="fu">colMeans</span>(A)</span>
+<span id="cb74-4"><a></a><span class="fu">apply</span>(A, <span class="dv">2</span>, mean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-27-2">
+<div id="tabset-33-2">
 <ul>
 <li>Prefer NumPy vectorisation; in pandas use column-wise ops; <code>DataFrame.apply</code> as last resort.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd</span>
-<span id="cb63-2"><a></a>A <span class="op">=</span> np.random.exponential(size<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">3</span>))</span>
-<span id="cb63-3"><a></a>A.mean(axis<span class="op">=</span><span class="dv">0</span>)         <span class="co"># column means</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd</span>
+<span id="cb75-2"><a></a>A <span class="op">=</span> np.random.exponential(size<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">3</span>))</span>
+<span id="cb75-3"><a></a>A.mean(axis<span class="op">=</span><span class="dv">0</span>)         <span class="co"># column means</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1254,25 +1484,25 @@ Samuel Orso
 <section id="performance-sketch" class="slide level2">
 <h2>Performance sketch</h2>
 <div class="panel-tabset">
-<ul id="tabset-28" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-28-1">R</a></li><li><a href="#tabset-28-2">Python</a></li></ul>
+<ul id="tabset-34" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-34-1">R</a></li><li><a href="#tabset-34-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-28-1">
+<div id="tabset-34-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a></a><span class="co"># install.packages("microbenchmark")  # if needed</span></span>
-<span id="cb64-2"><a></a><span class="co"># microbenchmark::microbenchmark(</span></span>
-<span id="cb64-3"><a></a><span class="co">#   for(i in 1:ncol(A)){},</span></span>
-<span id="cb64-4"><a></a><span class="co">#   apply(A, 2, mean),</span></span>
-<span id="cb64-5"><a></a><span class="co">#   colMeans(A)</span></span>
-<span id="cb64-6"><a></a><span class="co"># )</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a></a><span class="co"># install.packages("microbenchmark")  # if needed</span></span>
+<span id="cb76-2"><a></a><span class="co"># microbenchmark::microbenchmark(</span></span>
+<span id="cb76-3"><a></a><span class="co">#   for(i in 1:ncol(A)){},</span></span>
+<span id="cb76-4"><a></a><span class="co">#   apply(A, 2, mean),</span></span>
+<span id="cb76-5"><a></a><span class="co">#   colMeans(A)</span></span>
+<span id="cb76-6"><a></a><span class="co"># )</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <blockquote>
 <p>Rule: prefer builtins and vectorised code.</p>
 </blockquote>
 </div>
-<div id="tabset-28-2">
+<div id="tabset-34-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a></a><span class="co"># import timeit</span></span>
-<span id="cb65-2"><a></a><span class="co"># timeit.timeit("sum(range(1000))", number=10000)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a></a><span class="co"># import timeit</span></span>
+<span id="cb77-2"><a></a><span class="co"># timeit.timeit("sum(range(1000))", number=10000)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <blockquote>
 <p>Rule: prefer vectorised NumPy/pandas ops over Python-level loops.</p>
@@ -1310,6 +1540,175 @@ Samuel Orso
 <li>Loops: <code>for</code>, <code>while</code>, <code>repeat</code> (R); <code>for</code>, <code>while</code>, <code>for … else</code> (Py).</li>
 </ul>
 </section>
+<section id="mini-exercise-1-shortcircuit-vs-elementwise" class="slide level2">
+<h2>Mini-exercise 1: Short‑circuit vs elementwise</h2>
+<p><strong>Task:</strong> What do these return? In R: <code>c(T,F) | c(T,F)</code> vs <code>c(T,F) || c(T,F)</code>. In Python/NumPy: <code>(A | B)</code> vs <code>(A or B)</code> with boolean arrays.</p>
+<div class="panel-tabset">
+<ul id="tabset-35" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-35-1">R</a></li><li><a href="#tabset-35-2">Python / NumPy</a></li></ul>
+<div class="tab-content">
+<div id="tabset-35-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a></a><span class="fu">c</span>(T,F) <span class="sc">|</span> <span class="fu">c</span>(T,F)        <span class="co"># elementwise OR -&gt; TRUE FALSE</span></span>
+<span id="cb78-2"><a></a><span class="fu">c</span>(T,F) <span class="sc">||</span> <span class="fu">c</span>(T,F)       <span class="co"># an error with recent R; previously used only first element -&gt; TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-35-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a></a><span class="co"># Python lists</span></span>
+<span id="cb79-2"><a></a>[<span class="va">True</span>, <span class="va">False</span>] <span class="kw">or</span> [<span class="va">True</span>, <span class="va">False</span>]</span>
+<span id="cb79-3"><a></a></span>
+<span id="cb79-4"><a></a><span class="co"># Elementwise with NumPy</span></span>
+<span id="cb79-5"><a></a><span class="co">#| eval: false</span></span>
+<span id="cb79-6"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb79-7"><a></a>A <span class="op">=</span> np.array([<span class="va">True</span>, <span class="va">False</span>])<span class="op">;</span> B <span class="op">=</span> np.array([<span class="va">True</span>, <span class="va">False</span>])</span>
+<span id="cb79-8"><a></a>A <span class="op">|</span> B, A <span class="op">&amp;</span> B</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="mini-exercise-2-fizzbuzz-120" class="slide level2">
+<h2>Mini-exercise 2: FizzBuzz (1–20)</h2>
+<p><strong>Task:</strong> Print numbers 1–20; for multiples of 3 print <code>Fizz</code>, of 5 <code>Buzz</code>, of both <code>FizzBuzz</code>.</p>
+<div class="panel-tabset">
+<ul id="tabset-36" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-36-1">R</a></li><li><a href="#tabset-36-2">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-36-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>) {</span>
+<span id="cb80-2"><a></a>  <span class="cf">if</span> (i <span class="sc">%%</span> <span class="dv">15</span> <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">cat</span>(<span class="st">"FizzBuzz</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb80-3"><a></a>  <span class="cf">else</span> <span class="cf">if</span> (i <span class="sc">%%</span> <span class="dv">3</span> <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">cat</span>(<span class="st">"Fizz</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb80-4"><a></a>  <span class="cf">else</span> <span class="cf">if</span> (i <span class="sc">%%</span> <span class="dv">5</span> <span class="sc">==</span> <span class="dv">0</span>) <span class="fu">cat</span>(<span class="st">"Buzz</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb80-5"><a></a>  <span class="cf">else</span> <span class="fu">cat</span>(i, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb80-6"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-36-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">21</span>):</span>
+<span id="cb81-2"><a></a>    <span class="cf">if</span> i <span class="op">%</span> <span class="dv">15</span> <span class="op">==</span> <span class="dv">0</span>: <span class="bu">print</span>(<span class="st">"FizzBuzz"</span>)</span>
+<span id="cb81-3"><a></a>    <span class="cf">elif</span> i <span class="op">%</span> <span class="dv">3</span> <span class="op">==</span> <span class="dv">0</span>: <span class="bu">print</span>(<span class="st">"Fizz"</span>)</span>
+<span id="cb81-4"><a></a>    <span class="cf">elif</span> i <span class="op">%</span> <span class="dv">5</span> <span class="op">==</span> <span class="dv">0</span>: <span class="bu">print</span>(<span class="st">"Buzz"</span>)</span>
+<span id="cb81-5"><a></a>    <span class="cf">else</span>: <span class="bu">print</span>(i)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="mini-exercise-3-masking-odds-to-nanan" class="slide level2">
+<h2>Mini-exercise 3: Masking odds to NA/NaN</h2>
+<p><strong>Task:</strong> Given <code>x &lt;- 1:10</code> / <code>x = np.arange(1,11)</code>, replace odds by <code>NA</code>/<code>np.nan</code> using vectorised tools.</p>
+<div class="panel-tabset">
+<ul id="tabset-37" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-37-1">R</a></li><li><a href="#tabset-37-2">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-37-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb82-2"><a></a>x[x <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="cn">NA_integer_</span></span>
+<span id="cb82-3"><a></a>x</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-37-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb83-2"><a></a>x <span class="op">=</span> np.arange(<span class="dv">1</span>,<span class="dv">11</span>, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb83-3"><a></a>x[x <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">1</span>] <span class="op">=</span> np.nan</span>
+<span id="cb83-4"><a></a>x</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="mini-exercise-4-tiny-calculator-switchmatch" class="slide level2">
+<h2>Mini-exercise 4: Tiny calculator (switch/match)</h2>
+<p><strong>Task:</strong> Implement a tiny calculator using R <code>switch</code> and Python <code>match</code>.</p>
+<div class="panel-tabset">
+<ul id="tabset-38" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-38-1">R</a></li><li><a href="#tabset-38-2">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-38-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a></a>calc <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b, op) <span class="cf">switch</span>(op,</span>
+<span id="cb84-2"><a></a>  <span class="st">"+"</span> <span class="ot">=</span> a <span class="sc">+</span> b,</span>
+<span id="cb84-3"><a></a>  <span class="st">"-"</span> <span class="ot">=</span> a <span class="sc">-</span> b,</span>
+<span id="cb84-4"><a></a>  <span class="st">"*"</span> <span class="ot">=</span> a <span class="sc">*</span> b,</span>
+<span id="cb84-5"><a></a>  <span class="st">"/"</span> <span class="ot">=</span> a <span class="sc">/</span> b,</span>
+<span id="cb84-6"><a></a>  <span class="fu">stop</span>(<span class="st">"unknown op"</span>)</span>
+<span id="cb84-7"><a></a>)</span>
+<span id="cb84-8"><a></a><span class="fu">calc</span>(<span class="dv">20</span>,<span class="dv">5</span>,<span class="st">"+"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-38-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a></a><span class="co"># Python 3.10+</span></span>
+<span id="cb85-2"><a></a><span class="im">import</span> sys</span>
+<span id="cb85-3"><a></a><span class="cf">if</span> sys.version_info <span class="op">&gt;=</span> (<span class="dv">3</span>,<span class="dv">10</span>):</span>
+<span id="cb85-4"><a></a>    <span class="kw">def</span> calc(a,b,op):</span>
+<span id="cb85-5"><a></a>        <span class="cf">match</span> op:</span>
+<span id="cb85-6"><a></a>            <span class="cf">case</span> <span class="st">"+"</span>: <span class="cf">return</span> a <span class="op">+</span> b</span>
+<span id="cb85-7"><a></a>            <span class="cf">case</span> <span class="st">"-"</span>: <span class="cf">return</span> a <span class="op">-</span> b</span>
+<span id="cb85-8"><a></a>            <span class="cf">case</span> <span class="st">"*"</span>: <span class="cf">return</span> a <span class="op">*</span> b</span>
+<span id="cb85-9"><a></a>            <span class="cf">case</span> <span class="st">"/"</span>: <span class="cf">return</span> a <span class="op">/</span> b</span>
+<span id="cb85-10"><a></a>            <span class="cf">case</span> _: <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"unknown op"</span>)</span>
+<span id="cb85-11"><a></a>    calc(<span class="dv">20</span>,<span class="dv">5</span>,<span class="st">"+"</span>)</span>
+<span id="cb85-12"><a></a><span class="cf">else</span>:</span>
+<span id="cb85-13"><a></a>    ops <span class="op">=</span> {<span class="st">"+"</span>: <span class="kw">lambda</span> a,b: a<span class="op">+</span>b, <span class="st">"-"</span>: <span class="kw">lambda</span> a,b: a<span class="op">-</span>b, <span class="st">"*"</span>: <span class="kw">lambda</span> a,b: a<span class="op">*</span>b, <span class="st">"/"</span>: <span class="kw">lambda</span> a,b: a<span class="op">/</span>b}</span>
+<span id="cb85-14"><a></a>    ops[<span class="st">"+"</span>](<span class="dv">20</span>,<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="challenge-first-even-square-1000" class="slide level2">
+<h2>Challenge: First even square &gt; 1000</h2>
+<p><strong>Task:</strong> Write two versions (R &amp; Python):</p>
+<ul>
+<li>A loop-based solution with a <code>break</code> when found.</li>
+<li>A vectorised solution.</li>
+</ul>
+<div class="panel-tabset">
+<ul id="tabset-39" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-39-1">R</a></li><li><a href="#tabset-39-2">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-39-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a></a><span class="co"># Loop solution</span></span>
+<span id="cb86-2"><a></a>n <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb86-3"><a></a><span class="cf">repeat</span> {</span>
+<span id="cb86-4"><a></a>  s <span class="ot">&lt;-</span> n<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb86-5"><a></a>  <span class="cf">if</span> (s <span class="sc">&gt;</span> <span class="dv">1000</span> <span class="sc">&amp;&amp;</span> s <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>) { ans <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">n=</span>n, <span class="at">s=</span>s); <span class="cf">break</span> }</span>
+<span id="cb86-6"><a></a>  n <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb86-7"><a></a>}</span>
+<span id="cb86-8"><a></a>ans</span>
+<span id="cb86-9"><a></a></span>
+<span id="cb86-10"><a></a><span class="co"># Vectorised solution</span></span>
+<span id="cb86-11"><a></a>n <span class="ot">&lt;-</span> <span class="fu">seq_len</span>(<span class="dv">100</span>)</span>
+<span id="cb86-12"><a></a>sq <span class="ot">&lt;-</span> n<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb86-13"><a></a><span class="fu">cbind</span>(n, sq)[<span class="fu">which</span>(sq <span class="sc">&gt;</span> <span class="dv">1000</span> <span class="sc">&amp;</span> sq <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>)[<span class="dv">1</span>], ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-39-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a></a><span class="co"># Loop solution</span></span>
+<span id="cb87-2"><a></a>n <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb87-3"><a></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb87-4"><a></a>    s <span class="op">=</span> n<span class="op">*</span>n</span>
+<span id="cb87-5"><a></a>    <span class="cf">if</span> s <span class="op">&gt;</span> <span class="dv">1000</span> <span class="kw">and</span> s <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb87-6"><a></a>        ans <span class="op">=</span> {<span class="st">"n"</span>: n, <span class="st">"s"</span>: s}</span>
+<span id="cb87-7"><a></a>        <span class="cf">break</span></span>
+<span id="cb87-8"><a></a>    n <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb87-9"><a></a>ans</span>
+<span id="cb87-10"><a></a></span>
+<span id="cb87-11"><a></a><span class="co"># Vectorised (NumPy)</span></span>
+<span id="cb87-12"><a></a><span class="co">#| eval: false</span></span>
+<span id="cb87-13"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb87-14"><a></a>n <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">101</span>)</span>
+<span id="cb87-15"><a></a>sq <span class="op">=</span> n<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb87-16"><a></a>idx <span class="op">=</span> np.where((sq <span class="op">&gt;</span> <span class="dv">1000</span>) <span class="op">&amp;</span> (sq <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>))[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb87-17"><a></a><span class="bu">int</span>(n[idx]), <span class="bu">int</span>(sq[idx])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section class="slide level2">
 
 </section></section>
@@ -1338,38 +1737,38 @@ Samuel Orso
 <section id="everything-is-a-function-call-and-a-firstclass-object" class="slide level2">
 <h2>“Everything is a function call” (and a first‑class object)</h2>
 <div class="panel-tabset">
-<ul id="tabset-29" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-29-1">R</a></li><li><a href="#tabset-29-2">Python</a></li></ul>
+<ul id="tabset-40" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-40-1">R</a></li><li><a href="#tabset-40-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-29-1">
+<div id="tabset-40-1">
 <ul>
 <li>Evaluate a constant:</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a></a><span class="fl">18.10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a></a><span class="fl">18.10</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li>Names / quoted names:</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a></a>sqrt</span>
-<span id="cb67-2"><a></a><span class="st">`</span><span class="at">+</span><span class="st">`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a></a>sqrt</span>
+<span id="cb89-2"><a></a><span class="st">`</span><span class="at">+</span><span class="st">`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li>Function call:</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a></a><span class="fl">1.1</span> <span class="sc">+</span> <span class="fl">2.1</span></span>
-<span id="cb68-2"><a></a><span class="st">`</span><span class="at">+</span><span class="st">`</span>(<span class="fl">1.1</span>, <span class="fl">2.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a></a><span class="fl">1.1</span> <span class="sc">+</span> <span class="fl">2.1</span></span>
+<span id="cb90-2"><a></a><span class="st">`</span><span class="at">+</span><span class="st">`</span>(<span class="fl">1.1</span>, <span class="fl">2.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-29-2">
+<div id="tabset-40-2">
 <ul>
 <li>Evaluate a constant, names, and call:</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a></a><span class="fl">18.10</span></span>
-<span id="cb69-2"><a></a><span class="bu">abs</span></span>
-<span id="cb69-3"><a></a>(<span class="fl">1.1</span>).<span class="fu">__add__</span>(<span class="fl">2.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a></a><span class="fl">18.10</span></span>
+<span id="cb91-2"><a></a><span class="bu">abs</span></span>
+<span id="cb91-3"><a></a>(<span class="fl">1.1</span>).<span class="fu">__add__</span>(<span class="fl">2.1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <blockquote>
 <p>Operators are methods/functions under the hood (see <code>operator</code> module), and functions are <strong>first‑class</strong> values.</p>
@@ -1381,31 +1780,31 @@ Samuel Orso
 <section id="function-components" class="slide level2">
 <h2>Function components</h2>
 <div class="panel-tabset">
-<ul id="tabset-30" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-30-1">R</a></li><li><a href="#tabset-30-2">Python</a></li></ul>
+<ul id="tabset-41" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-41-1">R</a></li><li><a href="#tabset-41-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-30-1">
+<div id="tabset-41-1">
 <ul>
 <li><strong>Arguments</strong>, <strong>body</strong>, <strong>environment</strong>.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a></a>my_div <span class="ot">&lt;-</span> <span class="cf">function</span>(numerator, denominator) {</span>
-<span id="cb70-2"><a></a>  div <span class="ot">&lt;-</span> numerator <span class="sc">/</span> denominator</span>
-<span id="cb70-3"><a></a>  <span class="fu">return</span>(div)</span>
-<span id="cb70-4"><a></a>}</span>
-<span id="cb70-5"><a></a><span class="fu">formals</span>(my_div)</span>
-<span id="cb70-6"><a></a><span class="fu">body</span>(my_div)</span>
-<span id="cb70-7"><a></a><span class="fu">environment</span>(my_div)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a></a>my_div <span class="ot">&lt;-</span> <span class="cf">function</span>(numerator, denominator) {</span>
+<span id="cb92-2"><a></a>  div <span class="ot">&lt;-</span> numerator <span class="sc">/</span> denominator</span>
+<span id="cb92-3"><a></a>  <span class="fu">return</span>(div)</span>
+<span id="cb92-4"><a></a>}</span>
+<span id="cb92-5"><a></a><span class="fu">formals</span>(my_div)</span>
+<span id="cb92-6"><a></a><span class="fu">body</span>(my_div)</span>
+<span id="cb92-7"><a></a><span class="fu">environment</span>(my_div)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-30-2">
+<div id="tabset-41-2">
 <ul>
 <li><strong>Parameters</strong>, <strong>body</strong>, <strong>globals/closure</strong>.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a></a><span class="kw">def</span> my_div(numerator, denominator):</span>
-<span id="cb71-2"><a></a>    div <span class="op">=</span> numerator <span class="op">/</span> denominator</span>
-<span id="cb71-3"><a></a>    <span class="cf">return</span> div</span>
-<span id="cb71-4"><a></a>my_div.__code__.co_varnames, my_div.__defaults__, my_div.__closure__</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb93"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a></a><span class="kw">def</span> my_div(numerator, denominator):</span>
+<span id="cb93-2"><a></a>    div <span class="op">=</span> numerator <span class="op">/</span> denominator</span>
+<span id="cb93-3"><a></a>    <span class="cf">return</span> div</span>
+<span id="cb93-4"><a></a>my_div.__code__.co_varnames, my_div.__defaults__, my_div.__closure__</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1414,21 +1813,21 @@ Samuel Orso
 <section id="returns" class="slide level2">
 <h2>Returns</h2>
 <div class="panel-tabset">
-<ul id="tabset-31" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-31-1">R</a></li><li><a href="#tabset-31-2">Python</a></li></ul>
+<ul id="tabset-42" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-42-1">R</a></li><li><a href="#tabset-42-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-31-1">
+<div id="tabset-42-1">
 <p>Last expression is returned if <code>return()</code> omitted.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { x <span class="sc">+</span> <span class="dv">1</span> }</span>
-<span id="cb72-2"><a></a><span class="fu">f</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) { x <span class="sc">+</span> <span class="dv">1</span> }</span>
+<span id="cb94-2"><a></a><span class="fu">f</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-31-2">
+<div id="tabset-42-2">
 <p>Must <code>return</code> explicitly (else returns <code>None</code>).</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a></a><span class="kw">def</span> f(x):</span>
-<span id="cb73-2"><a></a>    x <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb73-3"><a></a><span class="bu">print</span>(f(<span class="dv">2</span>))  <span class="co"># None</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb95"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a></a><span class="kw">def</span> f(x):</span>
+<span id="cb95-2"><a></a>    x <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb95-3"><a></a><span class="bu">print</span>(f(<span class="dv">2</span>))  <span class="co"># None</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1437,32 +1836,32 @@ Samuel Orso
 <section id="passing-arguments" class="slide level2">
 <h2>Passing arguments</h2>
 <div class="panel-tabset">
-<ul id="tabset-32" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-32-1">R — matching rules</a></li><li><a href="#tabset-32-2">Python — calling conventions</a></li></ul>
+<ul id="tabset-43" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-43-1">R — matching rules</a></li><li><a href="#tabset-43-2">Python — calling conventions</a></li></ul>
 <div class="tab-content">
-<div id="tabset-32-1">
+<div id="tabset-43-1">
 <ul>
 <li><strong>Positional</strong>, <strong>exact by name</strong>, <strong>partial (prefix) matching</strong>.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a></a><span class="fu">my_div</span>(<span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb74-2"><a></a><span class="fu">my_div</span>(<span class="at">numerator =</span> <span class="dv">1</span>, <span class="at">denominator =</span> <span class="dv">2</span>)</span>
-<span id="cb74-3"><a></a><span class="fu">my_div</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">d =</span> <span class="dv">2</span>)  <span class="co"># partial match (works but discouraged)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb96"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a></a><span class="fu">my_div</span>(<span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb96-2"><a></a><span class="fu">my_div</span>(<span class="at">numerator =</span> <span class="dv">1</span>, <span class="at">denominator =</span> <span class="dv">2</span>)</span>
+<span id="cb96-3"><a></a><span class="fu">my_div</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">d =</span> <span class="dv">2</span>)  <span class="co"># partial match (works but discouraged)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-32-2">
+<div id="tabset-43-2">
 <ul>
 <li><strong>Positional</strong>, <strong>keyword</strong>, <strong>defaults</strong>, <code>*args</code>, <code>**kwargs</code>.</li>
 <li>Keyword‑only params (after <code>*</code>), positional‑only (before <code>/</code>).</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a></a><span class="kw">def</span> g(a, b<span class="op">=</span><span class="dv">1</span>, <span class="op">*</span>args, scale<span class="op">=</span><span class="dv">1</span>, <span class="op">**</span>kw):</span>
-<span id="cb75-2"><a></a>    <span class="cf">return</span> (a <span class="op">+</span> b) <span class="op">*</span> scale</span>
-<span id="cb75-3"><a></a></span>
-<span id="cb75-4"><a></a>g(<span class="dv">1</span>, <span class="dv">2</span>, scale<span class="op">=</span><span class="dv">3</span>)</span>
-<span id="cb75-5"><a></a></span>
-<span id="cb75-6"><a></a><span class="kw">def</span> h(x, <span class="op">/</span>, y, <span class="op">*</span>, z<span class="op">=</span><span class="dv">0</span>):  <span class="co"># pos‑only x; keyword‑only z</span></span>
-<span id="cb75-7"><a></a>    <span class="cf">return</span> x <span class="op">+</span> y <span class="op">+</span> z</span>
-<span id="cb75-8"><a></a>h(<span class="dv">1</span>, <span class="dv">2</span>, z<span class="op">=</span><span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a></a><span class="kw">def</span> g(a, b<span class="op">=</span><span class="dv">1</span>, <span class="op">*</span>args, scale<span class="op">=</span><span class="dv">1</span>, <span class="op">**</span>kw):</span>
+<span id="cb97-2"><a></a>    <span class="cf">return</span> (a <span class="op">+</span> b) <span class="op">*</span> scale</span>
+<span id="cb97-3"><a></a></span>
+<span id="cb97-4"><a></a>g(<span class="dv">1</span>, <span class="dv">2</span>, scale<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb97-5"><a></a></span>
+<span id="cb97-6"><a></a><span class="kw">def</span> h(x, <span class="op">/</span>, y, <span class="op">*</span>, z<span class="op">=</span><span class="dv">0</span>):  <span class="co"># pos‑only x; keyword‑only z</span></span>
+<span id="cb97-7"><a></a>    <span class="cf">return</span> x <span class="op">+</span> y <span class="op">+</span> z</span>
+<span id="cb97-8"><a></a>h(<span class="dv">1</span>, <span class="dv">2</span>, z<span class="op">=</span><span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1474,39 +1873,39 @@ Samuel Orso
 <li>Both <code>=</code> and <code>&lt;-</code> assign values, but <strong>inside calls</strong> <code>=</code> binds <strong>arguments</strong>.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a></a><span class="fu">my_div</span>(<span class="at">numerator =</span> <span class="dv">2</span>, <span class="at">denominator =</span> <span class="dv">1</span>)</span>
-<span id="cb76-2"><a></a>numerator             <span class="co"># error: object 'numerator' not found</span></span>
-<span id="cb76-3"><a></a><span class="fu">my_div</span>(numerator <span class="ot">&lt;-</span> <span class="dv">2</span>, <span class="at">denominator =</span> <span class="dv">1</span>)  <span class="co"># assigns globally first</span></span>
-<span id="cb76-4"><a></a>numerator             <span class="co"># now exists in workspace</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb98"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a></a><span class="fu">my_div</span>(<span class="at">numerator =</span> <span class="dv">2</span>, <span class="at">denominator =</span> <span class="dv">1</span>)</span>
+<span id="cb98-2"><a></a>numerator             <span class="co"># error: object 'numerator' not found</span></span>
+<span id="cb98-3"><a></a><span class="fu">my_div</span>(numerator <span class="ot">&lt;-</span> <span class="dv">2</span>, <span class="at">denominator =</span> <span class="dv">1</span>)  <span class="co"># assigns globally first</span></span>
+<span id="cb98-4"><a></a>numerator             <span class="co"># now exists in workspace</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="type-checks-friendly-failures" class="slide level2">
 <h2>Type checks &amp; friendly failures</h2>
 <div class="panel-tabset">
-<ul id="tabset-33" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-33-1">R</a></li><li><a href="#tabset-33-2">Python</a></li></ul>
+<ul id="tabset-44" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-44-1">R</a></li><li><a href="#tabset-44-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-33-1">
+<div id="tabset-44-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a></a>my_div <span class="ot">&lt;-</span> <span class="cf">function</span>(numerator, denominator) {</span>
-<span id="cb77-2"><a></a>  <span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.numeric</span>(numerator), <span class="sc">!</span><span class="fu">is.numeric</span>(denominator))) {</span>
-<span id="cb77-3"><a></a>    <span class="fu">stop</span>(<span class="st">"`numerator` and `denominator` must be numeric"</span>)</span>
-<span id="cb77-4"><a></a>  }</span>
-<span id="cb77-5"><a></a>  numerator <span class="sc">/</span> denominator</span>
-<span id="cb77-6"><a></a>}</span>
-<span id="cb77-7"><a></a><span class="fu">my_div</span>(<span class="st">"numerator"</span>, <span class="st">"denominator"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb99"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a></a>my_div <span class="ot">&lt;-</span> <span class="cf">function</span>(numerator, denominator) {</span>
+<span id="cb99-2"><a></a>  <span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.numeric</span>(numerator), <span class="sc">!</span><span class="fu">is.numeric</span>(denominator))) {</span>
+<span id="cb99-3"><a></a>    <span class="fu">stop</span>(<span class="st">"`numerator` and `denominator` must be numeric"</span>)</span>
+<span id="cb99-4"><a></a>  }</span>
+<span id="cb99-5"><a></a>  numerator <span class="sc">/</span> denominator</span>
+<span id="cb99-6"><a></a>}</span>
+<span id="cb99-7"><a></a><span class="fu">my_div</span>(<span class="st">"numerator"</span>, <span class="st">"denominator"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-33-2">
+<div id="tabset-44-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb78"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a></a><span class="kw">class</span> NotNumericError(<span class="pp">TypeError</span>):</span>
-<span id="cb78-2"><a></a>    <span class="cf">pass</span></span>
-<span id="cb78-3"><a></a></span>
-<span id="cb78-4"><a></a><span class="kw">def</span> my_div(numerator, denominator):</span>
-<span id="cb78-5"><a></a>    <span class="im">from</span> numbers <span class="im">import</span> Number</span>
-<span id="cb78-6"><a></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(numerator, Number) <span class="kw">or</span> <span class="kw">not</span> <span class="bu">isinstance</span>(denominator, Number):</span>
-<span id="cb78-7"><a></a>        <span class="cf">raise</span> NotNumericError(<span class="st">"numerator and denominator must be numeric"</span>)</span>
-<span id="cb78-8"><a></a>    <span class="cf">return</span> numerator <span class="op">/</span> denominator</span>
-<span id="cb78-9"><a></a><span class="co"># my_div("numerator", "denominator")  # raises</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb100"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb100-1"><a></a><span class="kw">class</span> NotNumericError(<span class="pp">TypeError</span>):</span>
+<span id="cb100-2"><a></a>    <span class="cf">pass</span></span>
+<span id="cb100-3"><a></a></span>
+<span id="cb100-4"><a></a><span class="kw">def</span> my_div(numerator, denominator):</span>
+<span id="cb100-5"><a></a>    <span class="im">from</span> numbers <span class="im">import</span> Number</span>
+<span id="cb100-6"><a></a>    <span class="cf">if</span> <span class="kw">not</span> <span class="bu">isinstance</span>(numerator, Number) <span class="kw">or</span> <span class="kw">not</span> <span class="bu">isinstance</span>(denominator, Number):</span>
+<span id="cb100-7"><a></a>        <span class="cf">raise</span> NotNumericError(<span class="st">"numerator and denominator must be numeric"</span>)</span>
+<span id="cb100-8"><a></a>    <span class="cf">return</span> numerator <span class="op">/</span> denominator</span>
+<span id="cb100-9"><a></a><span class="co"># my_div("numerator", "denominator")  # raises</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1515,20 +1914,20 @@ Samuel Orso
 <section id="warnings-messages-vs-warnings-logging" class="slide level2">
 <h2>Warnings / messages vs warnings / logging</h2>
 <div class="panel-tabset">
-<ul id="tabset-34" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-34-1">R</a></li><li><a href="#tabset-34-2">Python</a></li></ul>
+<ul id="tabset-45" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-45-1">R</a></li><li><a href="#tabset-45-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-34-1">
+<div id="tabset-45-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a></a><span class="fu">warning</span>(<span class="st">"Size mismatch; recycling may occur"</span>)</span>
-<span id="cb79-2"><a></a><span class="fu">message</span>(<span class="st">"Starting the division…"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb101"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a></a><span class="fu">warning</span>(<span class="st">"Size mismatch; recycling may occur"</span>)</span>
+<span id="cb101-2"><a></a><span class="fu">message</span>(<span class="st">"Starting the division…"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-34-2">
+<div id="tabset-45-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb80"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a></a><span class="im">import</span> warnings, logging</span>
-<span id="cb80-2"><a></a>warnings.warn(<span class="st">"Size mismatch; check inputs"</span>)</span>
-<span id="cb80-3"><a></a>logging.basicConfig(level<span class="op">=</span>logging.INFO)</span>
-<span id="cb80-4"><a></a>logging.info(<span class="st">"Starting the division…"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb102"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb102-1"><a></a><span class="im">import</span> warnings, logging</span>
+<span id="cb102-2"><a></a>warnings.warn(<span class="st">"Size mismatch; check inputs"</span>)</span>
+<span id="cb102-3"><a></a>logging.basicConfig(level<span class="op">=</span>logging.INFO)</span>
+<span id="cb102-4"><a></a>logging.info(<span class="st">"Starting the division…"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1537,21 +1936,21 @@ Samuel Orso
 <section id="dimensions-vectorisation" class="slide level2">
 <h2>Dimensions &amp; vectorisation</h2>
 <div class="panel-tabset">
-<ul id="tabset-35" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-35-1">R</a></li><li><a href="#tabset-35-2">Python (NumPy)</a></li></ul>
+<ul id="tabset-46" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-46-1">R</a></li><li><a href="#tabset-46-2">Python (NumPy)</a></li></ul>
 <div class="tab-content">
-<div id="tabset-35-1">
+<div id="tabset-46-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb81-2"><a></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">18</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb81-3"><a></a>A <span class="sc">/</span> B  <span class="co"># vectorised elementwise</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb103"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a></a>A <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb103-2"><a></a>B <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">10</span><span class="sc">:</span><span class="dv">18</span>, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb103-3"><a></a>A <span class="sc">/</span> B  <span class="co"># vectorised elementwise</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-35-2">
+<div id="tabset-46-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb82-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb82-2"><a></a>A <span class="op">=</span> np.arange(<span class="dv">1</span>,<span class="dv">10</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)</span>
-<span id="cb82-3"><a></a>B <span class="op">=</span> np.arange(<span class="dv">10</span>,<span class="dv">19</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)</span>
-<span id="cb82-4"><a></a>A <span class="op">/</span> B  <span class="co"># elementwise</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb104"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb104-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb104-2"><a></a>A <span class="op">=</span> np.arange(<span class="dv">1</span>,<span class="dv">10</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)</span>
+<span id="cb104-3"><a></a>B <span class="op">=</span> np.arange(<span class="dv">10</span>,<span class="dv">19</span>).reshape(<span class="dv">3</span>,<span class="dv">3</span>)</span>
+<span id="cb104-4"><a></a>A <span class="op">/</span> B  <span class="co"># elementwise</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1560,37 +1959,37 @@ Samuel Orso
 <section id="robust-my_div-shape-checks" class="slide level2">
 <h2>Robust <code>my_div</code> (shape checks)</h2>
 <div class="panel-tabset">
-<ul id="tabset-36" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-36-1">R</a></li><li><a href="#tabset-36-2">Python (NumPy)</a></li></ul>
+<ul id="tabset-47" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-47-1">R</a></li><li><a href="#tabset-47-2">Python (NumPy)</a></li></ul>
 <div class="tab-content">
-<div id="tabset-36-1">
+<div id="tabset-47-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a></a>my_div <span class="ot">&lt;-</span> <span class="cf">function</span>(numerator, denominator) {</span>
-<span id="cb83-2"><a></a>  <span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.numeric</span>(numerator), <span class="sc">!</span><span class="fu">is.numeric</span>(denominator))) {</span>
-<span id="cb83-3"><a></a>    <span class="fu">stop</span>(<span class="st">"`numerator` and `denominator` must be numeric"</span>)</span>
-<span id="cb83-4"><a></a>  }</span>
-<span id="cb83-5"><a></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">identical</span>(<span class="fu">dim</span>(numerator), <span class="fu">dim</span>(denominator))) {</span>
-<span id="cb83-6"><a></a>    <span class="co"># fall back to length check for vectors</span></span>
-<span id="cb83-7"><a></a>    <span class="cf">if</span> (<span class="fu">is.null</span>(<span class="fu">dim</span>(numerator)) <span class="sc">&amp;&amp;</span> <span class="fu">is.null</span>(<span class="fu">dim</span>(denominator))) {</span>
-<span id="cb83-8"><a></a>      <span class="cf">if</span> (<span class="fu">length</span>(numerator) <span class="sc">!=</span> <span class="fu">length</span>(denominator))</span>
-<span id="cb83-9"><a></a>        <span class="fu">stop</span>(<span class="st">"Lengths must match for vectors"</span>)</span>
-<span id="cb83-10"><a></a>    } <span class="cf">else</span> {</span>
-<span id="cb83-11"><a></a>      <span class="fu">stop</span>(<span class="st">"Dimensions must match for arrays/matrices"</span>)</span>
-<span id="cb83-12"><a></a>    }</span>
-<span id="cb83-13"><a></a>  }</span>
-<span id="cb83-14"><a></a>  numerator <span class="sc">/</span> denominator</span>
-<span id="cb83-15"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb105"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a></a>my_div <span class="ot">&lt;-</span> <span class="cf">function</span>(numerator, denominator) {</span>
+<span id="cb105-2"><a></a>  <span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span><span class="fu">is.numeric</span>(numerator), <span class="sc">!</span><span class="fu">is.numeric</span>(denominator))) {</span>
+<span id="cb105-3"><a></a>    <span class="fu">stop</span>(<span class="st">"`numerator` and `denominator` must be numeric"</span>)</span>
+<span id="cb105-4"><a></a>  }</span>
+<span id="cb105-5"><a></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">identical</span>(<span class="fu">dim</span>(numerator), <span class="fu">dim</span>(denominator))) {</span>
+<span id="cb105-6"><a></a>    <span class="co"># fall back to length check for vectors</span></span>
+<span id="cb105-7"><a></a>    <span class="cf">if</span> (<span class="fu">is.null</span>(<span class="fu">dim</span>(numerator)) <span class="sc">&amp;&amp;</span> <span class="fu">is.null</span>(<span class="fu">dim</span>(denominator))) {</span>
+<span id="cb105-8"><a></a>      <span class="cf">if</span> (<span class="fu">length</span>(numerator) <span class="sc">!=</span> <span class="fu">length</span>(denominator))</span>
+<span id="cb105-9"><a></a>        <span class="fu">stop</span>(<span class="st">"Lengths must match for vectors"</span>)</span>
+<span id="cb105-10"><a></a>    } <span class="cf">else</span> {</span>
+<span id="cb105-11"><a></a>      <span class="fu">stop</span>(<span class="st">"Dimensions must match for arrays/matrices"</span>)</span>
+<span id="cb105-12"><a></a>    }</span>
+<span id="cb105-13"><a></a>  }</span>
+<span id="cb105-14"><a></a>  numerator <span class="sc">/</span> denominator</span>
+<span id="cb105-15"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-36-2">
+<div id="tabset-47-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb84-2"><a></a></span>
-<span id="cb84-3"><a></a><span class="kw">def</span> my_div(numerator, denominator):</span>
-<span id="cb84-4"><a></a>    a <span class="op">=</span> np.asarray(numerator)</span>
-<span id="cb84-5"><a></a>    b <span class="op">=</span> np.asarray(denominator)</span>
-<span id="cb84-6"><a></a>    <span class="cf">if</span> a.shape <span class="op">!=</span> b.shape:</span>
-<span id="cb84-7"><a></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Shapes must match"</span>)</span>
-<span id="cb84-8"><a></a>    <span class="cf">return</span> a <span class="op">/</span> b</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb106"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb106-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb106-2"><a></a></span>
+<span id="cb106-3"><a></a><span class="kw">def</span> my_div(numerator, denominator):</span>
+<span id="cb106-4"><a></a>    a <span class="op">=</span> np.asarray(numerator)</span>
+<span id="cb106-5"><a></a>    b <span class="op">=</span> np.asarray(denominator)</span>
+<span id="cb106-6"><a></a>    <span class="cf">if</span> a.shape <span class="op">!=</span> b.shape:</span>
+<span id="cb106-7"><a></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">"Shapes must match"</span>)</span>
+<span id="cb106-8"><a></a>    <span class="cf">return</span> a <span class="op">/</span> b</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1599,56 +1998,56 @@ Samuel Orso
 <section id="scope-r-environments-vs-python-legb" class="slide level2">
 <h2>Scope: R environments vs Python LEGB</h2>
 <div class="panel-tabset">
-<ul id="tabset-37" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-37-1">R — lexical scoping</a></li><li><a href="#tabset-37-2">Python — LEGB &amp; <code>global</code>/<code>nonlocal</code></a></li></ul>
+<ul id="tabset-48" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-48-1">R — lexical scoping</a></li><li><a href="#tabset-48-2">Python — LEGB &amp; <code>global</code>/<code>nonlocal</code></a></li></ul>
 <div class="tab-content">
-<div id="tabset-37-1">
+<div id="tabset-48-1">
 <ul>
 <li><strong>Dynamic lookup:</strong> names resolved when function runs.</li>
 <li><strong>Name masking:</strong> inner names shadow outer names.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>() x <span class="sc">*</span> x</span>
-<span id="cb85-2"><a></a><span class="fu">f</span>()            <span class="co"># error, x not found</span></span>
-<span id="cb85-3"><a></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb85-4"><a></a><span class="fu">f</span>()            <span class="co"># now 100</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb107"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>() x <span class="sc">*</span> x</span>
+<span id="cb107-2"><a></a><span class="fu">f</span>()            <span class="co"># error, x not found</span></span>
+<span id="cb107-3"><a></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb107-4"><a></a><span class="fu">f</span>()            <span class="co"># now 100</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb86-2"><a></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(){ x <span class="ot">&lt;-</span> <span class="dv">1</span>; x <span class="sc">*</span> x }</span>
-<span id="cb86-3"><a></a><span class="fu">f</span>()            <span class="co"># 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb108"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb108-1"><a></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb108-2"><a></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(){ x <span class="ot">&lt;-</span> <span class="dv">1</span>; x <span class="sc">*</span> x }</span>
+<span id="cb108-3"><a></a><span class="fu">f</span>()            <span class="co"># 1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li>Inspect environments:</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a></a><span class="fu">environment</span>()</span>
-<span id="cb87-2"><a></a><span class="fu">globalenv</span>()</span>
-<span id="cb87-3"><a></a><span class="fu">emptyenv</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb109"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a></a><span class="fu">environment</span>()</span>
+<span id="cb109-2"><a></a><span class="fu">globalenv</span>()</span>
+<span id="cb109-3"><a></a><span class="fu">emptyenv</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-37-2">
+<div id="tabset-48-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a></a>x <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb88-2"><a></a></span>
-<span id="cb88-3"><a></a><span class="kw">def</span> f():</span>
-<span id="cb88-4"><a></a>    x <span class="op">=</span> <span class="dv">1</span>   <span class="co"># local shadows global</span></span>
-<span id="cb88-5"><a></a>    <span class="cf">return</span> x <span class="op">*</span> x</span>
-<span id="cb88-6"><a></a>f()</span>
-<span id="cb88-7"><a></a></span>
-<span id="cb88-8"><a></a>y <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb88-9"><a></a></span>
-<span id="cb88-10"><a></a><span class="kw">def</span> bump():</span>
-<span id="cb88-11"><a></a>    <span class="kw">global</span> y</span>
-<span id="cb88-12"><a></a>    y <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb88-13"><a></a>bump()<span class="op">;</span> y</span>
-<span id="cb88-14"><a></a></span>
-<span id="cb88-15"><a></a></span>
-<span id="cb88-16"><a></a><span class="kw">def</span> make_adder(k):</span>
-<span id="cb88-17"><a></a>    <span class="kw">def</span> add(x):</span>
-<span id="cb88-18"><a></a>        <span class="cf">return</span> x <span class="op">+</span> k  <span class="co"># closes over k (enclosing)</span></span>
-<span id="cb88-19"><a></a>    <span class="cf">return</span> add</span>
-<span id="cb88-20"><a></a>add5 <span class="op">=</span> make_adder(<span class="dv">5</span>)</span>
-<span id="cb88-21"><a></a>add5(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb110"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb110-1"><a></a>x <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb110-2"><a></a></span>
+<span id="cb110-3"><a></a><span class="kw">def</span> f():</span>
+<span id="cb110-4"><a></a>    x <span class="op">=</span> <span class="dv">1</span>   <span class="co"># local shadows global</span></span>
+<span id="cb110-5"><a></a>    <span class="cf">return</span> x <span class="op">*</span> x</span>
+<span id="cb110-6"><a></a>f()</span>
+<span id="cb110-7"><a></a></span>
+<span id="cb110-8"><a></a>y <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb110-9"><a></a></span>
+<span id="cb110-10"><a></a><span class="kw">def</span> bump():</span>
+<span id="cb110-11"><a></a>    <span class="kw">global</span> y</span>
+<span id="cb110-12"><a></a>    y <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb110-13"><a></a>bump()<span class="op">;</span> y</span>
+<span id="cb110-14"><a></a></span>
+<span id="cb110-15"><a></a></span>
+<span id="cb110-16"><a></a><span class="kw">def</span> make_adder(k):</span>
+<span id="cb110-17"><a></a>    <span class="kw">def</span> add(x):</span>
+<span id="cb110-18"><a></a>        <span class="cf">return</span> x <span class="op">+</span> k  <span class="co"># closes over k (enclosing)</span></span>
+<span id="cb110-19"><a></a>    <span class="cf">return</span> add</span>
+<span id="cb110-20"><a></a>add5 <span class="op">=</span> make_adder(<span class="dv">5</span>)</span>
+<span id="cb110-21"><a></a>add5(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1657,27 +2056,27 @@ Samuel Orso
 <section id="closures-higherorder-functions" class="slide level2">
 <h2>Closures &amp; higher‑order functions</h2>
 <div class="panel-tabset">
-<ul id="tabset-38" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-38-1">R</a></li><li><a href="#tabset-38-2">Python</a></li></ul>
+<ul id="tabset-49" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-49-1">R</a></li><li><a href="#tabset-49-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-38-1">
+<div id="tabset-49-1">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a></a>make_adder <span class="ot">&lt;-</span> <span class="cf">function</span>(k) {</span>
-<span id="cb89-2"><a></a>  <span class="cf">function</span>(x) x <span class="sc">+</span> k</span>
-<span id="cb89-3"><a></a>}</span>
-<span id="cb89-4"><a></a>add5 <span class="ot">&lt;-</span> <span class="fu">make_adder</span>(<span class="dv">5</span>)</span>
-<span id="cb89-5"><a></a><span class="fu">add5</span>(<span class="dv">3</span>)</span>
-<span id="cb89-6"><a></a><span class="co"># Map over a vector</span></span>
-<span id="cb89-7"><a></a><span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, add5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb111"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a></a>make_adder <span class="ot">&lt;-</span> <span class="cf">function</span>(k) {</span>
+<span id="cb111-2"><a></a>  <span class="cf">function</span>(x) x <span class="sc">+</span> k</span>
+<span id="cb111-3"><a></a>}</span>
+<span id="cb111-4"><a></a>add5 <span class="ot">&lt;-</span> <span class="fu">make_adder</span>(<span class="dv">5</span>)</span>
+<span id="cb111-5"><a></a><span class="fu">add5</span>(<span class="dv">3</span>)</span>
+<span id="cb111-6"><a></a><span class="co"># Map over a vector</span></span>
+<span id="cb111-7"><a></a><span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, add5)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-38-2">
+<div id="tabset-49-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a></a><span class="im">from</span> functools <span class="im">import</span> partial</span>
-<span id="cb90-2"><a></a></span>
-<span id="cb90-3"><a></a><span class="kw">def</span> add(x, y):</span>
-<span id="cb90-4"><a></a>    <span class="cf">return</span> x <span class="op">+</span> y</span>
-<span id="cb90-5"><a></a>add5 <span class="op">=</span> partial(add, <span class="dv">5</span>)</span>
-<span id="cb90-6"><a></a><span class="bu">list</span>(<span class="bu">map</span>(add5, <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">6</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb112"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb112-1"><a></a><span class="im">from</span> functools <span class="im">import</span> partial</span>
+<span id="cb112-2"><a></a></span>
+<span id="cb112-3"><a></a><span class="kw">def</span> add(x, y):</span>
+<span id="cb112-4"><a></a>    <span class="cf">return</span> x <span class="op">+</span> y</span>
+<span id="cb112-5"><a></a>add5 <span class="op">=</span> partial(add, <span class="dv">5</span>)</span>
+<span id="cb112-6"><a></a><span class="bu">list</span>(<span class="bu">map</span>(add5, <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">6</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1686,35 +2085,35 @@ Samuel Orso
 <section id="composition-piping" class="slide level2">
 <h2>Composition &amp; piping</h2>
 <div class="panel-tabset">
-<ul id="tabset-39" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-39-1">R</a></li><li><a href="#tabset-39-2">Python</a></li></ul>
+<ul id="tabset-50" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-50-1">R</a></li><li><a href="#tabset-50-2">Python</a></li></ul>
 <div class="tab-content">
-<div id="tabset-39-1">
+<div id="tabset-50-1">
 <ul>
 <li>Base pipe <code>|&gt;</code> and magrittr <code>%&gt;%</code>.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a></a><span class="st">`</span><span class="at">%big%</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) <span class="dv">10</span> <span class="sc">*</span> x <span class="sc">*</span> y  <span class="co"># custom infix</span></span>
-<span id="cb91-2"><a></a><span class="dv">1</span> <span class="sc">%big%</span> <span class="dv">2</span></span>
-<span id="cb91-3"><a></a></span>
-<span id="cb91-4"><a></a><span class="co"># composition via nesting / piping</span></span>
-<span id="cb91-5"><a></a><span class="fu">sqrt</span>(<span class="fu">log1p</span>(<span class="dv">9</span>))</span>
-<span id="cb91-6"><a></a><span class="dv">9</span> <span class="sc">|&gt;</span></span>
-<span id="cb91-7"><a></a>  <span class="fu">log1p</span>() <span class="sc">|&gt;</span></span>
-<span id="cb91-8"><a></a>  <span class="fu">sqrt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb113"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a></a><span class="st">`</span><span class="at">%big%</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) <span class="dv">10</span> <span class="sc">*</span> x <span class="sc">*</span> y  <span class="co"># custom infix</span></span>
+<span id="cb113-2"><a></a><span class="dv">1</span> <span class="sc">%big%</span> <span class="dv">2</span></span>
+<span id="cb113-3"><a></a></span>
+<span id="cb113-4"><a></a><span class="co"># composition via nesting / piping</span></span>
+<span id="cb113-5"><a></a><span class="fu">sqrt</span>(<span class="fu">log1p</span>(<span class="dv">9</span>))</span>
+<span id="cb113-6"><a></a><span class="dv">9</span> <span class="sc">|&gt;</span></span>
+<span id="cb113-7"><a></a>  <span class="fu">log1p</span>() <span class="sc">|&gt;</span></span>
+<span id="cb113-8"><a></a>  <span class="fu">sqrt</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<div id="tabset-39-2">
+<div id="tabset-50-2">
 <ul>
 <li>Nest calls or write a tiny <code>compose</code>.</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb92-1"><a></a><span class="im">from</span> math <span class="im">import</span> sqrt, log1p</span>
-<span id="cb92-2"><a></a></span>
-<span id="cb92-3"><a></a><span class="kw">def</span> compose(f, g):</span>
-<span id="cb92-4"><a></a>    <span class="cf">return</span> <span class="kw">lambda</span> x: f(g(x))</span>
-<span id="cb92-5"><a></a></span>
-<span id="cb92-6"><a></a>h <span class="op">=</span> compose(sqrt, log1p)</span>
-<span id="cb92-7"><a></a>h(<span class="dv">9</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb114"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb114-1"><a></a><span class="im">from</span> math <span class="im">import</span> sqrt, log1p</span>
+<span id="cb114-2"><a></a></span>
+<span id="cb114-3"><a></a><span class="kw">def</span> compose(f, g):</span>
+<span id="cb114-4"><a></a>    <span class="cf">return</span> <span class="kw">lambda</span> x: f(g(x))</span>
+<span id="cb114-5"><a></a></span>
+<span id="cb114-6"><a></a>h <span class="op">=</span> compose(sqrt, log1p)</span>
+<span id="cb114-7"><a></a>h(<span class="dv">9</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1723,32 +2122,32 @@ Samuel Orso
 <section id="documentation" class="slide level2">
 <h2>Documentation</h2>
 <div class="panel-tabset">
-<ul id="tabset-40" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-40-1">R — roxygen2 style (snippet)</a></li><li><a href="#tabset-40-2">Python — docstring + type hints</a></li></ul>
+<ul id="tabset-51" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-51-1">R — roxygen2 style (snippet)</a></li><li><a href="#tabset-51-2">Python — docstring + type hints</a></li></ul>
 <div class="tab-content">
-<div id="tabset-40-1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb93"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a></a><span class="co">#' Divide two numbers</span></span>
-<span id="cb93-2"><a></a><span class="co">#'</span></span>
-<span id="cb93-3"><a></a><span class="co">#' @param numerator,denominator Numeric scalars or vectors.</span></span>
-<span id="cb93-4"><a></a><span class="co">#' @return Numeric result.</span></span>
-<span id="cb93-5"><a></a><span class="co">#' @examples</span></span>
-<span id="cb93-6"><a></a><span class="co">#' my_div(4, 2)</span></span>
-<span id="cb93-7"><a></a>my_div <span class="ot">&lt;-</span> <span class="cf">function</span>(numerator, denominator) numerator <span class="sc">/</span> denominator</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tabset-51-1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb115"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a></a><span class="co">#' Divide two numbers</span></span>
+<span id="cb115-2"><a></a><span class="co">#'</span></span>
+<span id="cb115-3"><a></a><span class="co">#' @param numerator,denominator Numeric scalars or vectors.</span></span>
+<span id="cb115-4"><a></a><span class="co">#' @return Numeric result.</span></span>
+<span id="cb115-5"><a></a><span class="co">#' @examples</span></span>
+<span id="cb115-6"><a></a><span class="co">#' my_div(4, 2)</span></span>
+<span id="cb115-7"><a></a>my_div <span class="ot">&lt;-</span> <span class="cf">function</span>(numerator, denominator) numerator <span class="sc">/</span> denominator</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="tabset-40-2">
+<div id="tabset-51-2">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb94"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb94-1"><a></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
-<span id="cb94-2"><a></a>Number <span class="op">=</span> Union[<span class="bu">int</span>, <span class="bu">float</span>]</span>
-<span id="cb94-3"><a></a></span>
-<span id="cb94-4"><a></a><span class="kw">def</span> my_div(numerator: Number, denominator: Number) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
-<span id="cb94-5"><a></a>    <span class="co">"""Divide two numbers.</span></span>
-<span id="cb94-6"><a></a></span>
-<span id="cb94-7"><a></a><span class="co">    Args:</span></span>
-<span id="cb94-8"><a></a><span class="co">        numerator: dividend</span></span>
-<span id="cb94-9"><a></a><span class="co">        denominator: divisor</span></span>
-<span id="cb94-10"><a></a><span class="co">    Returns:</span></span>
-<span id="cb94-11"><a></a><span class="co">        The quotient as float.</span></span>
-<span id="cb94-12"><a></a><span class="co">    """</span></span>
-<span id="cb94-13"><a></a>    <span class="cf">return</span> numerator <span class="op">/</span> denominator</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb116"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb116-1"><a></a><span class="im">from</span> typing <span class="im">import</span> Union</span>
+<span id="cb116-2"><a></a>Number <span class="op">=</span> Union[<span class="bu">int</span>, <span class="bu">float</span>]</span>
+<span id="cb116-3"><a></a></span>
+<span id="cb116-4"><a></a><span class="kw">def</span> my_div(numerator: Number, denominator: Number) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb116-5"><a></a>    <span class="co">"""Divide two numbers.</span></span>
+<span id="cb116-6"><a></a></span>
+<span id="cb116-7"><a></a><span class="co">    Args:</span></span>
+<span id="cb116-8"><a></a><span class="co">        numerator: dividend</span></span>
+<span id="cb116-9"><a></a><span class="co">        denominator: divisor</span></span>
+<span id="cb116-10"><a></a><span class="co">    Returns:</span></span>
+<span id="cb116-11"><a></a><span class="co">        The quotient as float.</span></span>
+<span id="cb116-12"><a></a><span class="co">    """</span></span>
+<span id="cb116-13"><a></a>    <span class="cf">return</span> numerator <span class="op">/</span> denominator</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1757,21 +2156,21 @@ Samuel Orso
 <section id="testing-unit-tests" class="slide level2">
 <h2>Testing (unit tests)</h2>
 <div class="panel-tabset">
-<ul id="tabset-41" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-41-1">R — testthat (minimal)</a></li><li><a href="#tabset-41-2">Python — pytest (minimal)</a></li></ul>
+<ul id="tabset-52" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-52-1">R — testthat (minimal)</a></li><li><a href="#tabset-52-2">Python — pytest (minimal)</a></li></ul>
 <div class="tab-content">
-<div id="tabset-41-1">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb95"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a></a><span class="co"># install.packages("testthat")</span></span>
-<span id="cb95-2"><a></a><span class="co"># test_that("my_div works", {</span></span>
-<span id="cb95-3"><a></a><span class="co">#   expect_equal(my_div(4,2), 2)</span></span>
-<span id="cb95-4"><a></a><span class="co">#   expect_error(my_div("a", 2))</span></span>
-<span id="cb95-5"><a></a><span class="co"># })</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tabset-52-1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb117"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a></a><span class="co"># install.packages("testthat")</span></span>
+<span id="cb117-2"><a></a><span class="co"># test_that("my_div works", {</span></span>
+<span id="cb117-3"><a></a><span class="co">#   expect_equal(my_div(4,2), 2)</span></span>
+<span id="cb117-4"><a></a><span class="co">#   expect_error(my_div("a", 2))</span></span>
+<span id="cb117-5"><a></a><span class="co"># })</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="tabset-41-2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb96"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb96-1"><a></a><span class="co"># def test_my_div():</span></span>
-<span id="cb96-2"><a></a><span class="co">#     assert my_div(4,2) == 2</span></span>
-<span id="cb96-3"><a></a><span class="co">#     import pytest</span></span>
-<span id="cb96-4"><a></a><span class="co">#     with pytest.raises(Exception):</span></span>
-<span id="cb96-5"><a></a><span class="co">#         my_div("a", 2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tabset-52-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb118"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb118-1"><a></a><span class="co"># def test_my_div():</span></span>
+<span id="cb118-2"><a></a><span class="co">#     assert my_div(4,2) == 2</span></span>
+<span id="cb118-3"><a></a><span class="co">#     import pytest</span></span>
+<span id="cb118-4"><a></a><span class="co">#     with pytest.raises(Exception):</span></span>
+<span id="cb118-5"><a></a><span class="co">#         my_div("a", 2)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -1781,36 +2180,25 @@ Samuel Orso
 <ol type="1">
 <li><strong>Safe divide:</strong> Write <code>safe_div</code> in R &amp; Python that returns <code>NA</code>/<code>math.nan</code> when denominator is 0 and emits a warning.</li>
 <li><strong>Prefix matching:</strong> In R, define <code>f &lt;- function(numerator, denominator) {...}</code> and call it via partial names. Why is this risky? Rewrite to avoid it.</li>
-<li><strong>Default args:</strong> Show the difference between R’s lazily evaluated defaults and Python’s <strong>eager</strong> defaults by creating a timestamp default.</li>
-<li><strong>Closure:</strong> Write <code>make_multiplier(k)</code> then compute by 2 and by 10 for a vector.</li>
 </ol>
-</section>
-<section id="challenge-column-summary-function" class="slide level2">
-<h2>Challenge — Column summary function</h2>
-<p>Write a function that returns a 2‑column table (mean, sd) for all <strong>numeric</strong> columns.</p>
-<ul>
-<li><strong>R:</strong> Input: <code>data.frame</code>/tibble. Use <code>vapply</code>/<code>sapply</code> or <code>purrr::map_dfr</code>. Error if no numeric columns.</li>
-<li><strong>Python:</strong> Input: <code>pandas.DataFrame</code>. Use <code>select_dtypes(include="number")</code> then <code>agg</code>.</li>
-</ul>
-<p><em>Stretch:</em> add an argument <code>na_rm</code> / <code>skipna</code> and test it.</p>
 </section>
 <section id="appendix-python-in-this-deck-pitfalls" class="slide level2">
 <h2>Appendix — Python in this deck &amp; pitfalls</h2>
 <p>Render with R/knitr + <strong>reticulate</strong> and point to your env:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb97"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a></a><span class="fu">install.packages</span>(<span class="st">"reticulate"</span>)</span>
-<span id="cb97-2"><a></a>reticulate<span class="sc">::</span><span class="fu">use_condaenv</span>(<span class="st">"dacm"</span>, <span class="at">required =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb97-3"><a></a>reticulate<span class="sc">::</span><span class="fu">py_config</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb119"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a></a><span class="fu">install.packages</span>(<span class="st">"reticulate"</span>)</span>
+<span id="cb119-2"><a></a>reticulate<span class="sc">::</span><span class="fu">use_condaenv</span>(<span class="st">"dacm"</span>, <span class="at">required =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb119-3"><a></a>reticulate<span class="sc">::</span><span class="fu">py_config</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Python gotcha — mutable defaults:</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb98"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb98-1"><a></a><span class="co"># Bad</span></span>
-<span id="cb98-2"><a></a><span class="co"># def append_item(x, lst=[]):</span></span>
-<span id="cb98-3"><a></a><span class="co">#     lst.append(x); return lst</span></span>
-<span id="cb98-4"><a></a><span class="co"># Good</span></span>
-<span id="cb98-5"><a></a><span class="co"># def append_item(x, lst=None):</span></span>
-<span id="cb98-6"><a></a><span class="co">#     if lst is None: lst = []</span></span>
-<span id="cb98-7"><a></a><span class="co">#     lst.append(x); return lst</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb120"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb120-1"><a></a><span class="co"># Bad</span></span>
+<span id="cb120-2"><a></a><span class="co"># def append_item(x, lst=[]):</span></span>
+<span id="cb120-3"><a></a><span class="co">#     lst.append(x); return lst</span></span>
+<span id="cb120-4"><a></a><span class="co"># Good</span></span>
+<span id="cb120-5"><a></a><span class="co"># def append_item(x, lst=None):</span></span>
+<span id="cb120-6"><a></a><span class="co">#     if lst is None: lst = []</span></span>
+<span id="cb120-7"><a></a><span class="co">#     lst.append(x); return lst</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>R note — lazy defaults:</strong> evaluated when first used, not at definition.</p>
 </section>
@@ -1824,6 +2212,79 @@ Samuel Orso
 <li>Vectorise: R builtins; Python use NumPy/pandas.</li>
 <li>Composition: R <code>|&gt;</code>/<code>%&gt;%</code> &amp; custom <code>%op%</code>; Python nesting/<code>compose</code>/method chaining.</li>
 </ul>
+</section>
+<section id="mini-exercise-1-safe-divide" class="slide level2">
+<h2>Mini-exercise 1: Safe divide</h2>
+<p><strong>Task:</strong> Write <code>safe_div</code> in R &amp; Python that returns <code>NA</code>/<code>math.nan</code> when denominator is 0 and emits a warning.</p>
+<div class="panel-tabset">
+<ul id="tabset-53" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-53-1">R</a></li><li><a href="#tabset-53-2">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-53-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb121"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a></a>safe_div <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb121-2"><a></a>  <span class="fu">ifelse</span>(b <span class="sc">==</span> <span class="dv">0</span>, {</span>
+<span id="cb121-3"><a></a>    <span class="fu">warning</span>(<span class="st">"denominator is 0; returning NA"</span>)</span>
+<span id="cb121-4"><a></a>    <span class="cn">NA_real_</span></span>
+<span id="cb121-5"><a></a>  }, a <span class="sc">/</span> b)</span>
+<span id="cb121-6"><a></a>}</span>
+<span id="cb121-7"><a></a><span class="fu">safe_div</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>), <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">2</span>))</span>
+<span id="cb121-8"><a></a></span>
+<span id="cb121-9"><a></a></span>
+<span id="cb121-10"><a></a><span class="co"># alternatively</span></span>
+<span id="cb121-11"><a></a>safe_div <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb121-12"><a></a>  <span class="cf">if</span>(<span class="fu">any</span>(b <span class="sc">==</span> <span class="dv">0</span>)) {</span>
+<span id="cb121-13"><a></a>    <span class="fu">warning</span>(<span class="st">"denominator is 0; returning NA"</span>)</span>
+<span id="cb121-14"><a></a>  }</span>
+<span id="cb121-15"><a></a>  </span>
+<span id="cb121-16"><a></a>  x <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA_real_</span>, <span class="fu">length</span>(a))</span>
+<span id="cb121-17"><a></a>  x[b <span class="sc">!=</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> a[b <span class="sc">!=</span> <span class="dv">0</span>] <span class="sc">/</span> b[b <span class="sc">!=</span> <span class="dv">0</span>]</span>
+<span id="cb121-18"><a></a>  </span>
+<span id="cb121-19"><a></a>  <span class="fu">return</span>(x)</span>
+<span id="cb121-20"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-53-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb122"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb122-1"><a></a><span class="im">import</span> math, warnings</span>
+<span id="cb122-2"><a></a></span>
+<span id="cb122-3"><a></a><span class="kw">def</span> safe_div(a, b):</span>
+<span id="cb122-4"><a></a>    <span class="cf">try</span>:</span>
+<span id="cb122-5"><a></a>        <span class="cf">return</span> a <span class="op">/</span> b</span>
+<span id="cb122-6"><a></a>    <span class="cf">except</span> <span class="pp">ZeroDivisionError</span>:</span>
+<span id="cb122-7"><a></a>        warnings.warn(<span class="st">"denominator is 0; returning NaN"</span>)</span>
+<span id="cb122-8"><a></a>        <span class="cf">return</span> math.nan</span>
+<span id="cb122-9"><a></a></span>
+<span id="cb122-10"><a></a><span class="bu">print</span>(safe_div(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb122-11"><a></a><span class="bu">print</span>(safe_div(<span class="dv">2</span>,<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="mini-exercise-2-prefix-matching-r-safer-calls" class="slide level2">
+<h2>Mini-exercise 2: Prefix matching (R) &amp; safer calls</h2>
+<p><strong>Task:</strong> In R, define <code>f &lt;- function(numerator, denominator) {...}</code> and call it via partial names. Why is this risky? Rewrite to avoid it.</p>
+<div class="panel-tabset">
+<ul id="tabset-54" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-54-1">R</a></li><li><a href="#tabset-54-2">Python</a></li></ul>
+<div class="tab-content">
+<div id="tabset-54-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb123"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(numerator, denominator) numerator <span class="sc">/</span> denominator</span>
+<span id="cb123-2"><a></a><span class="fu">f</span>(<span class="at">n =</span> <span class="dv">1</span>, <span class="at">d =</span> <span class="dv">2</span>)              <span class="co"># works via partial matching (risky)</span></span>
+<span id="cb123-3"><a></a></span>
+<span id="cb123-4"><a></a><span class="co"># Make it safer:</span></span>
+<span id="cb123-5"><a></a><span class="fu">options</span>(<span class="at">warnPartialMatchArgs =</span> <span class="cn">TRUE</span>)  <span class="co"># warn on partial matching</span></span>
+<span id="cb123-6"><a></a><span class="fu">f</span>(<span class="at">numerator =</span> <span class="dv">1</span>, <span class="at">denominator =</span> <span class="dv">2</span>)     <span class="co"># explicit names</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-54-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb124"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb124-1"><a></a><span class="co"># Not applicable (Python has no partial name matching for keywords).</span></span>
+<span id="cb124-2"><a></a><span class="cf">pass</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
 
 
 </section></section>

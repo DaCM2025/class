@@ -648,6 +648,256 @@ If Python chunks don’t execute:
 
 ---
 
+## Mini-exercise 1: Indexing
+
+**Task:** Let `x <- 3 * seq_len(4)` (R) / `x = [3*i for i in range(1,5)]` (Py). Select the 2nd element via (a) positive, (b) negative, (c) logical/comprehension.
+
+::: panel-tabset
+
+### R
+
+```{r}
+x <- 3 * seq_len(4)   # 3 6 9 12
+x[2]                   # (a) positive
+x[-c(1,3,4)]           # (b) negative (keep only 2)
+x[c(FALSE, TRUE, FALSE, FALSE)]  # (c) logical
+```
+
+### Python
+
+```{python}
+x = [3*i for i in range(1,5)]   # [3,6,9,12]
+x[1]                             # (a) positive (0-based)
+x[-3]                            # (b) negative index from end -> element 2
+[xi for i, xi in enumerate(x) if i == 1]  # (c) comprehension
+```
+
+:::
+
+---
+
+## Mini-exercise 2: Sort descending
+
+**Task:** Sort `x` in descending order using (a) indices and (b) a built-in sorter.
+
+::: panel-tabset
+
+### R
+
+```{r}
+x <- 3 * seq_len(4)
+x[order(x, decreasing = TRUE)]   # via indices
+sort(x, decreasing = TRUE)       # via sorter
+```
+
+### Python
+
+```{python}
+x = [3,6,9,12]
+[xi for _, xi in sorted(enumerate(x), key=lambda t: t[1], reverse=True)]  # via indices
+sorted(x, reverse=True)                                                 # via sorter
+```
+
+:::
+
+---
+
+## Mini-exercise 3: Coercion
+
+**Task:** In R, evaluate `c(TRUE, 2, "3")` — what happens? In Python, compare `[True, 2, "3"]` and `np.array([True, 2, "3"])`.
+
+::: panel-tabset
+
+### R
+
+```{r}
+val <- c(TRUE, 2, "3")
+val
+typeof(val)  # "character"
+```
+
+### Python
+
+```{python}
+# Python list stays heterogeneous
+val = [True, 2, "3"]
+val, [type(v).__name__ for v in val]
+
+# NumPy coerces to a common dtype
+#| eval: false
+import numpy as np
+np.array([True, 2, "3"])  # dtype('<U...') (string)
+```
+
+:::
+
+---
+
+## Mini-exercise 4: Matrix ops
+
+**Task:** Create a 3×3 matrix / array and compute its transpose and `A %*% A` (R) / `A @ A` (Py).
+
+::: panel-tabset
+
+### R
+
+```{r}
+A <- matrix(1:9, 3, 3)
+A; t(A); A %*% A
+```
+
+### Python
+
+```{python}
+#| eval: false
+import numpy as np
+A = np.arange(1,10).reshape(3,3)
+A, A.T, A @ A
+```
+
+:::
+
+---
+
+## Challenge: Tennis leaderboard
+
+**Task:** Build table (players, DoB, wins); add **age (years)**; sort by age desc; plot wins vs age.
+
+::: panel-tabset
+
+### R
+
+```{r}
+players <- c("Novak Djokovic","Rafael Nadal","Roger Federer","Daniil Medvedev","Dominic Thiem")
+dob <- as.Date(c("1987-05-22","1986-06-03","1981-08-08","1996-02-11","1993-09-03"))
+wins <- c(16,19,20,0,0)
+
+df <- data.frame(player = players, dob = dob, wins = wins, stringsAsFactors = FALSE)
+now <- Sys.Date()
+df$age_years <- as.numeric(difftime(now, df$dob, units = "days")) / 365.2425
+
+df2 <- df[order(-df$age_years), ]
+print(df2)
+
+plot(df2$age_years, df2$wins, xlab = "Age (years)", ylab = "Grand Slam wins")
+```
+
+### Python
+
+```{python}
+#| eval: false
+import pandas as pd
+from datetime import date
+players = ["Novak Djokovic","Rafael Nadal","Roger Federer","Daniil Medvedev","Dominic Thiem"]
+df = pd.DataFrame({
+    "player": players,
+    "dob": pd.to_datetime(["1987-05-22","1986-06-03","1981-08-08","1996-02-11","1993-09-03"]),
+    "wins": [16,19,20,0,0]
+})
+now = pd.Timestamp.today().normalize()
+df["age_years"] = (now - df["dob"]).dt.days / 365.2425
+
+df2 = df.sort_values("age_years", ascending=False)
+print(df2)
+
+ax = df2.plot.scatter(x="age_years", y="wins")
+ax.set_xlabel("Age (years)"); ax.set_ylabel("Grand Slam wins")
+```
+
+:::
+
+---
+
+## Challenge: Tennis leaderboard - 2nd solution
+
+**Task:** Build table (players, DoB, wins); add **age (years)**; sort by age desc; plot wins vs age.
+
+::: panel-tabset
+
+### R (dplyr / ggplot2)
+
+```{r}
+library(dplyr)
+library(tibble)
+library(ggplot2)
+
+ref_date <- as.Date("2025-10-08")
+
+rankings <- tribble(
+  ~rank, ~player,             ~country, ~points, ~dob,          ~gs_titles,
+      1, "Carlos Alcaraz",    "ESP",     11540,  as.Date("2003-05-05"), 6,
+      2, "Jannik Sinner",     "ITA",     10950,  as.Date("2001-08-16"), 4,
+      3, "Alexander Zverev",  "GER",      5980,  as.Date("1997-04-20"), 0,
+      4, "Taylor Fritz",      "USA",      4995,  as.Date("1997-10-28"), 0,
+      5, "Novak Djokovic",    "SRB",      4830,  as.Date("1987-05-22"), 24
+) |>
+  mutate(age = floor(as.numeric(ref_date - dob) / 365.2425))
+
+rankings
+
+# Simple points bar chart
+rankings |>
+  ggplot(aes(x = reorder(player, points), y = points)) +
+  geom_col() +
+  coord_flip() +
+  labs(x = NULL, y = "Ranking points",
+       title = "ATP Singles — Top 5 (week of 2025‑10‑06)") +
+  theme_minimal(base_size = 12)
+
+# Optional: Grand Slam titles lollipop
+rankings |>
+  ggplot(aes(x = reorder(player, gs_titles), y = gs_titles)) +
+  geom_segment(aes(xend = player, y = 0, yend = gs_titles)) +
+  geom_point(size = 3) +
+  coord_flip() +
+  labs(x = NULL, y = "Grand Slam singles titles",
+       title = "Grand Slam titles (singles)") +
+  theme_minimal(base_size = 12)
+```
+
+### Python (pandas / matplotlib)
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+from datetime import datetime
+
+ref_date = datetime(2025, 10, 8)
+
+data = {
+    "rank":   [1, 2, 3, 4, 5],
+    "player": ["Carlos Alcaraz","Jannik Sinner","Alexander Zverev","Taylor Fritz","Novak Djokovic"],
+    "country":["ESP","ITA","GER","USA","SRB"],
+    "points": [11540, 10950, 5980, 4995, 4830],
+    "dob":    pd.to_datetime(["2003-05-05","2001-08-16","1997-04-20","1997-10-28","1987-05-22"]),
+    "gs_titles": [6, 4, 0, 0, 24]
+}
+rankings = pd.DataFrame(data)
+rankings["age"] = (ref_date - rankings["dob"]).dt.days // 365.2425
+rankings
+
+# Points bar chart (horizontal)
+ax = rankings.sort_values("points").plot(kind="barh", x="player", y="points", legend=False)
+ax.set_xlabel("Ranking points")
+ax.set_title("ATP Singles — Top 5 (week of 2025‑10‑06)")
+plt.tight_layout(); plt.show()
+
+# Optional: Grand Slam titles lollipop-style
+ordered = rankings.sort_values("gs_titles")
+plt.figure()
+for i, (p, v) in enumerate(zip(ordered["player"], ordered["gs_titles"])):
+    plt.plot([0, v], [i, i])
+    plt.plot(v, i, marker="o")
+plt.yticks(range(len(ordered)), ordered["player"])
+plt.xlabel("Grand Slam singles titles")
+plt.title("Grand Slam titles (singles)")
+plt.tight_layout(); plt.show()
+```
+
+:::
+
+---
+
 # Control structures
 
 ![](images/lego-674373_1280.jpg){fig-align=center}
@@ -1135,6 +1385,191 @@ Write two versions (R & Python):
 
 ---
 
+## Mini-exercise 1: Short‑circuit vs elementwise
+
+**Task:**  What do these return? In R: `c(T,F) | c(T,F)` vs `c(T,F) || c(T,F)`. In Python/NumPy: `(A | B)` vs `(A or B)` with boolean arrays. 
+
+::: panel-tabset
+
+### R
+
+```{r}
+c(T,F) | c(T,F)        # elementwise OR -> TRUE FALSE
+c(T,F) || c(T,F)       # an error with recent R; previously used only first element -> TRUE
+```
+
+### Python / NumPy
+
+```{python}
+# Python lists
+[True, False] or [True, False]
+
+# Elementwise with NumPy
+#| eval: false
+import numpy as np
+A = np.array([True, False]); B = np.array([True, False])
+A | B, A & B
+```
+
+:::
+
+---
+
+## Mini-exercise 2: FizzBuzz (1–20)
+
+**Task:** Print numbers 1–20; for multiples of 3 print `Fizz`, of 5 `Buzz`, of both `FizzBuzz`.
+
+::: panel-tabset
+
+### R
+
+```{r}
+for (i in 1:20) {
+  if (i %% 15 == 0) cat("FizzBuzz\n")
+  else if (i %% 3 == 0) cat("Fizz\n")
+  else if (i %% 5 == 0) cat("Buzz\n")
+  else cat(i, "\n")
+}
+```
+
+### Python
+
+```{python}
+for i in range(1, 21):
+    if i % 15 == 0: print("FizzBuzz")
+    elif i % 3 == 0: print("Fizz")
+    elif i % 5 == 0: print("Buzz")
+    else: print(i)
+```
+
+:::
+
+---
+
+## Mini-exercise 3: Masking odds to NA/NaN
+
+**Task:** Given `x <- 1:10` / `x = np.arange(1,11)`, replace odds by `NA`/`np.nan` using vectorised tools.
+
+::: panel-tabset
+
+### R
+
+```{r}
+x <- 1:10
+x[x %% 2 == 1] <- NA_integer_
+x
+```
+
+### Python
+
+```{python}
+#| eval: false
+import numpy as np
+x = np.arange(1,11, dtype=float)
+x[x % 2 == 1] = np.nan
+x
+```
+
+:::
+
+---
+
+## Mini-exercise 4: Tiny calculator (switch/match)
+
+**Task:** Implement a tiny calculator using R `switch` and Python `match`.
+
+::: panel-tabset
+
+### R
+
+```{r}
+calc <- function(a, b, op) switch(op,
+  "+" = a + b,
+  "-" = a - b,
+  "*" = a * b,
+  "/" = a / b,
+  stop("unknown op")
+)
+calc(20,5,"+")
+```
+
+### Python
+
+```{python}
+# Python 3.10+
+import sys
+if sys.version_info >= (3,10):
+    def calc(a,b,op):
+        match op:
+            case "+": return a + b
+            case "-": return a - b
+            case "*": return a * b
+            case "/": return a / b
+            case _: raise ValueError("unknown op")
+    calc(20,5,"+")
+else:
+    ops = {"+": lambda a,b: a+b, "-": lambda a,b: a-b, "*": lambda a,b: a*b, "/": lambda a,b: a/b}
+    ops["+"](20,5)
+```
+
+:::
+
+---
+
+## Challenge: First even square > 1000
+
+**Task:** Write two versions (R & Python):
+
+* A loop-based solution with a `break` when found.
+* A vectorised solution.
+
+::: panel-tabset
+
+### R
+
+```{r}
+# Loop solution
+n <- 1
+repeat {
+  s <- n^2
+  if (s > 1000 && s %% 2 == 0) { ans <- list(n=n, s=s); break }
+  n <- n + 1
+}
+ans
+
+# Vectorised solution
+n <- seq_len(100)
+sq <- n^2
+cbind(n, sq)[which(sq > 1000 & sq %% 2 == 0)[1], ]
+```
+
+### Python
+
+```{python}
+# Loop solution
+n = 1
+while True:
+    s = n*n
+    if s > 1000 and s % 2 == 0:
+        ans = {"n": n, "s": s}
+        break
+    n += 1
+ans
+
+# Vectorised (NumPy)
+#| eval: false
+import numpy as np
+n = np.arange(1, 101)
+sq = n**2
+idx = np.where((sq > 1000) & (sq % 2 == 0))[0][0]
+int(n[idx]), int(sq[idx])
+```
+
+:::
+
+
+---
+
 # Functions
 
 ![](images/lego-674354_1280.jpg){fig-align=center width=600 height=400}
@@ -1618,19 +2053,6 @@ def my_div(numerator: Number, denominator: Number) -> float:
 
 1. **Safe divide:** Write `safe_div` in R & Python that returns `NA`/`math.nan` when denominator is 0 and emits a warning.
 2. **Prefix matching:** In R, define `f <- function(numerator, denominator) {...}` and call it via partial names. Why is this risky? Rewrite to avoid it.
-3. **Default args:** Show the difference between R’s lazily evaluated defaults and Python’s **eager** defaults by creating a timestamp default.
-4. **Closure:** Write `make_multiplier(k)` then compute by 2 and by 10 for a vector.
-
----
-
-## Challenge — Column summary function
-
-Write a function that returns a 2‑column table (mean, sd) for all **numeric** columns.
-
-* **R:** Input: `data.frame`/tibble. Use `vapply`/`sapply` or `purrr::map_dfr`. Error if no numeric columns.
-* **Python:** Input: `pandas.DataFrame`. Use `select_dtypes(include="number")` then `agg`.
-
-*Stretch:* add an argument `na_rm` / `skipna` and test it.
 
 ---
 
@@ -1669,3 +2091,83 @@ reticulate::py_config()
 * R lexical scoping & environments vs Python LEGB with `global`/`nonlocal`.
 * Vectorise: R builtins; Python use NumPy/pandas.
 * Composition: R `|>`/`%>%` & custom `%op%`; Python nesting/`compose`/method chaining.
+
+---
+
+## Mini-exercise 1: Safe divide
+
+**Task:** Write `safe_div` in R & Python that returns `NA`/`math.nan` when denominator is 0 and emits a warning.
+
+::: panel-tabset
+
+### R
+
+```{r}
+safe_div <- function(a, b) {
+  ifelse(b == 0, {
+    warning("denominator is 0; returning NA")
+    NA_real_
+  }, a / b)
+}
+safe_div(c(1,2,3), c(1,0,2))
+
+
+# alternatively
+safe_div <- function(a, b) {
+  if(any(b == 0)) {
+    warning("denominator is 0; returning NA")
+  }
+  
+  x <- rep(NA_real_, length(a))
+  x[b != 0] <- a[b != 0] / b[b != 0]
+  
+  return(x)
+}
+```
+
+### Python
+
+```{python}
+import math, warnings
+
+def safe_div(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError:
+        warnings.warn("denominator is 0; returning NaN")
+        return math.nan
+
+print(safe_div(1,1))
+print(safe_div(2,0))
+```
+
+:::
+
+---
+
+## Mini-exercise 2: Prefix matching (R) & safer calls
+
+**Task:** In R, define `f <- function(numerator, denominator) {...}` and call it via partial names. Why is this risky? Rewrite to avoid it.
+
+::: panel-tabset
+
+### R
+
+```{r}
+f <- function(numerator, denominator) numerator / denominator
+f(n = 1, d = 2)              # works via partial matching (risky)
+
+# Make it safer:
+options(warnPartialMatchArgs = TRUE)  # warn on partial matching
+f(numerator = 1, denominator = 2)     # explicit names
+```
+
+### Python
+
+```{python}
+# Not applicable (Python has no partial name matching for keywords).
+pass
+```
+
+:::
+

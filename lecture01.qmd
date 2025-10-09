@@ -848,6 +848,8 @@ If stuck: ask on **Slack**—show error, steps tried, and minimal example.
 💡 *Tip:* Use `sum()` and `len()` to calculate an average.  
 :::
 
+
+
 ---
 
 ## Mini-exercise (3): Quarto
@@ -956,3 +958,197 @@ Thanks!
 *Optional:* After class, try converting one old analysis to **Quarto** and push it to GitHub with a short README.
 
 ---
+
+## Solution (1): R
+
+```r
+# exercise1.R
+x <- c(3, 7, 9, 2, 5)
+m <- mean(x)
+message(paste("The mean is", m))
+```
+
+---
+
+## Solution (2): Python
+
+```python
+# exercise2.py
+nums = [3, 7, 9, 2, 5]
+avg = sum(nums) / len(nums)
+print(f"The average is {avg}")
+```
+
+---
+
+## Solution (3): Quarto
+
+````markdown
+---
+title: "Exercise 3"
+author: "Your Name"
+format: html
+---
+
+```r
+"Hello R!"
+```
+
+```python
+print("Hello Python!")
+```
+````
+
+---
+
+## Solution (4): GitHub
+
+```bash
+# In a fresh folder:
+git init
+git branch -M main
+git remote add origin https://github.com/<user>/first-exercises.git
+
+# Add files
+git add exercise1.R exercise2.py exercise3.qmd README.md
+git commit -m "Add first three exercises"
+git push -u origin main
+```
+
+Example `README.md`:
+
+```md
+# first-exercises
+- `exercise1.R`: vector + mean (R)
+- `exercise2.py`: list + average (Python)
+- `exercise3.qmd`: R & Python chunks (Quarto)
+```
+
+---
+
+## Solution (5): R + Data
+
+```r
+# exercise5.R
+# A. summary by cylinders
+aggregate(mpg ~ cyl, data = mtcars, FUN = mean)
+
+# Using dplyr (optional)
+# library(dplyr)
+# mtcars |>
+#   group_by(cyl) |>
+#   summarise(mean_mpg = mean(mpg))
+
+# B. scatterplot mpg vs hp
+plot(mtcars$hp, mtcars$mpg,
+     xlab = "Horsepower (hp)", ylab = "Miles per gallon (mpg)",
+     main = "mtcars: mpg vs hp")
+```
+
+---
+
+## Solution (6): Python + Visualization
+
+```python
+# exercise6.py
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+
+# Load iris
+iris_bunch = load_iris(as_frame=True)
+df = iris_bunch.frame  # columns: sepal length (cm), sepal width (cm), ...
+df["species"] = df["target"].map(dict(enumerate(iris_bunch.target_names)))
+
+# Average petal length per species
+avg_petal = df.groupby("species")["petal length (cm)"].mean()
+print(avg_petal)
+
+# Histogram of sepal lengths
+plt.figure()
+df["sepal length (cm)"].hist()
+plt.title("Histogram: Sepal Length")
+plt.xlabel("Sepal length (cm)")
+plt.ylabel("Count")
+plt.tight_layout()
+plt.show()
+```
+
+---
+
+## Solution (7): Quarto + Reproducibility
+
+````markdown
+---
+title: "Exercise 7"
+author: "Your Name"
+format:
+  html: default
+  pdf: default
+---
+
+This document shows basic R summaries and a Python plot.
+
+```r
+summary(mtcars)
+```
+
+```python
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+iris = load_iris(as_frame=True).frame
+plt.figure()
+plt.scatter(iris["sepal length (cm)"], iris["sepal width (cm)"])
+plt.title("Iris: Sepal length vs width")
+plt.xlabel("Sepal length (cm)")
+plt.ylabel("Sepal width (cm)")
+plt.tight_layout()
+plt.show()
+```
+````
+
+Render:
+```bash
+quarto render exercise7.qmd --to html
+quarto render exercise7.qmd --to pdf   # requires LaTeX
+```
+
+---
+
+## Solution (8): All Together 🎯
+
+````markdown
+---
+title: "Exercise 8 (Capstone)"
+author: "Your Name"
+format: html
+---
+
+This Quarto file combines R + Python and is tracked on GitHub.
+
+```r
+mean(mtcars$mpg)
+```
+
+```python
+from sklearn.datasets import load_iris
+import matplotlib.pyplot as plt
+iris = load_iris(as_frame=True).frame
+plt.figure()
+plt.scatter(iris["sepal length (cm)"], iris["sepal width (cm)"])
+plt.title("Iris: Sepal length vs width")
+plt.xlabel("Sepal length (cm)")
+plt.ylabel("Sepal width (cm)")
+plt.tight_layout()
+plt.show()
+```
+````
+
+Push results:
+```bash
+quarto render exercise8.qmd
+git add exercise8.qmd exercise8.html
+git commit -m "Add capstone exercise with R+Python"
+git push
+```
+
