@@ -40,3 +40,10 @@
   height: 36px !important;
   width: auto !important;
 }
+.reveal .code-line-highlighted {
+  background: rgba(255, 215, 0, 0.18);
+  outline: 2px solid rgba(255, 215, 0, 0.55);
+}
+.reveal .code-line-highlighted .hljs-ln-numbers {
+  background: rgba(255, 215, 0, 0.18);
+}

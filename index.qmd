@@ -5,4 +5,5 @@ page-layout: full
 
 - [Lecture 1 — Introduction & Tools](lecture01.html)
 - [Lecture 2 — Programming Foundations](lecture02.html)
+- [Lecture 3 — Data Management & Collection](lecture03.html)
 

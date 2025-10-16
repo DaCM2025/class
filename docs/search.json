@@ -1,5 +1,1391 @@
 [
   {
+    "objectID": "lecture03.html#learning-goals",
+    "href": "lecture03.html#learning-goals",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Learning goals",
+    "text": "Learning goals\n\nUnderstand relational models: tables, rows, columns, keys, constraints\nWrite SQL: SELECT, WHERE, ORDER BY, LIMIT, GROUP BY, HAVING, JOIN\nConnect to SQL from R (DBI) and Python (sqlite3 / SQLAlchemy / pandas)\nUnderstand HTTP and the request/response cycle\nKnow when to use APIs vs web scraping\nParse HTML using CSS selectors (R rvest, Python BeautifulSoup)\nPeek at dynamic sites\nUse regex for cleaning and extraction (R & Python)"
+  },
+  {
+    "objectID": "lecture03.html#typical-data-for-a-project",
+    "href": "lecture03.html#typical-data-for-a-project",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Typical Data for a Project",
+    "text": "Typical Data for a Project\n\n\n\nType\nDescription\n\n\n\n\nTransactional\nYour data\n\n\nBehavioral\nYour data\n\n\nPublic Data\nOpen datasets\n\n\nPremium Data\nPaid datasets"
+  },
+  {
+    "objectID": "lecture03.html#typical-data-for-a-project-1",
+    "href": "lecture03.html#typical-data-for-a-project-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Typical Data for a Project",
+    "text": "Typical Data for a Project\n\n\n💳 Transactional (records of exchanges) - What it looks like: order lines, invoices, payments\n- Typical fields: order_id, customer_id, sku, qty, price, timestamp\n- Example dataset: UCI Online Retail II (real e-commerce transactions)\nhttps://archive.ics.uci.edu/datasets?search=Online+Retail\n👣 Behavioral (events & interactions) - What it looks like: page views, clicks, scrolls, add-to-cart\n- Typical fields: user_id, session_id, event_name, event_params, ts\n- Example datasets/docs: GA BigQuery sample (web/app) and Snowplow events model\nhttps://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset/ • https://docs.snowplow.io/docs/fundamentals/events/\n\n🏛️ Public Data (open gov & orgs) - What it looks like: macro indicators, demographics, prices, geo\n- Where to find: opendata.swiss, World Bank WDI, Eurostat\nhttps://www.bfs.admin.ch/bfs/en/home/services/ogd/portal.html • https://data.worldbank.org/indicator • https://ec.europa.eu/eurostat/data\n💼 Premium Data (licensed/commercial) - What it looks like: real-time market data, fundamentals, consumer panels\n- Providers (examples): Bloomberg Terminal, S&P Global Market Intelligence\nhttps://www.bloomberg.com/professional/products/bloomberg-terminal/ • https://www.spglobal.com/market-intelligence/en"
+  },
+  {
+    "objectID": "lecture03.html#data-warehouse",
+    "href": "lecture03.html#data-warehouse",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Data Warehouse",
+    "text": "Data Warehouse\nIn an organization, data is typically stored in:\n\nSeveral computers: operational databases\nA central place for analysis: a data warehouse for analytical data."
+  },
+  {
+    "objectID": "lecture03.html#flow-of-data-processing",
+    "href": "lecture03.html#flow-of-data-processing",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Flow of Data Processing",
+    "text": "Flow of Data Processing\n\nFormulate business questions\nSelect DB/NoSQL and set it up\nETL (Extract - Transform - Load)\nQuery Data/Create predictive models\nPresent/Visualize Data"
+  },
+  {
+    "objectID": "lecture03.html#tools-for-big-data-analysis",
+    "href": "lecture03.html#tools-for-big-data-analysis",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Tools for Big Data Analysis",
+    "text": "Tools for Big Data Analysis\n\n\nThere exist many tools for Big Data analysis. Some of them are:\n\nDatabases (SQL)\n\nNoSQL platforms\n\nCloud storage options (AWS, Google Cloud, etc.)\n\nThe easiest one of all (and the oldest!) is a database."
+  },
+  {
+    "objectID": "lecture03.html#data-management-on",
+    "href": "lecture03.html#data-management-on",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Data Management on…",
+    "text": "Data Management on…\nMost common data management platforms:\n\nRelational Databases (RDBMS) – Structure-based, SQL support.\nNoSQL – Flexible schema, good for unstructured data.\n\nOn-Premises or Cloud-Based"
+  },
+  {
+    "objectID": "lecture03.html#sql-nosql",
+    "href": "lecture03.html#sql-nosql",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "SQL / NoSQL",
+    "text": "SQL / NoSQL\n\n\nSQL Databases (relational databases)\n\nStructured query language\nSuited for structured data\nRelationships and tables\n\nNoSQL Databases (non-relational databases)\n\nDynamic schema for unstructured data\nFlexible for creating unique structures\nUnstructured or semi-structured data\nDocument, graph, column, KeyValue structures"
+  },
+  {
+    "objectID": "lecture03.html#relational-systems",
+    "href": "lecture03.html#relational-systems",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Relational Systems",
+    "text": "Relational Systems\n\n\nAdvantages of Relational Systems:\n\nMature technology:\n\nWell-defined interfaces (SQL)\nStructured and organized\nProvides meta-data in the form of a schema\n\nBuilt-in multi-user synchronization for data integrity\nGood at basic statistics and reporting\nBuilt-in query processing engines"
+  },
+  {
+    "objectID": "lecture03.html#object-relational-mapping",
+    "href": "lecture03.html#object-relational-mapping",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Object-relational mapping",
+    "text": "Object-relational mapping"
+  },
+  {
+    "objectID": "lecture03.html#sql-structured-query-language",
+    "href": "lecture03.html#sql-structured-query-language",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "SQL = Structured Query Language",
+    "text": "SQL = Structured Query Language\n\nIt is a compact language to express complex questions. For example:\n\nSELECT country, pollutant, particles\nFROM `air_quality`\nWHERE country = 'India' AND pollutant = 'NO2' AND particles &gt; 100\n\nYou don’t need to specify the steps for accomplishing this task (this is an example of declarative programming).\nThe SQL runtime decomposes the query into subroutines and picks the best way to execute it (i.e., which subroutine to do first, which second, etc)."
+  },
+  {
+    "objectID": "lecture03.html#section",
+    "href": "lecture03.html#section",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "",
+    "text": "SELECT country, pollutant, particles\nFROM `air_quality`\nWHERE country = 'India' AND pollutant = 'NO2' AND particles &gt; 100\nSuppose that:\n\ncountry = {India, …} is of length 1,000,\npollutant = {NO2, …} is of length 100,\nparticles = {100, 90, …} is of length 10,000.\n\nWhich filter in the WHERE clause would you run first?\nThe query scheduler takes care of it, we don‘t have to worry about this.\n\n\n\n\nCountry\nPollutant\nParticles\n\n\n\n\nUSA\nNO2\n90\n\n\nUSA\nCO2\n100\n\n\n…\n…\n…\n\n\nIndia\nNO2\n200\n\n\nIndia\nNO2\n210\n\n\nIndia\nCO2\n110\n\n\n…\n…\n…\n\n\nSwitzerland\nCO2\n20\n\n\nSwitzerland\nCO2\n20\n\n\n…\n…\n…"
+  },
+  {
+    "objectID": "lecture03.html#sql-recap-using-bigquery",
+    "href": "lecture03.html#sql-recap-using-bigquery",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "SQL recap using BigQuery",
+    "text": "SQL recap using BigQuery"
+  },
+  {
+    "objectID": "lecture03.html#select-from-where",
+    "href": "lecture03.html#select-from-where",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Select, From, Where",
+    "text": "Select, From, Where\n\n\nSELECT city  \nFROM `bigquery-public-data.openaq.global_air_quality`  \nWHERE country = 'CH'\nAsked ChatGPT for comment on SQL query:\n\nSELECT city: Specifies that we want to retrieve only the values in the city column.\nFROM 'bigquery-public-data.openaq.global_air_quality': Indicates the source table where the data is stored. In this case, it’s the global_air_quality table, which is part of the openaq dataset within bigquery-public-data on Google BigQuery.\nWHERE country = 'CH': This is a filter condition that limits the results to only those rows where the country column has the value ‘CH’ (the country code for Switzerland)."
+  },
+  {
+    "objectID": "lecture03.html#select-from-where-with-distinct",
+    "href": "lecture03.html#select-from-where-with-distinct",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Select, From, Where with Distinct",
+    "text": "Select, From, Where with Distinct\n\n\nSELECT DISTINCT city, country  \nFROM `bigquery-public-data.openaq.global_air_quality`  \nWHERE country = 'CH'\nNote: Capitalization is not required for SQL commands but it is a common convention to make SQL keywords stand out. It is considered best practice."
+  },
+  {
+    "objectID": "lecture03.html#filtering-with-conditions",
+    "href": "lecture03.html#filtering-with-conditions",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Filtering with Conditions",
+    "text": "Filtering with Conditions\n\nQuery: Records in India with no2 value more than 100.\n\nSELECT city, country, pollutant, value  \nFROM `bigquery-public-data.openaq.global_air_quality`  \nWHERE country = 'IN' AND pollutant = 'no2' AND value &gt; 100"
+  },
+  {
+    "objectID": "lecture03.html#limit-the-number-of-results",
+    "href": "lecture03.html#limit-the-number-of-results",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "LIMIT the Number of Results",
+    "text": "LIMIT the Number of Results"
+  },
+  {
+    "objectID": "lecture03.html#select-all-columns-with",
+    "href": "lecture03.html#select-all-columns-with",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Select all columns with *",
+    "text": "Select all columns with *"
+  },
+  {
+    "objectID": "lecture03.html#counting-records-with-count",
+    "href": "lecture03.html#counting-records-with-count",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Counting Records with COUNT()",
+    "text": "Counting Records with COUNT()\nSELECT COUNT(*)  \nFROM `bigquery-public-data.openaq.global_air_quality`  \nWHERE country = 'IN' AND pollutant = 'no2' AND value &gt; 100"
+  },
+  {
+    "objectID": "lecture03.html#aggregate-functions-min-max-sum-avg",
+    "href": "lecture03.html#aggregate-functions-min-max-sum-avg",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Aggregate Functions: MIN(), MAX(), SUM(), AVG()",
+    "text": "Aggregate Functions: MIN(), MAX(), SUM(), AVG()\n\nQuery: What is the average no2 pollutant value in US? In India?\n\n\n\nSELECT AVG(value) AS avg_no2  \nFROM `bigquery-public-data.openaq.global_air_quality`  \nWHERE country = 'US' AND pollutant = 'no2'\n\n\nSELECT AVG(value) AS avg_no2  \nFROM `bigquery-public-data.openaq.global_air_quality`  \nWHERE country = 'IN' AND pollutant = 'no2'\n\n\nWhat about Switzerland? What about the max?"
+  },
+  {
+    "objectID": "lecture03.html#with-clause",
+    "href": "lecture03.html#with-clause",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "WITH Clause",
+    "text": "WITH Clause\n\nQuery: Number of bitcoin transactions per date, sorted by date."
+  },
+  {
+    "objectID": "lecture03.html#limiting-results-with-limit",
+    "href": "lecture03.html#limiting-results-with-limit",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Limiting Results with LIMIT",
+    "text": "Limiting Results with LIMIT\n\nSometimes you want to return only part of the results. This can be useful for instance when you run queries on the cloud and you want to preview the results before downloading the entire dataset. LIMIT is used for this purpose. It avoids you pay money for bringing back all the results."
+  },
+  {
+    "objectID": "lecture03.html#group-by-operations-by-category",
+    "href": "lecture03.html#group-by-operations-by-category",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "GROUP BY – Operations by Category",
+    "text": "GROUP BY – Operations by Category\n\nQuery: What is the average no2 pollutant for each city in the US?\n\n\n\nSELECT city, AVG(value) AS avg_value  \nFROM `bigquery-public-data.openaq.global_air_quality`  \nWHERE country = 'US' AND pollutant = 'no2'  \nGROUP BY city\nGROUP BY city:\n\nThis groups the results by city. For each unique city in the dataset, the query calculates the average NO2 pollutant value based on the rows that belong to that city.\nWithout GROUP BY, the AVG() function would calculate the average across all rows in the dataset, rather than for each individual city."
+  },
+  {
+    "objectID": "lecture03.html#filtering-categories-with-group-by-and-having",
+    "href": "lecture03.html#filtering-categories-with-group-by-and-having",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Filtering Categories with GROUP BY and HAVING",
+    "text": "Filtering Categories with GROUP BY and HAVING\n\nQuery: Which cities in India have an average no2 pollutant &gt; 50?\n\n\n\nSELECT city, AVG(value) AS avg_value  \nFROM `bigquery-public-data.openaq.global_air_quality`  \nWHERE country = 'IN' AND pollutant = 'no2'  \nGROUP BY city\nHAVING avg_value &gt; 50"
+  },
+  {
+    "objectID": "lecture03.html#practice-query",
+    "href": "lecture03.html#practice-query",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Practice Query",
+    "text": "Practice Query\n\nQuery: What is the average time rent per station of bike share program in San Franciso?\n\n(Look for the San Francisco Bikeshare dataset)\n\nQuery: Which day of the week has the most fatal motor accidents in 2020?\n\n(Look for the NHTSA Traffic Fatalities dataset)"
+  },
+  {
+    "objectID": "lecture03.html#practice-query---answer-from-chatgpt",
+    "href": "lecture03.html#practice-query---answer-from-chatgpt",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Practice Query - Answer from ChatGPT",
+    "text": "Practice Query - Answer from ChatGPT\n\nQuery: What is the average time rent per station of bike share program in San Franciso?\n\n\n\nSELECT stations.name AS station_name, \n       AVG(trips.duration_sec / 60) AS avg_rent_time_minutes\nFROM `bigquery-public-data.san_francisco.bikeshare_trips` AS trips\nJOIN `bigquery-public-data.san_francisco.bikeshare_stations` AS stations\nON trips.start_station_id = stations.station_id\nGROUP BY station_name\nORDER BY avg_rent_time_minutes DESC\n\nIt uses the JOIN operation to merge the two tables (we will see JOIN in the next slides). We could simply return the station_id instead.\nIt uses the bigquery-public-data.san_francisco instead of bigquery-public-data.san_francisco_bikeshare dataset."
+  },
+  {
+    "objectID": "lecture03.html#practice-query---answer-from-chatgpt-1",
+    "href": "lecture03.html#practice-query---answer-from-chatgpt-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Practice Query - Answer from ChatGPT",
+    "text": "Practice Query - Answer from ChatGPT\n\nQuery: Which day of the week has the most fatal motor accidents in 2020?\n\n\n\nSELECT FORMAT_TIMESTAMP('%A', TIMESTAMP(timestamp_of_crash)) AS day_of_week,\n       COUNT(*) AS total_fatalities\nFROM `bigquery-public-data.nhtsa_traffic_fatalities.accident_2020`\nWHERE EXTRACT(YEAR FROM TIMESTAMP(timestamp_of_crash)) = 2020\nGROUP BY day_of_week\nORDER BY total_fatalities DESC\nLIMIT 1\n\nError in the dataset. ChatGPT is not able to type the correct dataset name (even after trying to correct the prompt).\nNo need to extract for the year, as the dataset is already filtered for 2020.\nIt imposes a limit of 1, but it is not necessary.\n\n\n\n\nIt uses more advanced SQL commands such as FORMAT_TIMESTAMP, TIMESTAMP and EXTRACT. These might not always be available in all SQL databases."
+  },
+  {
+    "objectID": "lecture03.html#sql-joins",
+    "href": "lecture03.html#sql-joins",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "SQL Joins",
+    "text": "SQL Joins\nJoins allow merging results from different tables. It is required to specify the “key” linking the tables."
+  },
+  {
+    "objectID": "lecture03.html#types-of-joins",
+    "href": "lecture03.html#types-of-joins",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Types of Joins",
+    "text": "Types of Joins\n\n(INNER) JOIN: Returns records that have matching values in both tables.\nLEFT/RIGHT (OUTER) JOIN: Returns all records from the left/right table and the matched records from the right/left table.\nFULL (OUTER) JOIN: Returns all records when there is a match in either left or right table."
+  },
+  {
+    "objectID": "lecture03.html#example-inner-join",
+    "href": "lecture03.html#example-inner-join",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example INNER JOIN",
+    "text": "Example INNER JOIN\n\nQuery: Find the top 5 longest bike rides in Austin, including informations about stations.\n\n\nWhich field name should we use to join the two tables?"
+  },
+  {
+    "objectID": "lecture03.html#example-inner-join---option-1",
+    "href": "lecture03.html#example-inner-join---option-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example INNER JOIN - option 1",
+    "text": "Example INNER JOIN - option 1\nSELECT *\nFROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` AS A\nINNER JOIN `bigquery-public-data.austin_bikeshare.bikeshare_stations` AS B  \nON A.start_station_id = B.station_id  \nORDER BY duration_minutes DESC  \nLIMIT 5\n\nYou can simplify the query by using the following syntax:\nJOIN `bigquery-public-data.austin_bikeshare.bikeshare_stations` AS B"
+  },
+  {
+    "objectID": "lecture03.html#example-inner-join---option-2",
+    "href": "lecture03.html#example-inner-join---option-2",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example INNER JOIN - option 2",
+    "text": "Example INNER JOIN - option 2\nSELECT *  \nFROM `bigquery-public-data.austin_bikeshare.bikeshare_trips` AS A,\n     `bigquery-public-data.austin_bikeshare.bikeshare_stations` AS B\nWHERE A.start_station_id = B.station_id  \nORDER BY duration_sec DESC  \nLIMIT 5"
+  },
+  {
+    "objectID": "lecture03.html#mini-exercise",
+    "href": "lecture03.html#mini-exercise",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Mini-exercise",
+    "text": "Mini-exercise\n\nQuery: Which bike start station has the longest duration rides?\n\n\nQuery: How many bikes were reported as stolen?"
+  },
+  {
+    "objectID": "lecture03.html#additional-sql-resources",
+    "href": "lecture03.html#additional-sql-resources",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Additional SQL Resources",
+    "text": "Additional SQL Resources\n\nSQL Tutorial (W3Schools)\nIntro to SQL (Kaggle)\nAdvanced SQL (Kaggle)"
+  },
+  {
+    "objectID": "lecture03.html#connecting-r-to-bigquery",
+    "href": "lecture03.html#connecting-r-to-bigquery",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Connecting R to BigQuery",
+    "text": "Connecting R to BigQuery\nTo connect R to BigQuery, use the bigrquery package:\n# Install the bigrquery package\ninstall.packages(\"bigrquery\")\n\n# Load the library and authenticate\nlibrary(bigrquery)\nbq_auth()\n\n# Run a query\nquery &lt;- \"SELECT country, pollutant, value \n          FROM `bigquery-public-data.openaq.global_air_quality` \n          WHERE country = 'US'\n          LIMIT 5\"\nresult &lt;- bq_project_query(\"your-project-id\", query)\ndata &lt;- bq_table_download(result)\nhead(data)\n\n\n  country pollutant       value\n1      US        no 0.007021218\n2      US        bc 0.410000000\n3      US        bc 0.500000000\n4      US        bc 2.100000000\n5      US        bc 0.160000000"
+  },
+  {
+    "objectID": "lecture03.html#example---number-of-bitcoin-transactions-over-time",
+    "href": "lecture03.html#example---number-of-bitcoin-transactions-over-time",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example - Number of Bitcoin Transactions Over time",
+    "text": "Example - Number of Bitcoin Transactions Over time\n\n\nquery &lt;- \"WITH time AS (  \n    SELECT DATE(block_timestamp) AS trans_date  \n    FROM `bigquery-public-data.crypto_bitcoin.transactions`  \n)  \nSELECT COUNT(trans_date) AS transactions, trans_date  \nFROM time  \nGROUP BY trans_date  \nORDER BY trans_date DESC\"\nresult &lt;- bq_project_query(\"your-project-id\", query)\ndata &lt;- bq_table_download(result)\n\nlibrary(ggplot2)\nlibrary(hrbrthemes)\np &lt;- ggplot(data, aes(x=trans_date, y=transactions)) +\n  geom_line( color=\"#69b3a2\") + \n  xlab(\"Time\") + ylab(\"Number of Transactions\") +\n  theme_ipsum() +\n  theme(axis.text.x=element_text(angle=60, hjust=1)) +\n  ggtitle(\"Number of Bitcoin Transactions Over Time\")\np"
+  },
+  {
+    "objectID": "lecture03.html#connecting-python-to-bigquery",
+    "href": "lecture03.html#connecting-python-to-bigquery",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Connecting Python to BigQuery",
+    "text": "Connecting Python to BigQuery\nTo connect Python to BigQuery, use the google-cloud-bigquery client.\n\n# TIP: Install once in your env:  pip install google-cloud-bigquery pandas pyarrow\n# Auth options:\n#  - gcloud:  gcloud auth application-default login\n#  - or set GOOGLE_APPLICATION_CREDENTIALS to a service-account JSON\n\nfrom google.cloud import bigquery\nimport pandas as pd\n\nclient = bigquery.Client(project=\"your-project-id\")\n\n# Run a query\nquery = \"\"\"\nSELECT country, pollutant, value\nFROM `bigquery-public-data.openaq.global_air_quality`\nWHERE country = 'US'\nLIMIT 5\n\"\"\"\ndf = client.query(query).to_dataframe()\ndf.head()"
+  },
+  {
+    "objectID": "lecture03.html#overview-of-bigquery",
+    "href": "lecture03.html#overview-of-bigquery",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Overview of BigQuery",
+    "text": "Overview of BigQuery\n\nBigQuery is a highly scalable data warehouse designed to store and analyze terabytes of data using SQL.\nBenefits:\n\nHigh-speed querying over large datasets.\nScalable storage and computing power.\nIntegration with public datasets for broader analysis."
+  },
+  {
+    "objectID": "lecture03.html#key-features-of-bigquery",
+    "href": "lecture03.html#key-features-of-bigquery",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Key Features of BigQuery",
+    "text": "Key Features of BigQuery\n\nServerless architecture: You don’t manage infrastructure, it scales automatically.\nSQL-based queries: Standard SQL allows you to extract, transform, and analyze data.\nBuilt-in machine learning: You can train and deploy machine learning models directly within BigQuery using SQL.\nIntegration with R and Python: Use the bigrquery package to connect R with BigQuery or google-cloud-bigquery for Python."
+  },
+  {
+    "objectID": "lecture03.html#local-sql-practice",
+    "href": "lecture03.html#local-sql-practice",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Local SQL practice",
+    "text": "Local SQL practice"
+  },
+  {
+    "objectID": "lecture03.html#mini-database-sqlite",
+    "href": "lecture03.html#mini-database-sqlite",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Mini database (SQLite)",
+    "text": "Mini database (SQLite)\nWe will create a small customers–orders database to practice.\n\nR — create & seedPython — create & seed\n\n\nlibrary(DBI); library(RSQLite)\ncon &lt;- dbConnect(SQLite(), \":memory:\")\n\nDBI::dbExecute(con, \"\nCREATE TABLE customers (\n  customer_id INTEGER PRIMARY KEY,\n  name TEXT NOT NULL,\n  country TEXT NOT NULL\n);\n\")\nDBI::dbExecute(con, \"\nCREATE TABLE orders (\n  order_id INTEGER PRIMARY KEY,\n  customer_id INTEGER NOT NULL,\n  order_date TEXT NOT NULL, -- ISO8601\n  amount REAL NOT NULL,\n  FOREIGN KEY(customer_id) REFERENCES customers(customer_id)\n);\n\")\n\nDBI::dbWriteTable(con, \"customers\",\n  data.frame(customer_id=1:5,\n             name=c(\"Ada\",\"Bruno\",\"Chloé\",\"Dinesh\",\"Elena\"),\n             country=c(\"CH\",\"FR\",\"CH\",\"IN\",\"US\")),\n  append=TRUE)\n\nDBI::dbWriteTable(con, \"orders\",\n  data.frame(order_id=1:10,\n             customer_id=c(1,1,2,3,3,3,4,4,5,5),\n             order_date=as.character(as.Date(\"2025-09-20\") + c(0,1,0,2,5,6,1,7,3,9)),\n             amount=c(120,75,300,42,88,150,60,500,20,220)),\n  append=TRUE)\n\nDBI::dbListTables(con)\n\n\nimport sqlite3, pandas as pd, datetime as dt\ncon = sqlite3.connect(\":memory:\")\ncur = con.cursor()\ncur.execute(\"\"\"\nCREATE TABLE customers (\n  customer_id INTEGER PRIMARY KEY,\n  name TEXT NOT NULL,\n  country TEXT NOT NULL\n);\n\"\"\")\ncur.execute(\"\"\"\nCREATE TABLE orders (\n  order_id INTEGER PRIMARY KEY,\n  customer_id INTEGER NOT NULL,\n  order_date TEXT NOT NULL,\n  amount REAL NOT NULL,\n  FOREIGN KEY(customer_id) REFERENCES customers(customer_id)\n);\n\"\"\")\n\ncustomers = pd.DataFrame({\n  \"customer_id\": [1,2,3,4,5],\n  \"name\": [\"Ada\",\"Bruno\",\"Chloé\",\"Dinesh\",\"Elena\"],\n  \"country\": [\"CH\",\"FR\",\"CH\",\"IN\",\"US\"]\n})\norders = pd.DataFrame({\n  \"order_id\": range(1,11),\n  \"customer_id\": [1,1,2,3,3,3,4,4,5,5],\n  \"order_date\": [(dt.date(2025,9,20)+dt.timedelta(days=d)).isoformat() for d in [0,1,0,2,5,6,1,7,3,9]],\n  \"amount\": [120,75,300,42,88,150,60,500,20,220]\n})\ncustomers.to_sql(\"customers\", con, if_exists=\"append\", index=False)\norders.to_sql(\"orders\", con, if_exists=\"append\", index=False)\ncon.execute(\"SELECT name FROM sqlite_master WHERE type='table'\").fetchall()"
+  },
+  {
+    "objectID": "lecture03.html#sql-basics-1",
+    "href": "lecture03.html#sql-basics-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "SQL basics",
+    "text": "SQL basics\nSELECT specific columns → WHERE to filter → ORDER BY to sort → LIMIT to preview.\nSELECT name, country\nFROM customers\nWHERE country = 'CH'\nORDER BY name ASC\nLIMIT 5;\n\nTip: Start with SELECT * ... LIMIT 5 to inspect shape without scanning the full table."
+  },
+  {
+    "objectID": "lecture03.html#aggregation-group-by-having",
+    "href": "lecture03.html#aggregation-group-by-having",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Aggregation: GROUP BY & HAVING",
+    "text": "Aggregation: GROUP BY & HAVING\n-- Average order amount per country\nSELECT c.country, ROUND(AVG(o.amount),2) AS avg_amount, COUNT(*) AS n_orders\nFROM orders o\nJOIN customers c ON o.customer_id = c.customer_id\nGROUP BY c.country\nHAVING COUNT(*) &gt;= 2\nORDER BY avg_amount DESC;\nRules: every selected non-aggregated column must appear in GROUP BY. Use HAVING to filter groups."
+  },
+  {
+    "objectID": "lecture03.html#joins-visual-intuition",
+    "href": "lecture03.html#joins-visual-intuition",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "JOINS (visual intuition)",
+    "text": "JOINS (visual intuition)\n\nINNER JOIN: only matching rows\nLEFT JOIN: all left + matches from right\nFULL OUTER JOIN: all rows from both (not in SQLite; emulate with UNION)\nJOIN keys should be indexed in larger DBs; ensure uniqueness/NOT NULL on IDs\n\n-- List each order with its customer name (INNER JOIN)\nSELECT o.order_id, o.order_date, o.amount, c.name\nFROM orders o\nINNER JOIN customers c ON o.customer_id = c.customer_id\nORDER BY o.order_id;\n-- Customers without orders (LEFT JOIN + NULL check)\nSELECT c.customer_id, c.name\nFROM customers c\nLEFT JOIN orders o ON o.customer_id = c.customer_id\nWHERE o.order_id IS NULL;"
+  },
+  {
+    "objectID": "lecture03.html#accessing-sql-from-r",
+    "href": "lecture03.html#accessing-sql-from-r",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Accessing SQL from R",
+    "text": "Accessing SQL from R\n\nDBI + dplyrRaw SQL + dbGetQuery\n\n\nlibrary(DBI); library(dplyr)\n# con from previous slide\ntbl(con, \"orders\") |&gt;\n  inner_join(tbl(con, \"customers\"), by = join_by(customer_id)) |&gt;\n  group_by(country) |&gt;\n  summarise(n = n(), total = sum(amount), .groups=\"drop\") |&gt;\n  arrange(desc(total)) |&gt;\n  collect()\n\n\nDBI::dbGetQuery(con, \"SELECT COUNT(*) AS n FROM orders WHERE amount &gt; 100;\")"
+  },
+  {
+    "objectID": "lecture03.html#accessing-sql-from-python",
+    "href": "lecture03.html#accessing-sql-from-python",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Accessing SQL from Python",
+    "text": "Accessing SQL from Python\n\npandas + SQLSQLAlchemy engine (optional)\n\n\nimport pandas as pd\nq = \"\"\"\nSELECT c.country, COUNT(*) AS n, SUM(o.amount) AS total\nFROM orders o JOIN customers c ON o.customer_id=c.customer_id\nGROUP BY c.country ORDER BY total DESC\n\"\"\"\npd.read_sql_query(q, con)\n\n\nfrom sqlalchemy import create_engine\nengine = create_engine(\"sqlite+pysqlite:///:memory:\", echo=False, future=True)\n# (Recreate and load tables as above, then use engine.connect())"
+  },
+  {
+    "objectID": "lecture03.html#inclass-miniexercises",
+    "href": "lecture03.html#inclass-miniexercises",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "In‑class mini‑exercises",
+    "text": "In‑class mini‑exercises\n\nWarm‑up: Write a query to list CH customers ordered by name. Add LIMIT 3.\nAggregation: Average order amount per customer; return top 3 customers.\nJoin logic: Find customers with no orders using a LEFT JOIN."
+  },
+  {
+    "objectID": "lecture03.html#cheatsheet",
+    "href": "lecture03.html#cheatsheet",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Cheat‑sheet",
+    "text": "Cheat‑sheet\n\nSELECT col1, col2 FROM t WHERE cond ORDER BY col1 DESC LIMIT n;\nJOIN: A JOIN B ON A.key = B.key · left join keeps all of A\nAggregation: GROUP BY cols + HAVING to filter groups\nR: DBI::dbGetQuery(con, sql); Python: pd.read_sql_query(sql, con)"
+  },
+  {
+    "objectID": "lecture03.html#openweathermap-current-weather",
+    "href": "lecture03.html#openweathermap-current-weather",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "OpenWeatherMap (current weather)",
+    "text": "OpenWeatherMap (current weather)\n\nCreate a free key (account on openweathermap.org).\nTry this URL in your browser (replace YOUR_KEY):\n\nhttps://api.openweathermap.org/data/2.5/weather?q=Lausanne&units=metric&appid=YOUR_KEY\n\nLook for fields like main.temp, weather.description, wind.speed in the JSON.\n\n\nIf the JSON is hard to read, use the browser’s built‑in JSON viewer or a JSON‑formatting extension."
+  },
+  {
+    "objectID": "lecture03.html#r-openweathermap-json-to-tibble",
+    "href": "lecture03.html#r-openweathermap-json-to-tibble",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "R: OpenWeatherMap → JSON to tibble",
+    "text": "R: OpenWeatherMap → JSON to tibble\n\n# packages\nlibrary(httr2)\nlibrary(dplyr)\n\n# store your key in an env var before class: Sys.setenv(OPENWEATHERMAP_API_KEY=\"...\")\nokey &lt;- Sys.getenv(\"OPENWEATHERMAP_API_KEY\")\n\nresp &lt;- request(\"https://api.openweathermap.org/data/2.5/weather\") |&gt;\n  req_url_query(q = \"Lausanne\", units = \"metric\", appid = okey) |&gt;\n  req_perform()\n\nwx &lt;- resp_body_json(resp, simplifyVector = TRUE)\n\n# extract a compact summary row\nwx_row &lt;- tibble::tibble(\n  city        = wx$name,\n  country     = wx$sys$country,\n  temperature = wx$main$temp,\n  feels_like  = wx$main$feels_like,\n  humidity    = wx$main$humidity,\n  wind_ms     = wx$wind$speed,\n  condition   = wx$weather$description,\n  timestamp   = as.POSIXct(wx$dt, origin = \"1970-01-01\", tz = \"UTC\")\n)\nwx_row\n\n# A tibble: 1 × 8\n  city     country temperature feels_like humidity wind_ms condition    \n  &lt;chr&gt;    &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;        \n1 Lausanne CH             9.89       8.31       92    3.12 broken clouds\n# ℹ 1 more variable: timestamp &lt;dttm&gt;\n\n\n\nGlobal execute: { eval: false } prevents live HTTP calls during render. Run interactively if needed."
+  },
+  {
+    "objectID": "lecture03.html#python-openweathermap-json-to-dataframe",
+    "href": "lecture03.html#python-openweathermap-json-to-dataframe",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Python: OpenWeatherMap → JSON to DataFrame",
+    "text": "Python: OpenWeatherMap → JSON to DataFrame\n\nimport os, requests, pandas as pd\n\nokey = os.environ.get(\"OPENWEATHERMAP_API_KEY\")\nparams = {\"q\": \"Lausanne\", \"units\": \"metric\", \"appid\": okey}\nr = requests.get(\"https://api.openweathermap.org/data/2.5/weather\", params=params)\nwx = r.json()\nrow = {\n    \"city\": wx.get(\"name\"),\n    \"country\": wx.get(\"sys\", {}).get(\"country\"),\n    \"temperature\": wx.get(\"main\", {}).get(\"temp\"),\n    \"feels_like\": wx.get(\"main\", {}).get(\"feels_like\"),\n    \"humidity\": wx.get(\"main\", {}).get(\"humidity\"),\n    \"wind_ms\": wx.get(\"wind\", {}).get(\"speed\"),\n    \"condition\": (wx.get(\"weather\", {}).get(\"description\"),\n}\npd.DataFrame([row])"
+  },
+  {
+    "objectID": "lecture03.html#alpha-vantage-stocks",
+    "href": "lecture03.html#alpha-vantage-stocks",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Alpha Vantage (stocks)",
+    "text": "Alpha Vantage (stocks)\n\nUses an API key. Demo key available for specific symbols.\nPaste in your browser (works without signing up):\n\nhttps://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=demo\n\nThe JSON contains a nested object Time Series (Daily) with open, high, low, close, volume by date.\n\n\nIf the demo key is throttled, retry after ~1 min or switch to IBM symbol."
+  },
+  {
+    "objectID": "lecture03.html#r-alpha-vantage-tidy-daily-prices",
+    "href": "lecture03.html#r-alpha-vantage-tidy-daily-prices",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "R: Alpha Vantage → tidy daily prices",
+    "text": "R: Alpha Vantage → tidy daily prices\n\nlibrary(httr2)\nlibrary(purrr)\nlibrary(dplyr)\n\nakey &lt;- Sys.getenv(\"ALPHAVANTAGE_API_KEY\", unset = \"demo\")\nresp &lt;- request(\"https://www.alphavantage.co/query\") |&gt;\n  req_url_query(`function` = \"TIME_SERIES_DAILY\", symbol = \"MSFT\", apikey = akey) |&gt;\n  req_perform()\njs &lt;- resp_body_json(resp, simplifyVector = TRUE)\n\ndaily &lt;- js[[\"Time Series (Daily)\"]]\nprices &lt;- imap_dfr(daily, ~ tibble::tibble(\n  date   = as.Date(.y),\n  open   = as.numeric(.x[[\"1. open\"]]),\n  high   = as.numeric(.x[[\"2. high\"]]),\n  low    = as.numeric(.x[[\"3. low\"]]),\n  close  = as.numeric(.x[[\"4. close\"]]),\n  volume = as.numeric(.x[[\"5. volume\"]])\n)) |&gt;\n  arrange(date)\nprices\n\n# A tibble: 100 × 6\n   date        open  high   low close   volume\n   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;\n 1 2025-05-23  450.  454.  449.  450. 16883509\n 2 2025-05-27  456.  461.  456.  461. 20974293\n 3 2025-05-28  461.  463.  457.  457. 17086261\n 4 2025-05-29  462.  462.  455.  459. 13982211\n 5 2025-05-30  460.  462.  456.  460. 34770475\n 6 2025-06-02  457.  462.  457.  462. 16626495\n 7 2025-06-03  461.  464.  461.  463. 15743760\n 8 2025-06-04  464   466.  463.  464. 14162688\n 9 2025-06-05  465.  470.  464.  468. 20154460\n10 2025-06-06  470.  473.  469.  470. 15285624\n# ℹ 90 more rows"
+  },
+  {
+    "objectID": "lecture03.html#python-alpha-vantage-tidy-daily-prices",
+    "href": "lecture03.html#python-alpha-vantage-tidy-daily-prices",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Python: Alpha Vantage → tidy daily prices",
+    "text": "Python: Alpha Vantage → tidy daily prices\n\nimport os, requests, pandas as pd\nakey = os.environ.get(\"ALPHAVANTAGE_API_KEY\", \"demo\")\nparams = {\"function\": \"TIME_SERIES_DAILY\", \"symbol\": \"MSFT\", \"apikey\": akey}\nr = requests.get(\"https://www.alphavantage.co/query\", params=params)\njs = r.json()\ndaily = js.get(\"Time Series (Daily)\", {})\ndf = (pd.DataFrame(daily).T\n        .rename(columns={\n            \"1. open\":\"open\",\"2. high\":\"high\",\"3. low\":\"low\",\n            \"4. close\":\"close\",\"5. volume\":\"volume\"\n        })\n        .reset_index(names=\"date\"))\ndf[\"date\"] = pd.to_datetime(df[\"date\"]).dt.date\ndf.sort_values(\"date\").head()"
+  },
+  {
+    "objectID": "lecture03.html#omdb-movies",
+    "href": "lecture03.html#omdb-movies",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "OMDb (movies)",
+    "text": "OMDb (movies)\nSearch for a title + year (replace YOUR_KEY):\nhttps://www.omdbapi.com/?apikey=YOUR_KEY&s=titanic&y=1997\nThen open details by IMDb id (Titanic):\nhttps://www.omdbapi.com/?apikey=YOUR_KEY&i=tt0120338\nLook for fields like Title, Year, Genre, Director, imdbRating."
+  },
+  {
+    "objectID": "lecture03.html#r-omdb-search-details",
+    "href": "lecture03.html#r-omdb-search-details",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "R: OMDb search + details",
+    "text": "R: OMDb search + details\n\nlibrary(httr2)\n\nmkey &lt;- Sys.getenv(\"OMDB_API_KEY\")\n# Search first\ns &lt;- request(\"https://www.omdbapi.com/\") |&gt;\n  req_url_query(apikey = mkey, s = \"titanic\", y = 1997) |&gt;\n  req_perform() |&gt;\n  resp_body_json(simplifyVector = TRUE)\n\nhead(s$Search)\n\n# Then fetch details by IMDb id\nmovie &lt;- request(\"https://www.omdbapi.com/\") |&gt;\n  req_url_query(apikey = mkey, i = \"tt0120338\") |&gt;\n  req_perform() |&gt;\n  resp_body_json(simplifyVector = TRUE)\n\nunlist(movie[c(\"Title\",\"Year\",\"Genre\",\"Director\",\"imdbRating\")])"
+  },
+  {
+    "objectID": "lecture03.html#python-omdb-search-details",
+    "href": "lecture03.html#python-omdb-search-details",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Python: OMDb search + details",
+    "text": "Python: OMDb search + details\n\nimport os, requests, pandas as pd\nmkey = os.environ.get(\"OMDB_API_KEY\")\n\n# Search\ns = requests.get(\"https://www.omdbapi.com/\", params={\"apikey\": mkey, \"s\": \"titanic\", \"y\": 1997}).json()\npd.DataFrame(s.get(\"Search\", []))\n\n# Details\nmovie = requests.get(\"https://www.omdbapi.com/\", params={\"apikey\": mkey, \"i\": \"tt0120338\"}).json()\n{ k: movie.get(k) for k in [\"Title\",\"Year\",\"Genre\",\"Director\",\"imdbRating\"] }"
+  },
+  {
+    "objectID": "lecture03.html#wikipedia-pageviews",
+    "href": "lecture03.html#wikipedia-pageviews",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Wikipedia pageviews",
+    "text": "Wikipedia pageviews\n\nRPython\n\n\n\nlibrary(pageviews)\n\ntop_articles(\"en.wikipedia\",\n             start = (Sys.Date()-1)) %&gt;%\n  dplyr::select(article, views) %&gt;%\n  dplyr::top_n(10)\n\n\n\n\nimport requests, datetime\nimport pandas as pd\n\nyesterday = (datetime.date.today() - datetime.timedelta(days=1))\nurl = (\n    f\"https://wikimedia.org/api/rest_v1/metrics/pageviews/top/\"\n    f\"en.wikipedia/all-access/{yesterday.year}/{yesterday:%m}/{yesterday:%d}\"\n)\nresp = requests.get(url)\nitems = resp.json()[\"items\"][0][\"articles\"]\n# Build DataFrame and keep top 10\n(df := pd.DataFrame(items))[['article','views']].head(10)"
+  },
+  {
+    "objectID": "lecture03.html#translation-with-deepl",
+    "href": "lecture03.html#translation-with-deepl",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Translation with Deepl",
+    "text": "Translation with Deepl\n\nRPython\n\n\n\nlibrary(deeplr)\ndeeplr::translate2(\n  text = \"Mais quelle bonne traduction nom d'une pipe!\",\n  target_lang = \"EN\",\n  auth_key = my_key\n  )\n\n\n\n\nimport os\ntry:\n    import deepl\n    translator = deepl.Translator(os.environ[\"DEEPL_API_KEY\"])  # set your key in env\n    result = translator.translate_text(\n        \"Mais quelle bonne traduction nom d'une pipe!\", target_lang=\"EN-GB\"\n    )\n    result.text\nexcept Exception as e:\n    f\"DEEPL example not executed: {e}\"\n\n\n\n\nThis is what we obtain on Google translate:\n\nBut what a good translation of the name of a pipe!"
+  },
+  {
+    "objectID": "lecture03.html#api-example-chatgpt",
+    "href": "lecture03.html#api-example-chatgpt",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "API Example: ChatGPT",
+    "text": "API Example: ChatGPT\n\nRPython\n\n\n\nlibrary(chatgpt)\ncat(ask_chatgpt(\"What do you think about the Data and Code Management class?\"))\n\n\n\n\n# Requires: pip install openai\nimport os\nfrom openai import OpenAI\nclient = OpenAI(api_key=os.environ.get(\"OPENAI_API_KEY\"))\nresp = client.chat.completions.create(\n    model=\"gpt-4o-mini\",\n    messages=[\n        {\"role\":\"system\",\"content\":\"You are a helpful assistant.\"},\n        {\"role\":\"user\",\"content\":\"What do you think about the Programming Tools in Data Science class in R?\"}\n    ]\n)\nprint(resp.choices[0].message.content)"
+  },
+  {
+    "objectID": "lecture03.html#your-turn-58-minutes",
+    "href": "lecture03.html#your-turn-58-minutes",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Your turn (5–8 minutes)",
+    "text": "Your turn (5–8 minutes)\n\nGenerate a browser URL for a city of your choice in OpenWeatherMap.\nUse OMDb to search your favorite movie and open its details page.\n(Stretch) Replace MSFT with another symbol in Alpha Vantage and fetch the JSON.\n\n\nBonus: Copy one of the R/Python snippets, set your env var locally, and print 3 fields."
+  },
+  {
+    "objectID": "lecture03.html#keeping-api-keys-safe-classfriendly",
+    "href": "lecture03.html#keeping-api-keys-safe-classfriendly",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Keeping API keys safe (class‑friendly)",
+    "text": "Keeping API keys safe (class‑friendly)\n\nNever hard‑code secrets in slides, repos, or notebooks.\nPrefer environment variables:\n\nR: ~/.Renviron → OPENWEATHER_API_KEY=...\nPython: set in shell before launch, or use .env + python-dotenv locally.\n\nRotate / revoke keys if you accidentally leak them.\nWatch the rate limits (Alpha Vantage is strict); implement simple retries if needed."
+  },
+  {
+    "objectID": "lecture03.html#cheatsheet-env-vars",
+    "href": "lecture03.html#cheatsheet-env-vars",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Cheat‑sheet: env vars",
+    "text": "Cheat‑sheet: env vars\nmacOS/Linux (bash/zsh)\nexport OPENWEATHER_API_KEY=xxxxxx\nexport ALPHAVANTAGE_API_KEY=xxxxxx\nexport OMDB_API_KEY=xxxxxx\nWindows (PowerShell)\nsetx OPENWEATHER_API_KEY \"xxxxxx\"\nsetx ALPHAVANTAGE_API_KEY \"xxxxxx\"\nsetx OMDB_API_KEY \"xxxxxx\"\nR session\nSys.getenv(\"OPENWEATHER_API_KEY\")\nPython session\nimport os\nos.environ.get(\"OPENWEATHER_API_KEY\")"
+  },
+  {
+    "objectID": "lecture03.html#api-1",
+    "href": "lecture03.html#api-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "API",
+    "text": "API\n\nApplication Programming Interface are gold standard for fetching data from the web\nData is fetched by directly posing HTTP requests.\nData requests from R using library(httr) or API wrappers.\nData fetched through the API is generally more reliable."
+  },
+  {
+    "objectID": "lecture03.html#whats-an-http-api",
+    "href": "lecture03.html#whats-an-http-api",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "What’s an HTTP API",
+    "text": "What’s an HTTP API\n\nA URL endpoint (e.g., https://api.example.com/resource).\nA method (GET for reading, POST for creating, …).\nQuery parameters (e.g., ?q=Lausanne&units=metric).\nOften requires an API key (auth & rate limits).\nReturns JSON most of the time."
+  },
+  {
+    "objectID": "lecture03.html#api-2",
+    "href": "lecture03.html#api-2",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "API",
+    "text": "API\nAPI = Application Programming Interface — structured endpoints to request data.\n\n\nPros\n\nStable schema\nPagination, filters\nLegal & documented\nFewer scraping breakages\n\n\nCons\n\nRegistration/API key\nRate limits/quotas\nNot all data exposed"
+  },
+  {
+    "objectID": "lecture03.html#webscraping-1",
+    "href": "lecture03.html#webscraping-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Webscraping",
+    "text": "Webscraping\n\nIf API is not available, e.g. there is no libraries, you could try to build your own API by following for example this tutorial or that one (not covered in this class).\nInstead, we discuss webscraping, a method that is effective regardless of whether a website offers an API."
+  },
+  {
+    "objectID": "lecture03.html#when-scraping-is-needed",
+    "href": "lecture03.html#when-scraping-is-needed",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "When scraping is needed",
+    "text": "When scraping is needed\nIf no API or missing fields → parse the HTML.\n\nFetch page (respect robots & rate limits)\nParse DOM\nSelect nodes (CSS selectors)\nExtract text/attributes"
+  },
+  {
+    "objectID": "lecture03.html#webscraping---a-first-example",
+    "href": "lecture03.html#webscraping---a-first-example",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Webscraping - a first example",
+    "text": "Webscraping - a first example\n\nRPython\n\n\n\nlibrary(rvest)\nurl &lt;- \"https://dcm.samorso.ch/en/lectures/\"\n\nread_html(url) %&gt;%\n  html_table() %&gt;%\n  .[[1]] %&gt;%\n  .[5:7,] %&gt;%\n  kableExtra::kable()\n\n\n\n\nimport pandas as pd\nurl = \"https://dcm.samorso.ch/en/lectures/\"\n# pandas can directly read HTML tables into DataFrames\ntables = pd.read_html(url)\ntables[0].iloc[4:7]"
+  },
+  {
+    "objectID": "lecture03.html#http-requestresponse-cycle",
+    "href": "lecture03.html#http-requestresponse-cycle",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "HTTP request/response cycle",
+    "text": "HTTP request/response cycle"
+  },
+  {
+    "objectID": "lecture03.html#scraping",
+    "href": "lecture03.html#scraping",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Scraping?",
+    "text": "Scraping?"
+  },
+  {
+    "objectID": "lecture03.html#hypertext-markup-language",
+    "href": "lecture03.html#hypertext-markup-language",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "HyperText Markup Language",
+    "text": "HyperText Markup Language\n\n&lt;!DOCTYPE html&gt;\n&lt;html&gt;    \n  &lt;body&gt;\n    &lt;h1 id='first'&gt;Webscraping with R&lt;/h1&gt;\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;\n  &lt;/body&gt;\n&lt;/html&gt;\n\nTry it!"
+  },
+  {
+    "objectID": "lecture03.html#html",
+    "href": "lecture03.html#html",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "HTML",
+    "text": "HTML\n\nelement starts with &lt;tag&gt; and ends &lt;/tag&gt;,\nit has optional attributes (id=attribute),\ncontent is everything between two tags.\nFor example, add the attribute style=\"background-color:DodgerBlue;\" to h1 and try it."
+  },
+  {
+    "objectID": "lecture03.html#html-elements",
+    "href": "lecture03.html#html-elements",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "HTML elements",
+    "text": "HTML elements\n\n\n\ntag\nmeaning\n\n\n\n\np\nParagraph\n\n\nh1\nTop-level heading\n\n\nh2, h3, …\nLower level headings\n\n\nol\nOrdered list\n\n\nul\nUnorder list\n\n\nli\nList item\n\n\nimg\nImage\n\n\na\nAnchor (Hyperlink)\n\n\ndiv\nSection wrapper (block-level)\n\n\nspan\nText wrapper (in-line)\n\n\n\nFind out more tags here or here"
+  },
+  {
+    "objectID": "lecture03.html#data-extraction",
+    "href": "lecture03.html#data-extraction",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Data extraction",
+    "text": "Data extraction\nCreate a minimal HTML page for experimenting\n\nRPython\n\n\n\nhtml_page &lt;- minimal_html('\n  &lt;body&gt;\n    &lt;h1&gt;Webscraping with R&lt;/h1&gt;\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;\n  &lt;/body&gt;')\n\n\n\n\nfrom bs4 import BeautifulSoup\nhtml_page = BeautifulSoup('''\n  &lt;body&gt;\n    &lt;h1&gt;Webscraping with R&lt;/h1&gt;\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;\n  &lt;/body&gt;''', 'html.parser')"
+  },
+  {
+    "objectID": "lecture03.html#example-list-item-li",
+    "href": "lecture03.html#example-list-item-li",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: list item (li)",
+    "text": "Example: list item (li)\n\n...\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt; \n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt; \n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt; \n    &lt;/ul&gt;\n...\n\n\nRPython\n\n\n\nhtml_page %&gt;% html_nodes(\"li\")\nhtml_page %&gt;% html_nodes(\"li\") %&gt;% html_text()\n\n\n\n\n[e for e in html_page.select('li')]\n[e.get_text(strip=True) for e in html_page.select('li')]"
+  },
+  {
+    "objectID": "lecture03.html#example-heading-of-order-2-h2",
+    "href": "lecture03.html#example-heading-of-order-2-h2",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: heading of order 2 (h2)",
+    "text": "Example: heading of order 2 (h2)\n\n...\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n...\n\n\nRPython\n\n\n\nhtml_page %&gt;% html_nodes(\"h2\") %&gt;% html_text()\n\n\n\n\n[e.get_text(strip=True) for e in html_page.select('h2')]"
+  },
+  {
+    "objectID": "lecture03.html#example-emphasized-text-em",
+    "href": "lecture03.html#example-emphasized-text-em",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: emphasized text (em)",
+    "text": "Example: emphasized text (em)\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt; \n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;\n\n\nRPython\n\n\n\nhtml_page %&gt;% html_nodes(\"em\") %&gt;% html_text()\n\n\n\n\n[e.get_text(strip=True) for e in html_page.select('em')]"
+  },
+  {
+    "objectID": "lecture03.html#cascading-style-sheets-css",
+    "href": "lecture03.html#cascading-style-sheets-css",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Cascading Style Sheets (CSS)",
+    "text": "Cascading Style Sheets (CSS)\n\nCSS is used to specify the style (appearance, arrangement and variations) of your web pages.\n\n\n&lt;style&gt;\nbody {\n  background-color: lightblue;\n}\nh1 {\n  color: white;\n  text-align: center;\n}\n.content {\nfont-family: monospace;\nfont-size: 1.5em;\ncolor: black;\n}\n#intro {\n  background-color: lightgrey;\n  border-style: solid;\n  border-width: 5px;\n  padding: 5px;\n  margin: 5px;\n  text-align: center;\n}\n&lt;/style&gt;"
+  },
+  {
+    "objectID": "lecture03.html#css-selectors-cheatsheet",
+    "href": "lecture03.html#css-selectors-cheatsheet",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "CSS selectors cheat‑sheet",
+    "text": "CSS selectors cheat‑sheet\n\n\n\nselector\nmeaning\n\n\n\n\ntag\nelement by tag\n\n\n.class\nby class\n\n\n#id\nby id\n\n\na[href]\nattribute present\n\n\na[href*=\"wiki\"]\nattr contains\n\n\nparent &gt; child\ndirect child\n\n\nA + B\nadjacent sibling\n\n\nA ~ B\nany following sibling\n\n\n:first-child, :nth-child(2)\nstructural pseudo‑classes\n\n\n:not(X)\nnegation\n\n\n\nCSS diner, CSS selector, W3 School"
+  },
+  {
+    "objectID": "lecture03.html#css-selector-grouping",
+    "href": "lecture03.html#css-selector-grouping",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "CSS Selector: grouping (,)",
+    "text": "CSS Selector: grouping (,)\n\nThe grouping selector selects all the HTML elements with the same style definitions.\nFor example, div, p selects all &lt;div&gt; elements and all &lt;em&gt; elements."
+  },
+  {
+    "objectID": "lecture03.html#example-grouping-li-and-em",
+    "href": "lecture03.html#example-grouping-li-and-em",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: grouping li and em",
+    "text": "Example: grouping li and em\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;"
+  },
+  {
+    "objectID": "lecture03.html#example-grouping-li-and-em-1",
+    "href": "lecture03.html#example-grouping-li-and-em-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: grouping li and em",
+    "text": "Example: grouping li and em\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt; \n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt; \n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt; \n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt; \n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt; #&lt;&lt;\n\n\nRPython\n\n\n\nhtml_page %&gt;% html_nodes(\"li, em\") %&gt;% html_text()\n\n\n\n\n[e.get_text(strip=True) for e in html_page.select('li, em')]"
+  },
+  {
+    "objectID": "lecture03.html#css-selector-descendant-selector-space",
+    "href": "lecture03.html#css-selector-descendant-selector-space",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "CSS Selector: descendant selector (space)",
+    "text": "CSS Selector: descendant selector (space)\n\nThe descendant selector matches all elements that are descendants of a specified element.\nFor example, div p selects all &lt;p&gt; elements inside &lt;div&gt; elements."
+  },
+  {
+    "objectID": "lecture03.html#example-all-em-that-are-descendants-of-li",
+    "href": "lecture03.html#example-all-em-that-are-descendants-of-li",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: all em that are descendants of li",
+    "text": "Example: all em that are descendants of li\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;"
+  },
+  {
+    "objectID": "lecture03.html#example-all-em-that-are-descendants-of-li-1",
+    "href": "lecture03.html#example-all-em-that-are-descendants-of-li-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: all em that are descendants of li",
+    "text": "Example: all em that are descendants of li\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;\n\n\nRPython\n\n\n\nhtml_page %&gt;% html_nodes(\"li em\") %&gt;% html_text()\n\n\n\n\n[e.get_text(strip=True) for e in html_page.select('li em')]"
+  },
+  {
+    "objectID": "lecture03.html#css-selector-child-selector",
+    "href": "lecture03.html#css-selector-child-selector",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "CSS Selector: child selector (>)",
+    "text": "CSS Selector: child selector (&gt;)\n\nThe child selector selects all elements that are the children of a specified element.\nFor example, div &gt; p selects all &lt;p&gt; elements that are children of a &lt;div&gt; element."
+  },
+  {
+    "objectID": "lecture03.html#example-all-em-that-are-children-of-p",
+    "href": "lecture03.html#example-all-em-that-are-children-of-p",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: all em that are children of p",
+    "text": "Example: all em that are children of p\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;"
+  },
+  {
+    "objectID": "lecture03.html#example-all-em-that-are-children-of-p-1",
+    "href": "lecture03.html#example-all-em-that-are-children-of-p-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: all em that are children of p",
+    "text": "Example: all em that are children of p\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;\n\n\nRPython\n\n\n\nhtml_page %&gt;% html_nodes(\"p &gt; em\") %&gt;% html_text()\n\n\n\n\n[e.get_text(strip=True) for e in html_page.select('p &gt; em')]"
+  },
+  {
+    "objectID": "lecture03.html#css-selector-adjacent-sibling-selector",
+    "href": "lecture03.html#css-selector-adjacent-sibling-selector",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "CSS Selector: adjacent sibling selector (+)",
+    "text": "CSS Selector: adjacent sibling selector (+)\n\nThe adjacent sibling selector is used to select an element that is directly after another specific element.\nSibling elements must have the same parent element, and “adjacent” means “immediately following”.\nFor example, div + p selects the first &lt;p&gt; element that is situated immediately after &lt;div&gt; elements."
+  },
+  {
+    "objectID": "lecture03.html#example-em-immediately-after-p",
+    "href": "lecture03.html#example-em-immediately-after-p",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: em immediately after p",
+    "text": "Example: em immediately after p\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;"
+  },
+  {
+    "objectID": "lecture03.html#example-em-immediately-after-p-1",
+    "href": "lecture03.html#example-em-immediately-after-p-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: em immediately after p",
+    "text": "Example: em immediately after p\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;\n\n\nRPython\n\n\n\nhtml_page %&gt;% html_nodes(\"p + em\") %&gt;% html_text()\n\n\n\n\n[e.get_text(strip=True) for e in html_page.select('p + em')]\n\n\n\n\nNo em are immediately after p."
+  },
+  {
+    "objectID": "lecture03.html#example-em-immediately-after-em",
+    "href": "lecture03.html#example-em-immediately-after-em",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: em immediately after em",
+    "text": "Example: em immediately after em\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;"
+  },
+  {
+    "objectID": "lecture03.html#example-em-immediately-after-em-1",
+    "href": "lecture03.html#example-em-immediately-after-em-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: em immediately after em",
+    "text": "Example: em immediately after em\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;\n\n\nRPython\n\n\n\nhtml_page %&gt;% html_nodes(\"em + em\") %&gt;% html_text()\n\n\n\n\n[e.get_text(strip=True) for e in html_page.select('em + em')]"
+  },
+  {
+    "objectID": "lecture03.html#css-selector-general-sibling-selector",
+    "href": "lecture03.html#css-selector-general-sibling-selector",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "CSS Selector: general sibling selector (~)",
+    "text": "CSS Selector: general sibling selector (~)\n\nThe general sibling selector selects all elements that are next siblings of a specified element.\nSibling elements must have the same parent element, and “general” means “any place”.\nFor example, div ~ p selects all &lt;p&gt; elements that are preceded by a &lt;div&gt; element."
+  },
+  {
+    "objectID": "lecture03.html#example-em-next-sibling-of-a",
+    "href": "lecture03.html#example-em-next-sibling-of-a",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: em next sibling of a",
+    "text": "Example: em next sibling of a\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;"
+  },
+  {
+    "objectID": "lecture03.html#example-em-next-sibling-of-a-1",
+    "href": "lecture03.html#example-em-next-sibling-of-a-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: em next sibling of a",
+    "text": "Example: em next sibling of a\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and \n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt; \n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;\n\n\nRPython\n\n\n\nhtml_page %&gt;% html_nodes(\"a ~ em\") %&gt;% html_text()\n\n\n\n\n[e.get_text(strip=True) for e in html_page.select('a ~ em')]\n\n\n\n\n(Here, we would have obtained the same result with a + em)"
+  },
+  {
+    "objectID": "lecture03.html#css-selector-first-child-selector-first-child",
+    "href": "lecture03.html#css-selector-first-child-selector-first-child",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "CSS Selector: first child selector (:first-child)",
+    "text": "CSS Selector: first child selector (:first-child)\n\n:first-child selects the specified element that is the first child of another element.\nFor example, p:first-child selects all &lt;p&gt; elements that are the first child of any other element."
+  },
+  {
+    "objectID": "lecture03.html#example-all-li-that-are-first-children",
+    "href": "lecture03.html#example-all-li-that-are-first-children",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: all li that are first children",
+    "text": "Example: all li that are first children\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;"
+  },
+  {
+    "objectID": "lecture03.html#example-all-li-that-are-first-children-1",
+    "href": "lecture03.html#example-all-li-that-are-first-children-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: all li that are first children",
+    "text": "Example: all li that are first children\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;  \n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt; \n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;\n\n\nRPython\n\n\n\nhtml_page %&gt;% html_nodes(\"li:first-child\") %&gt;% html_text()\n\n\n\n\n[e.get_text(strip=True) for e in html_page.select('li:first-child')]"
+  },
+  {
+    "objectID": "lecture03.html#css-selector-nth-child-selector-nth-childn",
+    "href": "lecture03.html#css-selector-nth-child-selector-nth-childn",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "CSS Selector: nth child selector (:nth-child(n))",
+    "text": "CSS Selector: nth child selector (:nth-child(n))\n\nRemark: :last-child is completely symmetric to :first-child.\n:nth-child(n) selects the specified element that is the nth child of another element.\nFor example, p:nth-child(2) selects all &lt;p&gt; elements that are the second child of any other element."
+  },
+  {
+    "objectID": "lecture03.html#example-all-li-that-are-second-children",
+    "href": "lecture03.html#example-all-li-that-are-second-children",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: all li that are second children",
+    "text": "Example: all li that are second children\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;"
+  },
+  {
+    "objectID": "lecture03.html#example-all-li-that-are-second-children-1",
+    "href": "lecture03.html#example-all-li-that-are-second-children-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: all li that are second children",
+    "text": "Example: all li that are second children\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt; \n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;\n\n\nRPython\n\n\n\nhtml_page %&gt;% html_nodes(\"li:nth-child(2)\") %&gt;% html_text()\n\n\n\n\n[e.get_text(strip=True) for e in html_page.select('li:nth-child(2)')]"
+  },
+  {
+    "objectID": "lecture03.html#html-attributes",
+    "href": "lecture03.html#html-attributes",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "HTML attributes",
+    "text": "HTML attributes\n\nAll HTML elements can have attributes, additional information about elements.\nAttributes are always specified in the start tag, usually in the format name=\"value\".\nFor example, &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt;, href is an attribute of a that specifies an url.\nAttributes can be accessed with html_attr command."
+  },
+  {
+    "objectID": "lecture03.html#example-href-attributes",
+    "href": "lecture03.html#example-href-attributes",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: href attributes",
+    "text": "Example: href attributes\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and\n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt;\n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;"
+  },
+  {
+    "objectID": "lecture03.html#example-href-attributes-1",
+    "href": "lecture03.html#example-href-attributes-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: href attributes",
+    "text": "Example: href attributes\n\n\n    &lt;p&gt; Basic experience with &lt;a href=\"www.r-project.org\"&gt;R&lt;/a&gt; and \n    familiarity with the &lt;em&gt;Tidyverse&lt;/em&gt; is recommended.&lt;/p&gt;\n    &lt;h2&gt;Technologies&lt;/h2&gt;\n    &lt;ol&gt;\n      &lt;li&gt;HTML: &lt;em&gt;Hypertext Markup Language&lt;/em&gt;&lt;/li&gt;\n      &lt;li&gt;CSS: &lt;em&gt;Cascading Style Sheets&lt;/em&gt;&lt;/li&gt;\n    &lt;/ol&gt;\n    &lt;h2&gt;Packages&lt;/h2&gt;\n    &lt;ul&gt;\n      &lt;a href=\"https://github.com/tidyverse/rvest\"&gt;&lt;li&gt;rvest&lt;/li&gt;&lt;/a&gt; \n    &lt;/ul&gt;\n    &lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;:\n    &lt;em&gt;rvest&lt;/em&gt; is included in the &lt;em&gt;tidyverse&lt;/em&gt;&lt;/p&gt;\n\n\nRPython\n\n\n\nhtml_page %&gt;% html_nodes(\"a\") %&gt;% html_attr(\"href\")\n\n\n\n\n[a.get('href') for a in html_page.select('a')]"
+  },
+  {
+    "objectID": "lecture03.html#html-tables",
+    "href": "lecture03.html#html-tables",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "HTML tables",
+    "text": "HTML tables\n\n\n\ntag\nmeaning\n\n\n\n\ntable\nTable section\n\n\ntr\nTable row\n\n\ntd\nTable cell\n\n\nth\nTable header\n\n\n\n\nTables can be fetched by using the command html_table()"
+  },
+  {
+    "objectID": "lecture03.html#example-wikipedia-table",
+    "href": "lecture03.html#example-wikipedia-table",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: Wikipedia table",
+    "text": "Example: Wikipedia table\n\nWe would like to fetch the table with Qualified teams of the Rugby World Cup 2023 on Wikipedia.\nA first solution: fetch all tables and select the correct one.\n\n\nRPython\n\n\n\nurl &lt;- \"https://en.wikipedia.org/wiki/2023_Rugby_World_Cup\"\nurl %&gt;% read_html() %&gt;% html_table() %&gt;% .[[4]] %&gt;% kableExtra::kable()\n\n\n\n\nimport pandas as pd\nurl = \"https://en.wikipedia.org/wiki/2023_Rugby_World_Cup\"\n# Fetch all tables, pick the 5th (0-indexed 4) like the R example\npd.read_html(url)[4]"
+  },
+  {
+    "objectID": "lecture03.html#example-wikipedia-table-1",
+    "href": "lecture03.html#example-wikipedia-table-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: Wikipedia table",
+    "text": "Example: Wikipedia table\n\nInspect the HTML with the developer tools."
+  },
+  {
+    "objectID": "lecture03.html#example-wikipedia-table-2",
+    "href": "lecture03.html#example-wikipedia-table-2",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: Wikipedia table",
+    "text": "Example: Wikipedia table\n\nA better solution using CSS selectors: using the class selector (.).\nSelect class=\"wikitable\".\n\n\nRPython\n\n\n\nurl &lt;- \"https://en.wikipedia.org/wiki/2023_Rugby_World_Cup\"\nurl %&gt;% read_html() %&gt;% html_nodes(\".wikitable\") %&gt;% html_table() %&gt;% .[[3]] %&gt;% kableExtra::kable() # equivalently html_nodes(\"table.wikitable\")\n\n\n\n\nimport pandas as pd\nurl = \"https://en.wikipedia.org/wiki/2023_Rugby_World_Cup\"\n# read_html can filter by attrs (class)\npd.read_html(url, attrs={\"class\":\"wikitable\"})[2]"
+  },
+  {
+    "objectID": "lecture03.html#example-wikipedia-table-3",
+    "href": "lecture03.html#example-wikipedia-table-3",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: Wikipedia table",
+    "text": "Example: Wikipedia table\n\nA better solution using CSS selectors: using the class selector (.).\nSelect class=\"wikitable sortable\".\n\n\nRPython\n\n\n\nurl &lt;- \"https://en.wikipedia.org/wiki/2023_Rugby_World_Cup\"\nurl %&gt;% read_html() %&gt;% html_nodes(\".wikitable.sortable\") %&gt;% html_table() %&gt;%  kableExtra::kable() # equivalently html_nodes(\"table.wikitable.sortable\")\n\n\n\n\nimport pandas as pd\nurl = \"https://en.wikipedia.org/wiki/2023_Rugby_World_Cup\"\npd.read_html(url, attrs={\"class\":\"wikitable sortable\"})[0]"
+  },
+  {
+    "objectID": "lecture03.html#example-wikipedia-table-4",
+    "href": "lecture03.html#example-wikipedia-table-4",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: Wikipedia table",
+    "text": "Example: Wikipedia table\n\nAn alternative solution: select table immediately after four p.\n\n\nRPython\n\n\n\nurl &lt;- \"https://en.wikipedia.org/wiki/2023_Rugby_World_Cup\"\nurl %&gt;% read_html() %&gt;% html_nodes(\"p + p + p + p + table\") %&gt;% html_table() %&gt;% kableExtra::kable()\n\n\n\n\nimport requests, pandas as pd\nfrom bs4 import BeautifulSoup\nurl = \"https://en.wikipedia.org/wiki/2023_Rugby_World_Cup\"\nhtml = requests.get(url).text\nsoup = BeautifulSoup(html, 'html.parser')\ntable = soup.select_one('p + p + p + p + table')\npd.read_html(str(table))[0]"
+  },
+  {
+    "objectID": "lecture03.html#why-web-scraping-could-be-bad",
+    "href": "lecture03.html#why-web-scraping-could-be-bad",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Why web scraping could be bad?",
+    "text": "Why web scraping could be bad?\n\nScraping increases web traffic.\nPeople ignore and violate robots.txt and Terms of Service (ToS) of websites.\nYou should avoid those troubles by following these simple rules:\n\n\nRead ToS of the website you want to scrap.\nInspect robots.txt (see https://cran.r-project.org/robots.txt for instance).\nUse a reasonable frequency of requests (force your program to make some pauses)."
+  },
+  {
+    "objectID": "lecture03.html#respect-robots-be-polite",
+    "href": "lecture03.html#respect-robots-be-polite",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Respect robots, be polite",
+    "text": "Respect robots, be polite\n\nCheck robots.txt and TOS\nIdentify yourself via User‑Agent\nAdd random delays and exponential backoff\nCache responses during development\n\n\nRPython\n\n\nlibrary(polite)\nrobotstxt::paths_allowed(\"https://en.wikipedia.org/wiki/Main_Page\")\n# caching demo\nlibrary(httr2)\nreq &lt;- request(\"https://httpbin.org/get\") |&gt;\n  req_options(useragent = \"DaCM-course/1.0\") |&gt;\n  req_perform()\n\n\nimport time, random, requests\nfrom urllib import robotparser\nfrom tenacity import retry, wait_exponential, stop_after_attempt\nimport requests_cache\n\nrp = robotparser.RobotFileParser()\nrp.set_url(\"https://en.wikipedia.org/robots.txt\"); rp.read()\nrp.can_fetch(\"DaCM-course\", \"https://en.wikipedia.org/wiki/Main_Page\")\n\nsession = requests_cache.CachedSession(\"scrape_cache\", expire_after=3600)\n@retry(wait=wait_exponential(multiplier=1, min=1, max=30), stop=stop_after_attempt(5))\ndef get(url):\n    time.sleep(random.uniform(0.5,1.5))\n    return session.get(url, headers={\"User-Agent\":\"DaCM-course/1.0\"}, timeout=20)\nresp = get(\"https://httpbin.org/get\")\nresp.json()"
+  },
+  {
+    "objectID": "lecture03.html#dynamic-sites-advanced",
+    "href": "lecture03.html#dynamic-sites-advanced",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Dynamic sites (advanced)",
+    "text": "Dynamic sites (advanced)\n\nSometimes, what you see in your browser is not what is returned by read_html(). In many cases, this is due to website that employs methods for dynamic data requests.\nA solution is to simulate a browser to cope with dynamically rendered webpages.\nSelenium offers a solution. It is a project focused on automating web browsers.\nYou have access to Selenium with the RSelenium package.\nAn alternative is the chromote package (developped by Posit) that focuses on Chrome DevTools Protocol."
+  },
+  {
+    "objectID": "lecture03.html#world-bank-data",
+    "href": "lecture03.html#world-bank-data",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "World bank data",
+    "text": "World bank data"
+  },
+  {
+    "objectID": "lecture03.html#world-bank-data-1",
+    "href": "lecture03.html#world-bank-data-1",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "World bank data",
+    "text": "World bank data"
+  },
+  {
+    "objectID": "lecture03.html#world-bank-data-2",
+    "href": "lecture03.html#world-bank-data-2",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "World bank data",
+    "text": "World bank data\n\nTrying to fetch the data non-dynamically using class=\"item\".\n\n\nRPython\n\n\n\nurl &lt;- \"https://data.worldbank.org/indicator/SP.ADO.TFRT\"\nurl %&gt;% read_html() %&gt;% html_nodes(\".item\") %&gt;% html_text() # or html_nodes(\"div.item\")\n\n\nOnly the header is returned.\n\n\n\n\nimport requests\nfrom bs4 import BeautifulSoup\nurl = \"https://data.worldbank.org/indicator/SP.ADO.TFRT\"\nsoup = BeautifulSoup(requests.get(url).text, 'html.parser')\n[x.get_text(strip=True) for x in soup.select('.item')][:6]\n\n# Only header-like elements typically appear; dynamic content isn't in the initial HTML."
+  },
+  {
+    "objectID": "lecture03.html#world-bank-data-3",
+    "href": "lecture03.html#world-bank-data-3",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "World bank data",
+    "text": "World bank data\n\nA first dynamic solution.\n\n\nRPython\n\n\n\nlibrary(chromote)\nb &lt;- ChromoteSession$new() # open a chromote session\nurl &lt;- \"https://data.worldbank.org/indicator/SP.ADO.TFRT\"\nb$Page$navigate(url) # navigate to the url\nb$Runtime$evaluate(\"document.querySelector('html').outerHTML\")$result$value %&gt;%\n  read_html() %&gt;% html_nodes(\".item\") %&gt;% html_text() %&gt;% head()\nb$close() # close the session\n\n\n\n\n# Example with Selenium (browser automation). Requires: pip install selenium webdriver-manager\nfrom bs4 import BeautifulSoup\nfrom selenium import webdriver\nfrom selenium.webdriver.firefox.options import Options\nfrom webdriver_manager.firefox import GeckoDriverManager\n\noptions = Options()\noptions.add_argument(\"-headless\")\ndriver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)\nurl = \"https://data.worldbank.org/indicator/SP.ADO.TFRT\"\ndriver.get(url)\nhtml = driver.page_source\nsoup = BeautifulSoup(html, 'html.parser')\nitems = [x.get_text(strip=True) for x in soup.select('.item')][:6]\ndriver.quit()\nitems"
+  },
+  {
+    "objectID": "lecture03.html#world-bank-data-4",
+    "href": "lecture03.html#world-bank-data-4",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "World bank data",
+    "text": "World bank data\nSome comments on the chromote command:\n\nb &lt;- ChromoteSession$new() create a new ChromoteSession object assigned to b.\nb$Page$navigate(url) navigates to the provided URL.\nThe Runtime$evaluate command tells the browser to run JavaScript code.\nThe JavaScript code document.querySelector('html').outerHTML selects the\n\nelement from the current web page’s Document Object Model (DOM), and then retrieves its entire HTML content, including the element itself and everything inside it.\nEssentially, it captures the entire structure of the HTML document, from the opening\n\ntag to the closing\n\ntag, as a string.\nNotice that the browser can be viewed using b$view()\nCheck the package site for more info."
+  },
+  {
+    "objectID": "lecture03.html#world-bank-data-5",
+    "href": "lecture03.html#world-bank-data-5",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "World bank data",
+    "text": "World bank data\n\nchromote is for Chrome, Chromium and the likes. Selenium is more general.\nUnfortunately, the solution using RSelenium is currently not working properly. But here is how a possible implementation would look like.\n\n\nRPython\n\n\n\nrD &lt;- rsDriver(browser=\"firefox\", port=4545L, verbose=F)\nremDr &lt;- rD[[\"client\"]]\nremDr$navigate(url)\nhtml_page &lt;- remDr$getPageSource()[[1]]\nhtml_page %&gt;% read_html() %&gt;% html_nodes(\".item\") %&gt;% html_text()\n\n\n\n\n# Selenium example shown previously; equivalent: use Chrome/Firefox drivers similarly."
+  },
+  {
+    "objectID": "lecture03.html#dynamic-sites-overview",
+    "href": "lecture03.html#dynamic-sites-overview",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Dynamic sites (overview)",
+    "text": "Dynamic sites (overview)\nWhen HTML is rendered by JavaScript, read_html()/requests won’t see final content.\nOptions:\n\nR chromote (Chrome DevTools Protocol)\nPython playwright (modern) or selenium (browser automation)\n\n\nR — chromotePython — playwright\n\n\nlibrary(chromote)\nb &lt;- ChromoteSession$new(); b$Page$navigate(\"https://data.worldbank.org/indicator/SP.ADO.TFRT\")\nhtml &lt;- b$Runtime$evaluate(\"document.documentElement.outerHTML\")$result$value\nread_html(html) |&gt;\n  html_elements(\".some-selector\") |&gt;\n  html_text()\nb$close()\n\n\n# playwright install must have been run once\nfrom playwright.sync_api import sync_playwright\nwith sync_playwright() as p:\n    browser = p.chromium.launch(headless=True)\n    page = browser.new_page()\n    page.goto(\"https://data.worldbank.org/indicator/SP.ADO.TFRT\", wait_until=\"networkidle\")\n    html = page.content()\n    # parse with BeautifulSoup here\n    browser.close()"
+  },
+  {
+    "objectID": "lecture03.html#regular-expressions",
+    "href": "lecture03.html#regular-expressions",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Regular Expressions",
+    "text": "Regular Expressions\n\nRegular expressions (regex) are patterns used to match character combinations in strings. They are particularly useful for extracting or replacing parts of text data."
+  },
+  {
+    "objectID": "lecture03.html#using-regex-in-r",
+    "href": "lecture03.html#using-regex-in-r",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Using Regex in R",
+    "text": "Using Regex in R\n\nR has built-in functions to work with regular expressions:\n\ngrep(): Search for matches of a pattern in a character vector.\ngrepl(): Returns a logical vector indicating if there is a match.\nsub(), gsub(): Replace the first or all occurrences of a pattern in a string.\nregexpr(), gregexpr(): Find the position and length of matches.\nstr_extract() and str_replace() from stringr package for a tidy approach.\n\n\n\n\n\n\n\n\nTip\n\n\nPython equivalents:\n\nre.search, re.findall, re.finditer for matching.\nre.sub for replacing.\nre.compile to pre-compile patterns.\npandas.Series.str.contains / .extract / .replace for vectorized ops on Series."
+  },
+  {
+    "objectID": "lecture03.html#basics-of-regular-expressions",
+    "href": "lecture03.html#basics-of-regular-expressions",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Basics of Regular Expressions",
+    "text": "Basics of Regular Expressions\n\nCommon symbols used in regular expressions:\n\n.: Any single character except newline.\n*: Zero or more repetitions of the preceding character.\n+: One or more repetitions of the preceding character.\n?: Zero or one repetition of the preceding character.\n[]: A set of characters. For example, [abc] matches ‘a’, ‘b’, or ‘c’.\n^: In [], it inverts the match. For example, [^abc] matches everything except ‘a’, ‘b’, or ‘c’.\n^: Matches the start of a string.\n$: Matches the end of a string.\n-: Defines a range of characters. For example, [a-z] matches any lowercase letter.\n\\\\: Escape character."
+  },
+  {
+    "objectID": "lecture03.html#useful-pairs-of-characters",
+    "href": "lecture03.html#useful-pairs-of-characters",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Useful pairs of characters",
+    "text": "Useful pairs of characters\n\n\\\\d: Any digit.\n\\\\D: Any non-digit.\n\\\\w: Any word character (alphanumeric + underscore).\n\\\\W: Any non-word character.\n\\\\s: Any whitespace character.\n\\\\S: Any non-whitespace character.\n\nQuantifiers:\n\n{n}: Exactly n repetitions.\n{n,}: At least n repetitions.\n{n,m}: Between n and m repetitions."
+  },
+  {
+    "objectID": "lecture03.html#example-extracting-data-with-regex",
+    "href": "lecture03.html#example-extracting-data-with-regex",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: Extracting Data with Regex",
+    "text": "Example: Extracting Data with Regex\n\nRPython\n\n\n\nlibrary(stringr)\n\ntext &lt;- \"John's email is john.doe@example.com and Jane's email is jane_doe123@example.org\"\n\n# Extract all email addresses\n# chatGPT solution:\n# emails &lt;- str_extract_all(text, \"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\\\.[a-zA-Z]{2,}\")\nemails &lt;- str_extract_all(text, \"\\\\S+@\\\\S+\")\nprint(emails)\n\n\n\n\nimport re\ntext = \"John's email is john.doe@example.com and Jane's email is jane_doe123@example.org\"\n# ChatGPT-like stricter pattern (commented):\n# emails = re.findall(r\"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\", text)\nemails = re.findall(r\"\\S+@\\S+\", text)\nemails"
+  },
+  {
+    "objectID": "lecture03.html#example-cleaning-text-with-regex",
+    "href": "lecture03.html#example-cleaning-text-with-regex",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Example: Cleaning Text with Regex",
+    "text": "Example: Cleaning Text with Regex\n\nUse gsub() to clean text data by removing unwanted characters.\n\n\nRPython\n\n\n\n# Replace all non-alphanumeric characters with a space\n# chatGPT solution:\n# clean_text &lt;- gsub(\"[^a-zA-Z0-9\\\\s]\", \" \", \"Hello, World! Welcome to R programming.\")\nclean_text &lt;- gsub(\"\\\\W\", \" \", \"Hello, World! Welcome to R programming.\")\nprint(clean_text)\n\n\n\n\nimport re\nclean_text = re.sub(r\"\\W\", \" \", \"Hello, World! Welcome to R programming.\")\nclean_text"
+  },
+  {
+    "objectID": "lecture03.html#miniexercises",
+    "href": "lecture03.html#miniexercises",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Mini‑exercises",
+    "text": "Mini‑exercises\n\nSelector hunt: On a Wikipedia page of your choice, find a CSS selector that returns exactly the list of section headings.\nTable picker: Extract one table from a Wikipedia article both with R and Python. Compare row counts.\nLink map: Collect the first 20 unique links from a Wikipedia page of your choice and count domain frequency (R or Python).\nRespect the robots: Check if scraping is allowed for a path of your choice."
+  },
+  {
+    "objectID": "lecture03.html#common-pitfalls-fixes",
+    "href": "lecture03.html#common-pitfalls-fixes",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "Common pitfalls & fixes",
+    "text": "Common pitfalls & fixes\n\nChanged selectors? Prefer stable hooks: IDs, data-* attributes, semantic classes\nEncoding issues? Check content-type and use encoding='utf-8'\nBlocked? Reduce rate, rotate User-Agent, add referer; never bypass auth/captcha"
+  },
+  {
+    "objectID": "lecture03.html#references-further-reading",
+    "href": "lecture03.html#references-further-reading",
+    "title": "Lecture 3 — Data Management & Collection",
+    "section": "References & further reading",
+    "text": "References & further reading\n\nR: rvest (tidyverse.org), httr2, polite, chromote\nPython: requests, BeautifulSoup, lxml, pandas.read_html, playwright, selenium, requests-cache, tenacity\nRegex: R4DS chapters on regex; regex101.com for testing\nEthics: robotstxt.org; site Terms of Service"
+  },
+  {
+    "objectID": "lecture01.html#welcome",
+    "href": "lecture01.html#welcome",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Welcome!",
+    "text": "Welcome!\n\n\n\nCourse: Data & Code Management: From Collection to Application\nTime & place: Thursdays 9:00–12:00\nCommunication: Slack (class workspace)\nMaterials: GitHub repo & website\nGrading: participation (bonus), homeworks (3 indivuals) and final project (group)\n\nAlways refer to the course website dcm.samorso.ch for the latest info!\n\n\n\n“Reproducibility is job #1 for modern data science.”\n— everyone who has ever lost a script 😉\n\n\n\n\n\n\n\n\nNote\n\n\nToday’s goals\n1. Understand course scope & expectations\n2. See why reproducibility matters\n3. Meet the core toolchain (R, Python, SQL, GitHub, Markdown/Jupyter/Quarto)\n4. Try small, focused exercises"
+  },
+  {
+    "objectID": "lecture01.html#agenda",
+    "href": "lecture01.html#agenda",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Agenda",
+    "text": "Agenda\n\nCourse overview & evaluation\n\nReproducibility in analytics\n\nCore tools & workflows\n\nQuarto refresher\nGitHub refresher\nMini‑exercises\n\nTip: Slides include short activities you can try during/after class."
+  },
+  {
+    "objectID": "lecture01.html#expectations-evaluation",
+    "href": "lecture01.html#expectations-evaluation",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Expectations & Evaluation",
+    "text": "Expectations & Evaluation\n\nParticipation: engaged presence (practicals), Slack questions/answers\nHomeworks: short, targeted (programming, SQL, tooling)\nProject: real‑world style, reproducible deliverable\nAcademic integrity: cite sources, no copy‑paste answers\n\nTools allowed: R, Python, SQL, Quarto, GitHub, AI copilots (with provenance & verification)."
+  },
+  {
+    "objectID": "lecture01.html#what-are-llms",
+    "href": "lecture01.html#what-are-llms",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "What are LLMs?",
+    "text": "What are LLMs?\n\nDefinition: Large Language Models (LLMs) are AI models trained on vast amounts of text data to understand and generate human language.\nExamples:\n\nGPT-4, GPT-5 (OpenAI)\nGemini (Google)\nLLaMA (Meta)\nClaude (Anthropic)\n\nCapabilities:\n\nNatural language understanding and generation\nText completion, summarization, translation\nAssistance in various domains, including programming."
+  },
+  {
+    "objectID": "lecture01.html#why-are-they-important-for-programming",
+    "href": "lecture01.html#why-are-they-important-for-programming",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Why are they important for programming?",
+    "text": "Why are they important for programming?\n\nLLMs can understand code as a special type of language.\n\nThey offer assistance in code generation, debugging, and improving programming productivity."
+  },
+  {
+    "objectID": "lecture01.html#llm-for-programming---key-features",
+    "href": "lecture01.html#llm-for-programming---key-features",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "LLM for Programming - Key Features",
+    "text": "LLM for Programming - Key Features\n\nCode Suggestions:\n\nAutomates repetitive coding tasks.\nHelps in writing boilerplate code.\nSee for instance GitHub’s copilot.\n\nError Debugging:\n\nIdentifies and resolves bugs in code snippets.\nSuggests alternative solutions or optimizations.\n\nCode Explanation:\n\nBreaks down complex code into simple explanations.\nHelps in learning new programming concepts."
+  },
+  {
+    "objectID": "lecture01.html#benefits-of-using-llms-like-chatgpt-in-programming",
+    "href": "lecture01.html#benefits-of-using-llms-like-chatgpt-in-programming",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Benefits of Using LLMs like ChatGPT in Programming",
+    "text": "Benefits of Using LLMs like ChatGPT in Programming\n1. Increased Productivity\n\nAutomates repetitive and boilerplate tasks.\nHelps explore new coding approaches faster.\n\n2. Learning and Discovery\n\nExplains code, libraries, and new languages in an intuitive manner.\nGreat for beginners and advanced users alike."
+  },
+  {
+    "objectID": "lecture01.html#challenges-and-considerations",
+    "href": "lecture01.html#challenges-and-considerations",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Challenges and Considerations",
+    "text": "Challenges and Considerations\n1. Not Always Correct\n\nLLMs can suggest incorrect code, it can hallucinate, requiring human oversight.\n\n2. Context Limitations\n\nLLMs lack the full project context, so they might not understand the specific requirements.\n\n3. Ethical Concerns\n\nIntellectual property, security, and data privacy must be considered when using AI for programming.\n\n\n\n\n\n\n\nImportant\n\n\nAI policy (short)\nUse AI to brainstorm, outline, or lint code. Own the result: verify outputs, write your tests, and document AI assistance (what, why, where)."
+  },
+  {
+    "objectID": "lecture01.html#minimal-project-structure",
+    "href": "lecture01.html#minimal-project-structure",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Minimal Project Structure",
+    "text": "Minimal Project Structure\nproject/\n├─ data/           # raw/ and processed/ (never overwrite raw)\n├─ R/ or src/      # functions, modules\n├─ notebooks/      # exploratory analysis\n├─ reports/        # Quarto/Markdown outputs\n├─ tests/          # unit tests\n├─ renv/ or .venv/ # R or Python environment\n├─ .gitignore\n└─ README.md"
+  },
+  {
+    "objectID": "lecture01.html#tooling-map",
+    "href": "lecture01.html#tooling-map",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Tooling Map",
+    "text": "Tooling Map\n\nR (tidyverse, data.table) & Python (pandas, polars)\nSQL for data retrieval/joins/aggregations (week 5)\nGit + GitHub for versioning & collaboration\nMarkdown/Jupyter/Quarto for literate workflows\nOptional helpers: make, pre-commit, linters\n\n\n\nR snippet\n# Vectorized transform\nlibrary(dplyr)\nset.seed(42)\ndf &lt;- tibble(x = rnorm(5), y = rnorm(5))\ndf |&gt;\n  mutate(z = x + y, grp = if_else(z &gt; 0, \"pos\", \"neg\"))\n\nPython snippet\nimport pandas as pd\nimport numpy as np\nrng = np.random.default_rng(42)\ndf = pd.DataFrame({\"x\": rng.normal(size=5), \"y\": rng.normal(size=5)})\ndf.assign(z=lambda d: d.x + d.y,\n          grp=lambda d: np.where(d.z &gt; 0, \"pos\", \"neg\"))\n\n\n\n\n\n\n\nCaution\n\n\nAre these codes reproducible? Why/why not?"
+  },
+  {
+    "objectID": "lecture01.html#what-is-quarto",
+    "href": "lecture01.html#what-is-quarto",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "What is Quarto?",
+    "text": "What is Quarto?\n\nQuarto: successor of RMarkdown\nmarkdown contrasts markup languages (e.g. HTML) which require heavy syntax\nQuarto provides a literate programming framework for data science.\nLiterate programming: narrative + code in the same document.\nReproducible research: analyses can be reproduced the same way by someone else."
+  },
+  {
+    "objectID": "lecture01.html#what-is-quarto-1",
+    "href": "lecture01.html#what-is-quarto-1",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "What is Quarto?",
+    "text": "What is Quarto?\n\nIn a nutshell, Quarto builds on Pandoc and execution engines (Knitr for R, Jupyter for Python/Julia/Observable). It allows embedding code into Markdown documents, which can be rendered into multiple formats (HTML, PDF, Word, …)."
+  },
+  {
+    "objectID": "lecture01.html#create-a-quarto-document",
+    "href": "lecture01.html#create-a-quarto-document",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Create a Quarto document",
+    "text": "Create a Quarto document\nIn RStudio or VSCode, click File → New File → Quarto Document. Or simply create a .qmd file."
+  },
+  {
+    "objectID": "lecture01.html#important-features-of-markdown",
+    "href": "lecture01.html#important-features-of-markdown",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Important features of markdown",
+    "text": "Important features of markdown\n\nThree aspects:\n\nYAML metadata\nText\nCode cells/chunks"
+  },
+  {
+    "objectID": "lecture01.html#yaml-yaml-aint-markup-language",
+    "href": "lecture01.html#yaml-yaml-aint-markup-language",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "YAML (YAML Ain’t Markup Language)",
+    "text": "YAML (YAML Ain’t Markup Language)\n\nHeader where options are defined.\nSurrounded by ---\nOptions include: author, date, output format, table of contents, themes, code folding, …\n\nExample:\n---\ntitle: \"My Report\"\nauthor: \"Jane Doe\"\nformat: html\ntoc: true\n---"
+  },
+  {
+    "objectID": "lecture01.html#text-in-markdown",
+    "href": "lecture01.html#text-in-markdown",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Text in Markdown",
+    "text": "Text in Markdown\n\nCore body, essential for explaining your analysis.\nMarkdown syntax:\n\n*italics*, **bold**, code style\nheaders (#, ##, ###)\nlists (*, -, +, 1.)\nlinks: [Quarto](https://quarto.org)\nblockquotes (&gt; …)\nimages: ![](path/to/img.png)\ntables (basic Markdown or functions like knitr::kable())"
+  },
+  {
+    "objectID": "lecture01.html#extended-text-features",
+    "href": "lecture01.html#extended-text-features",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Extended text features",
+    "text": "Extended text features\n\nMath: in \\(\\LaTeX\\) via $...$ inline or $$...$$ display.\nCross-references: @fig-label or @sec-label.\nCitations with .bib files ([@doe2023]).\nYou can always use HTML when needed."
+  },
+  {
+    "objectID": "lecture01.html#code-cells-in-quarto",
+    "href": "lecture01.html#code-cells-in-quarto",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Code cells in Quarto",
+    "text": "Code cells in Quarto\nQuarto supports R, Python, Julia, and ObservableJS.\nCode cell delimiters:\n```r\n# R code here\n```\n\n```python\n# Python code here\n```\n\nIn Jupyter notebooks, the same concepts apply — each code cell is language-specific."
+  },
+  {
+    "objectID": "lecture01.html#chunk-cell-options",
+    "href": "lecture01.html#chunk-cell-options",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Chunk / cell options",
+    "text": "Chunk / cell options\nQuarto syntax uses YAML-like #| comments:\n```r\n#| echo: false\n#| eval: true\n#| warning: false\n#| cache: false\n1 + 1\n```\nOptions you’ll use most often:\n\neval: run code?\necho: show code?\nwarning: show warnings?\ncache: reuse computations?"
+  },
+  {
+    "objectID": "lecture01.html#figures-in-code-cells",
+    "href": "lecture01.html#figures-in-code-cells",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Figures in code cells",
+    "text": "Figures in code cells\nOptions for plots:\n```r\n#| fig-width: 6\n#| fig-height: 4\n#| fig-align: center\n#| fig-cap: \"A scatterplot\"\nplot(iris$Sepal.Length, iris$Sepal.Width)\n```\n\nA scatterplot"
+  },
+  {
+    "objectID": "lecture01.html#printing-tables-with-knitrkable",
+    "href": "lecture01.html#printing-tables-with-knitrkable",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Printing tables with knitr::kable()",
+    "text": "Printing tables with knitr::kable()\n```r\n#| echo: true\n#| fig-height: 5\ndata(\"iris\")\nknitr::kable(iris[1:5,])\n```\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\n5.1\n3.5\n1.4\n0.2\nsetosa\n\n\n4.9\n3.0\n1.4\n0.2\nsetosa\n\n\n4.7\n3.2\n1.3\n0.2\nsetosa\n\n\n4.6\n3.1\n1.5\n0.2\nsetosa\n\n\n5.0\n3.6\n1.4\n0.2\nsetosa\n\n\n\n\n\nFor enhanced tables: kableExtra."
+  },
+  {
+    "objectID": "lecture01.html#extended-tables-with-kableextra",
+    "href": "lecture01.html#extended-tables-with-kableextra",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Extended tables with kableExtra",
+    "text": "Extended tables with kableExtra\n\nlibrary(kableExtra)\nmtcars[1:3, 1:8] %&gt;%\n  kbl() %&gt;%\n  kable_paper(full_width = T)\n\n\n\n\n\nmpg\ncyl\ndisp\nhp\ndrat\nwt\nqsec\nvs\n\n\n\n\nMazda RX4\n21.0\n6\n160\n110\n3.90\n2.620\n16.46\n0\n\n\nMazda RX4 Wag\n21.0\n6\n160\n110\n3.90\n2.875\n17.02\n0\n\n\nDatsun 710\n22.8\n4\n108\n93\n3.85\n2.320\n18.61\n1"
+  },
+  {
+    "objectID": "lecture01.html#mathpix-for-equations",
+    "href": "lecture01.html#mathpix-for-equations",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mathpix for equations",
+    "text": "Mathpix for equations\nMathpix Snip digitizes handwritten/printed math and pastes directly into Markdown/LaTeX/Word."
+  },
+  {
+    "objectID": "lecture01.html#live-preview",
+    "href": "lecture01.html#live-preview",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Live preview",
+    "text": "Live preview\n\nRStudio: quarto preview\nVSCode: Quarto extension\nJupyter: live interactive editing\n\nInstant feedback without full rebuilds."
+  },
+  {
+    "objectID": "lecture01.html#why-github",
+    "href": "lecture01.html#why-github",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Why GitHub?",
+    "text": "Why GitHub?\n\nWork with others on the same project without endless email exchanges\n\nAvoid “file_v1”, “file_v2”, “final_version_really.R” chaos\n\nTrack who changed what and when\n\nDiscuss, review, and plan changes in one place\n\n\n\n\n\n\n\nTip\n\n\n💡 Think of GitHub as both a time machine and a teamwork hub."
+  },
+  {
+    "objectID": "lecture01.html#why-github-for-this-course",
+    "href": "lecture01.html#why-github-for-this-course",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Why GitHub for this course?",
+    "text": "Why GitHub for this course?\nWe will use GitHub to:\n- Work in groups on projects\n- Submit homeworks\n- Develop programs"
+  },
+  {
+    "objectID": "lecture01.html#what-is-git",
+    "href": "lecture01.html#what-is-git",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "What is Git?",
+    "text": "What is Git?\nGit is a distributed version control system:\n\nDistributed: every copy of a project has the full history\n\nVersion control: keeps track of all changes to your project\n\n\n\n\n\n\n\nImportant\n\n\nInstead of dozens of “final” files, Git records every change in one clean history."
+  },
+  {
+    "objectID": "lecture01.html#types-of-version-control-systems",
+    "href": "lecture01.html#types-of-version-control-systems",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Types of Version Control Systems",
+    "text": "Types of Version Control Systems\n\nLocal – on your own computer\n\nCentralized – one main server (risk of failure!)\n\nDistributed – full history on every machine (Git)"
+  },
+  {
+    "objectID": "lecture01.html#why-version-control",
+    "href": "lecture01.html#why-version-control",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Why Version Control?",
+    "text": "Why Version Control?\n\nCollaborate safely with others\n\nRoll back mistakes\n\nExplore new ideas with branches\n\nReduce risks of file loss or corruption"
+  },
+  {
+    "objectID": "lecture01.html#git-github",
+    "href": "lecture01.html#git-github",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Git ≠ GitHub",
+    "text": "Git ≠ GitHub\n\nGit = software for version control\n\nGitHub = website/platform that hosts Git repositories\n\nAlternatives: GitLab, BitBucket, SourceForge"
+  },
+  {
+    "objectID": "lecture01.html#file-states-in-git",
+    "href": "lecture01.html#file-states-in-git",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "File States in Git",
+    "text": "File States in Git\nA file can be:\n- Untracked – new, not in Git yet\n- Modified – changed, not saved in history\n- Staged – marked for next snapshot\n- Committed – safely stored in the repository"
+  },
+  {
+    "objectID": "lecture01.html#ignoring-files",
+    "href": "lecture01.html#ignoring-files",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Ignoring Files",
+    "text": "Ignoring Files\nUse a .gitignore file to tell Git which files to skip:\n- Temporary files (.Rhistory, .DS_Store)\n- Large data files\n- Secrets or keys"
+  },
+  {
+    "objectID": "lecture01.html#github-basic-workflow",
+    "href": "lecture01.html#github-basic-workflow",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "GitHub: Basic Workflow",
+    "text": "GitHub: Basic Workflow\n\nOpen your RStudio project (linked to GitHub)\n\nWork locally as usual\n\nSave often\n\nCommit snapshots of your changes\n\nPush commits to GitHub\n\nOn another computer (or from a teammate) → Pull updates\n\n\n\n\n\n\n\nTip\n\n\nAlways pull before you push to avoid conflicts!"
+  },
+  {
+    "objectID": "lecture01.html#commits",
+    "href": "lecture01.html#commits",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Commits",
+    "text": "Commits\n\nCommit = snapshot of your work\n\nGood commit messages explain why you changed something, not just what"
+  },
+  {
+    "objectID": "lecture01.html#common-issues-fixes",
+    "href": "lecture01.html#common-issues-fixes",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Common Issues & Fixes",
+    "text": "Common Issues & Fixes\n\nWrong repo → Double-check you’re in the right project\n\nLarge files (&gt;100MB) → use another service (Dropbox, Zenodo, etc.)\n\nConflicts → someone else changed the same file → git pull --rebase\n\nMerge conflicts → same lines changed → talk to your teammate + edit manually"
+  },
+  {
+    "objectID": "lecture01.html#new-habits-with-github",
+    "href": "lecture01.html#new-habits-with-github",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "New Habits with GitHub",
+    "text": "New Habits with GitHub\n\nCommit often\n\nPush regularly\n\nPull before you start working\n\nCommunicate with teammates"
+  },
+  {
+    "objectID": "lecture01.html#collaboration-rituals",
+    "href": "lecture01.html#collaboration-rituals",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Collaboration Rituals",
+    "text": "Collaboration Rituals\n\nBranch → small PR → peer review → merge\nUse Issues with labels (“bug”, “enhancement”, “question”)\nTemplates: PULL_REQUEST_TEMPLATE.md, ISSUE_TEMPLATE.md\nDocument decisions in CHANGELOG.md\n\n\n\n\n\n\n\nNote\n\n\nActivity (2’): In pairs, outline a PR description for adding a new utils/plot.R with one function and one test."
+  },
+  {
+    "objectID": "lecture01.html#example-pr-description",
+    "href": "lecture01.html#example-pr-description",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Example PR Description",
+    "text": "Example PR Description\nPR Title\nAdd utils/plot.R with basic plotting function and test\nSummary\n- Add plot_scatter() in utils/plot.R\n- Add test in tests/testthat/test-plot.R\nDetails\n- Input validation (numeric vectors of equal length)\n- Uses ggplot2\n- Tests:\n- Error if unequal lengths\n- Output is \"ggplot\""
+  },
+  {
+    "objectID": "lecture01.html#example-pr-description-cont.",
+    "href": "lecture01.html#example-pr-description-cont.",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Example PR Description (cont.)",
+    "text": "Example PR Description (cont.)\nChecklist\n- [x] Function implemented\n- [x] Tests added\n- [x] Documentation with roxygen2\n- [ ] CI checks pass\nRelated Issues\nCloses #12 (feature request: plotting utilities)"
+  },
+  {
+    "objectID": "lecture01.html#github-in-a-nutshell",
+    "href": "lecture01.html#github-in-a-nutshell",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "GitHub in a Nutshell",
+    "text": "GitHub in a Nutshell\n\nGit gets easier once you get the basic idea that branches are homeomorphic endofunctors mapping submanifolds of a Hilbert space.\n—Isaac Wolkerstorfer (joking)"
+  },
+  {
+    "objectID": "lecture01.html#git-in-6-commands",
+    "href": "lecture01.html#git-in-6-commands",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Git in 6 commands",
+    "text": "Git in 6 commands\ngit status\ngit add -A\ngit commit -m \"Explain what/why, not how\"\ngit pull --rebase\ngit push\ngit switch -c feature/your-topic   # create a feature branch\n\n\n\n\n\n\nNote\n\n\nActivity (think‑pair‑share):\nWhat makes a good commit message? Write one for “fixed weird bug in script” that would help your future self."
+  },
+  {
+    "objectID": "lecture01.html#reproducibility-why-it-matters",
+    "href": "lecture01.html#reproducibility-why-it-matters",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Reproducibility: Why it matters",
+    "text": "Reproducibility: Why it matters\nSymptoms of non‑reproducible work (raise your hand if you’ve seen these):\n- “It works on my machine.”\n- “I changed nothing and it broke.”\n- “Which file is the final_final_v3.R?”\nPrinciples\n- Deterministic environments\n- Versioned code and data contracts\n- Scripts, not clicks\n- Single‑source of truth (parameters, config)\n- Literate programming (Markdown/Quarto)\n- Automated checks (CI later in course)"
+  },
+  {
+    "objectID": "lecture01.html#is-there-a-reproducibility-crisis",
+    "href": "lecture01.html#is-there-a-reproducibility-crisis",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Is there a reproducibility crisis?",
+    "text": "Is there a reproducibility crisis?"
+  },
+  {
+    "objectID": "lecture01.html#environments-determinism",
+    "href": "lecture01.html#environments-determinism",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Environments (determinism)",
+    "text": "Environments (determinism)\n\n\nR — renv\ninstall.packages(\"renv\")\nrenv::init()\nrenv::snapshot()   # lock versions\nrenv::restore()    # reproduce elsewhere\n\nPython — Conda (recommended)\n# create & activate\nconda create -n bia python=3.11 pandas scikit-learn jupyterlab -c conda-forge\nconda activate bia\n\n# share exact env\nconda env export --from-history &gt; environment.yml\n# reproduce elsewhere\nconda env create -f environment.yml\n\nPython — Poetry (alternative)\n# once\npoetry config virtualenvs.in-project true\n# in project\npoetry init\npoetry add pandas scikit-learn jupyter\npoetry install           # recreate from poetry.lock\n\n\n\n\n\n\n\nNote\n\n\nExercise (1′): List one package you rely on in R and in Python. Why lock its version?"
+  },
+  {
+    "objectID": "lecture01.html#nondeterminism-in-llm",
+    "href": "lecture01.html#nondeterminism-in-llm",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Nondeterminism in LLM",
+    "text": "Nondeterminism in LLM\n\nReproducibility is a bedrock of scientific progress. However, it’s remarkably difficult to get reproducible results out of large language models.\nHorace He in collaboration with others at Thinking Machines\n\n\n\n\n\n\n\nNote\n\n\nRead the full article here"
+  },
+  {
+    "objectID": "lecture01.html#data-contracts-file-hygiene",
+    "href": "lecture01.html#data-contracts-file-hygiene",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Data Contracts & File Hygiene",
+    "text": "Data Contracts & File Hygiene\n\nNever overwrite raw/ data\nValidate schemas (columns, types, keys)\nRecord data provenance (source, timestamp)\nUse .gitignore to avoid committing large/secret files\n\n# data & local env\ndata/raw/*\n!.gitkeep\n.venv/\nrenv/library/\n*.sqlite\n*.parquet"
+  },
+  {
+    "objectID": "lecture01.html#common-pitfalls-how-to-avoid-them",
+    "href": "lecture01.html#common-pitfalls-how-to-avoid-them",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Common Pitfalls & How to Avoid Them",
+    "text": "Common Pitfalls & How to Avoid Them\n\nUndocumented notebooks → add titles, goals, outputs\nHidden state (globals) → pass parameters explicitly (next lecture)\nOne giant script → split into modules\nNo seeds → set seeds where randomness matters\nUnpinned packages → lock versions"
+  },
+  {
+    "objectID": "lecture01.html#quick-wins-you-can-adopt-today",
+    "href": "lecture01.html#quick-wins-you-can-adopt-today",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Quick Wins You Can Adopt Today",
+    "text": "Quick Wins You Can Adopt Today\n\nCreate a project with folders from the template earlier\nInitialize Git and push to GitHub\nSet up renv or .venv or equivalent\nConvert one analysis to Quarto"
+  },
+  {
+    "objectID": "lecture01.html#whats-next",
+    "href": "lecture01.html#whats-next",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "What’s Next",
+    "text": "What’s Next\n\nNext lecture: Programming foundations (R & Python)\nBefore next time: ensure you can\n\nclone a GitHub repo,\ncreate a branch & commit,\nrender a Quarto .qmd to HTML,\nset up renv or .venv.\n\n\n\n\n\n\n\n\nTip\n\n\nIf stuck: ask on Slack—show error, steps tried, and minimal example."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-1-r",
+    "href": "lecture01.html#mini-exercise-1-r",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (1): R",
+    "text": "Mini-exercise (1): R\n\nOpen RStudio (or your preferred IDE).\n\nCreate a new R script named exercise1.R.\n\nWrite R code that:\n\nCreates a numeric vector of length 5.\n\nComputes its mean.\n\nPrints the result with a short message.\n\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Use c() for vectors, mean() for averages, and paste() for printing messages."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-2-python",
+    "href": "lecture01.html#mini-exercise-2-python",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (2): Python",
+    "text": "Mini-exercise (2): Python\n\nCreate a new Python file named exercise2.py.\n\nWrite a script that:\n\nCreates a list of 5 numbers.\n\nComputes their average.\n\nPrints the result.\n\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Use sum() and len() to calculate an average."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-3-quarto",
+    "href": "lecture01.html#mini-exercise-3-quarto",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (3): Quarto",
+    "text": "Mini-exercise (3): Quarto\n\nCreate a new Quarto document named exercise3.qmd.\n\nAdd:\n\nA title and author.\n\nOne R code chunk that prints \"Hello R!\".\n\nOne Python code chunk that prints \"Hello Python!\".\n\n\nRender the document to HTML.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Use ```{r} and ```{python} for chunks."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-4-github",
+    "href": "lecture01.html#mini-exercise-4-github",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (4): GitHub",
+    "text": "Mini-exercise (4): GitHub\n\nCreate a new GitHub repository called first-exercises.\n\nAdd the three files you created (exercise1.R, exercise2.py, exercise3.qmd).\n\nWrite a short README.md describing what each file does.\n\nCommit and push your changes.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Use GitHub Desktop, git on the command line, or RStudio’s Git interface."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-5-r-data",
+    "href": "lecture01.html#mini-exercise-5-r-data",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (5): R + Data",
+    "text": "Mini-exercise (5): R + Data\n\nIn R, load the built-in dataset mtcars.\n\nCompute the average miles per gallon (mpg) by the number of cylinders (cyl).\n\nMake a simple scatterplot of mpg vs hp (horsepower).\n\nSave the script as exercise5.R.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Look at aggregate() or dplyr::group_by() + summarise(). Use plot() for a quick scatterplot."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-6-python-visualization",
+    "href": "lecture01.html#mini-exercise-6-python-visualization",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (6): Python + Visualization",
+    "text": "Mini-exercise (6): Python + Visualization\n\nIn Python, use the pandas and matplotlib libraries.\n\nLoad the dataset iris (you can import it from sklearn.datasets).\n\nCompute the average petal length per species.\n\nMake a histogram of sepal lengths.\n\nSave the script as exercise6.py.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: pandas.DataFrame.groupby() is useful for summaries."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-7-quarto-reproducibility",
+    "href": "lecture01.html#mini-exercise-7-quarto-reproducibility",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (7): Quarto + Reproducibility",
+    "text": "Mini-exercise (7): Quarto + Reproducibility\n\nCreate a Quarto document called exercise7.qmd.\n\nInclude:\n\nA title, author, and date.\n\nA short text section explaining what the document does.\n\nOne R chunk producing a table of summary statistics (e.g., summary(mtcars)).\n\nOne Python chunk producing a plot of the iris dataset.\n\n\nRender both HTML and PDF versions.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: To render PDF, you may need LaTeX installed. Use quarto render exercise7.qmd --to pdf."
+  },
+  {
+    "objectID": "lecture01.html#mini-exercise-8-all-together",
+    "href": "lecture01.html#mini-exercise-8-all-together",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Mini-exercise (8): All Together 🎯",
+    "text": "Mini-exercise (8): All Together 🎯\n\nCreate a new Quarto document named exercise8.qmd.\n\nInside it:\n\nAdd a short introduction paragraph.\n\nAn R chunk that computes and prints the mean of mtcars$mpg.\n\nA Python chunk that loads iris and plots sepal length vs sepal width.\n\n\nRender the document to HTML.\n\nPush the .qmd, the HTML output, and any supporting files to your GitHub repo first-exercises.\n\nUpdate your README.md to include a short description of this integrated exercise.\n\n\n\n\n\n\n\nNote\n\n\n💡 Goal: Practice combining R + Python code in Quarto, and making results reproducible via GitHub."
+  },
+  {
+    "objectID": "lecture01.html#bonus-opportunity",
+    "href": "lecture01.html#bonus-opportunity",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "💡 Bonus Opportunity",
+    "text": "💡 Bonus Opportunity\n\nIf you prepare a solution to one of the mini-exercises\n\nand present it briefly during the next practical session\n👉 You may receive a bonus point (participation credit).\n\n\n\n\n\n\n\nNote\n\n\n🌟 Tip: The focus is on sharing your approach, not on having a perfect solution."
+  },
+  {
+    "objectID": "lecture01.html#qa",
+    "href": "lecture01.html#qa",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Q&A",
+    "text": "Q&A\nThanks!\nOptional: After class, try converting one old analysis to Quarto and push it to GitHub with a short README."
+  },
+  {
+    "objectID": "lecture01.html#solution-1-r",
+    "href": "lecture01.html#solution-1-r",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (1): R",
+    "text": "Solution (1): R\n# exercise1.R\nx &lt;- c(3, 7, 9, 2, 5)\nm &lt;- mean(x)\nmessage(paste(\"The mean is\", m))"
+  },
+  {
+    "objectID": "lecture01.html#solution-2-python",
+    "href": "lecture01.html#solution-2-python",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (2): Python",
+    "text": "Solution (2): Python\n# exercise2.py\nnums = [3, 7, 9, 2, 5]\navg = sum(nums) / len(nums)\nprint(f\"The average is {avg}\")"
+  },
+  {
+    "objectID": "lecture01.html#solution-3-quarto",
+    "href": "lecture01.html#solution-3-quarto",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (3): Quarto",
+    "text": "Solution (3): Quarto\n---\ntitle: \"Exercise 3\"\nauthor: \"Your Name\"\nformat: html\n---\n\n```r\n\"Hello R!\"\n```\n\n```python\nprint(\"Hello Python!\")\n```"
+  },
+  {
+    "objectID": "lecture01.html#solution-4-github",
+    "href": "lecture01.html#solution-4-github",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (4): GitHub",
+    "text": "Solution (4): GitHub\n# In a fresh folder:\ngit init\ngit branch -M main\ngit remote add origin https://github.com/&lt;user&gt;/first-exercises.git\n\n# Add files\ngit add exercise1.R exercise2.py exercise3.qmd README.md\ngit commit -m \"Add first three exercises\"\ngit push -u origin main\nExample README.md:\n# first-exercises\n- `exercise1.R`: vector + mean (R)\n- `exercise2.py`: list + average (Python)\n- `exercise3.qmd`: R & Python chunks (Quarto)"
+  },
+  {
+    "objectID": "lecture01.html#solution-5-r-data",
+    "href": "lecture01.html#solution-5-r-data",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (5): R + Data",
+    "text": "Solution (5): R + Data\n# exercise5.R\n# A. summary by cylinders\naggregate(mpg ~ cyl, data = mtcars, FUN = mean)\n\n# Using dplyr (optional)\n# library(dplyr)\n# mtcars |&gt;\n#   group_by(cyl) |&gt;\n#   summarise(mean_mpg = mean(mpg))\n\n# B. scatterplot mpg vs hp\nplot(mtcars$hp, mtcars$mpg,\n     xlab = \"Horsepower (hp)\", ylab = \"Miles per gallon (mpg)\",\n     main = \"mtcars: mpg vs hp\")"
+  },
+  {
+    "objectID": "lecture01.html#solution-6-python-visualization",
+    "href": "lecture01.html#solution-6-python-visualization",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (6): Python + Visualization",
+    "text": "Solution (6): Python + Visualization\n# exercise6.py\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom sklearn.datasets import load_iris\n\n# Load iris\niris_bunch = load_iris(as_frame=True)\ndf = iris_bunch.frame  # columns: sepal length (cm), sepal width (cm), ...\ndf[\"species\"] = df[\"target\"].map(dict(enumerate(iris_bunch.target_names)))\n\n# Average petal length per species\navg_petal = df.groupby(\"species\")[\"petal length (cm)\"].mean()\nprint(avg_petal)\n\n# Histogram of sepal lengths\nplt.figure()\ndf[\"sepal length (cm)\"].hist()\nplt.title(\"Histogram: Sepal Length\")\nplt.xlabel(\"Sepal length (cm)\")\nplt.ylabel(\"Count\")\nplt.tight_layout()\nplt.show()"
+  },
+  {
+    "objectID": "lecture01.html#solution-7-quarto-reproducibility",
+    "href": "lecture01.html#solution-7-quarto-reproducibility",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (7): Quarto + Reproducibility",
+    "text": "Solution (7): Quarto + Reproducibility\n---\ntitle: \"Exercise 7\"\nauthor: \"Your Name\"\nformat:\n  html: default\n  pdf: default\n---\n\nThis document shows basic R summaries and a Python plot.\n\n```r\nsummary(mtcars)\n```\n\n```python\nimport matplotlib.pyplot as plt\nfrom sklearn.datasets import load_iris\niris = load_iris(as_frame=True).frame\nplt.figure()\nplt.scatter(iris[\"sepal length (cm)\"], iris[\"sepal width (cm)\"])\nplt.title(\"Iris: Sepal length vs width\")\nplt.xlabel(\"Sepal length (cm)\")\nplt.ylabel(\"Sepal width (cm)\")\nplt.tight_layout()\nplt.show()\n```\nRender:\nquarto render exercise7.qmd --to html\nquarto render exercise7.qmd --to pdf   # requires LaTeX"
+  },
+  {
+    "objectID": "lecture01.html#solution-8-all-together",
+    "href": "lecture01.html#solution-8-all-together",
+    "title": "Lecture 1 — Introduction & Tools",
+    "section": "Solution (8): All Together 🎯",
+    "text": "Solution (8): All Together 🎯\n---\ntitle: \"Exercise 8 (Capstone)\"\nauthor: \"Your Name\"\nformat: html\n---\n\nThis Quarto file combines R + Python and is tracked on GitHub.\n\n```r\nmean(mtcars$mpg)\n```\n\n```python\nfrom sklearn.datasets import load_iris\nimport matplotlib.pyplot as plt\niris = load_iris(as_frame=True).frame\nplt.figure()\nplt.scatter(iris[\"sepal length (cm)\"], iris[\"sepal width (cm)\"])\nplt.title(\"Iris: Sepal length vs width\")\nplt.xlabel(\"Sepal length (cm)\")\nplt.ylabel(\"Sepal width (cm)\")\nplt.tight_layout()\nplt.show()\n```\nPush results:\nquarto render exercise8.qmd\ngit add exercise8.qmd exercise8.html\ngit commit -m \"Add capstone exercise with R+Python\"\ngit push"
+  },
+  {
     "objectID": "lecture02.html#big-picture",
     "href": "lecture02.html#big-picture",
     "title": "Lecture 2 — Programming Foundations",
@@ -551,474 +1937,5 @@
     "title": "Lecture 2 — Programming Foundations",
     "section": "Mini-exercise 2: Prefix matching (R) & safer calls",
     "text": "Mini-exercise 2: Prefix matching (R) & safer calls\nTask: In R, define f &lt;- function(numerator, denominator) {...} and call it via partial names. Why is this risky? Rewrite to avoid it.\n\nRPython\n\n\n\nf &lt;- function(numerator, denominator) numerator / denominator\nf(n = 1, d = 2)              # works via partial matching (risky)\n\n# Make it safer:\noptions(warnPartialMatchArgs = TRUE)  # warn on partial matching\nf(numerator = 1, denominator = 2)     # explicit names\n\n\n\n\n# Not applicable (Python has no partial name matching for keywords).\npass"
-  },
-  {
-    "objectID": "lecture01.html#welcome",
-    "href": "lecture01.html#welcome",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Welcome!",
-    "text": "Welcome!\n\n\n\nCourse: Data & Code Management: From Collection to Application\nTime & place: Thursdays 9:00–12:00\nCommunication: Slack (class workspace)\nMaterials: GitHub repo & website\nGrading: participation (bonus), homeworks (3 indivuals) and final project (group)\n\nAlways refer to the course website dcm.samorso.ch for the latest info!\n\n\n\n“Reproducibility is job #1 for modern data science.”\n— everyone who has ever lost a script 😉\n\n\n\n\n\n\n\n\nNote\n\n\nToday’s goals\n1. Understand course scope & expectations\n2. See why reproducibility matters\n3. Meet the core toolchain (R, Python, SQL, GitHub, Markdown/Jupyter/Quarto)\n4. Try small, focused exercises"
-  },
-  {
-    "objectID": "lecture01.html#agenda",
-    "href": "lecture01.html#agenda",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Agenda",
-    "text": "Agenda\n\nCourse overview & evaluation\n\nReproducibility in analytics\n\nCore tools & workflows\n\nQuarto refresher\nGitHub refresher\nMini‑exercises\n\nTip: Slides include short activities you can try during/after class."
-  },
-  {
-    "objectID": "lecture01.html#expectations-evaluation",
-    "href": "lecture01.html#expectations-evaluation",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Expectations & Evaluation",
-    "text": "Expectations & Evaluation\n\nParticipation: engaged presence (practicals), Slack questions/answers\nHomeworks: short, targeted (programming, SQL, tooling)\nProject: real‑world style, reproducible deliverable\nAcademic integrity: cite sources, no copy‑paste answers\n\nTools allowed: R, Python, SQL, Quarto, GitHub, AI copilots (with provenance & verification)."
-  },
-  {
-    "objectID": "lecture01.html#what-are-llms",
-    "href": "lecture01.html#what-are-llms",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "What are LLMs?",
-    "text": "What are LLMs?\n\nDefinition: Large Language Models (LLMs) are AI models trained on vast amounts of text data to understand and generate human language.\nExamples:\n\nGPT-4, GPT-5 (OpenAI)\nGemini (Google)\nLLaMA (Meta)\nClaude (Anthropic)\n\nCapabilities:\n\nNatural language understanding and generation\nText completion, summarization, translation\nAssistance in various domains, including programming."
-  },
-  {
-    "objectID": "lecture01.html#why-are-they-important-for-programming",
-    "href": "lecture01.html#why-are-they-important-for-programming",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Why are they important for programming?",
-    "text": "Why are they important for programming?\n\nLLMs can understand code as a special type of language.\n\nThey offer assistance in code generation, debugging, and improving programming productivity."
-  },
-  {
-    "objectID": "lecture01.html#llm-for-programming---key-features",
-    "href": "lecture01.html#llm-for-programming---key-features",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "LLM for Programming - Key Features",
-    "text": "LLM for Programming - Key Features\n\nCode Suggestions:\n\nAutomates repetitive coding tasks.\nHelps in writing boilerplate code.\nSee for instance GitHub’s copilot.\n\nError Debugging:\n\nIdentifies and resolves bugs in code snippets.\nSuggests alternative solutions or optimizations.\n\nCode Explanation:\n\nBreaks down complex code into simple explanations.\nHelps in learning new programming concepts."
-  },
-  {
-    "objectID": "lecture01.html#benefits-of-using-llms-like-chatgpt-in-programming",
-    "href": "lecture01.html#benefits-of-using-llms-like-chatgpt-in-programming",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Benefits of Using LLMs like ChatGPT in Programming",
-    "text": "Benefits of Using LLMs like ChatGPT in Programming\n1. Increased Productivity\n\nAutomates repetitive and boilerplate tasks.\nHelps explore new coding approaches faster.\n\n2. Learning and Discovery\n\nExplains code, libraries, and new languages in an intuitive manner.\nGreat for beginners and advanced users alike."
-  },
-  {
-    "objectID": "lecture01.html#challenges-and-considerations",
-    "href": "lecture01.html#challenges-and-considerations",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Challenges and Considerations",
-    "text": "Challenges and Considerations\n1. Not Always Correct\n\nLLMs can suggest incorrect code, it can hallucinate, requiring human oversight.\n\n2. Context Limitations\n\nLLMs lack the full project context, so they might not understand the specific requirements.\n\n3. Ethical Concerns\n\nIntellectual property, security, and data privacy must be considered when using AI for programming.\n\n\n\n\n\n\n\nImportant\n\n\nAI policy (short)\nUse AI to brainstorm, outline, or lint code. Own the result: verify outputs, write your tests, and document AI assistance (what, why, where)."
-  },
-  {
-    "objectID": "lecture01.html#minimal-project-structure",
-    "href": "lecture01.html#minimal-project-structure",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Minimal Project Structure",
-    "text": "Minimal Project Structure\nproject/\n├─ data/           # raw/ and processed/ (never overwrite raw)\n├─ R/ or src/      # functions, modules\n├─ notebooks/      # exploratory analysis\n├─ reports/        # Quarto/Markdown outputs\n├─ tests/          # unit tests\n├─ renv/ or .venv/ # R or Python environment\n├─ .gitignore\n└─ README.md"
-  },
-  {
-    "objectID": "lecture01.html#tooling-map",
-    "href": "lecture01.html#tooling-map",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Tooling Map",
-    "text": "Tooling Map\n\nR (tidyverse, data.table) & Python (pandas, polars)\nSQL for data retrieval/joins/aggregations (week 5)\nGit + GitHub for versioning & collaboration\nMarkdown/Jupyter/Quarto for literate workflows\nOptional helpers: make, pre-commit, linters\n\n\n\nR snippet\n# Vectorized transform\nlibrary(dplyr)\nset.seed(42)\ndf &lt;- tibble(x = rnorm(5), y = rnorm(5))\ndf |&gt;\n  mutate(z = x + y, grp = if_else(z &gt; 0, \"pos\", \"neg\"))\n\nPython snippet\nimport pandas as pd\nimport numpy as np\nrng = np.random.default_rng(42)\ndf = pd.DataFrame({\"x\": rng.normal(size=5), \"y\": rng.normal(size=5)})\ndf.assign(z=lambda d: d.x + d.y,\n          grp=lambda d: np.where(d.z &gt; 0, \"pos\", \"neg\"))\n\n\n\n\n\n\n\nCaution\n\n\nAre these codes reproducible? Why/why not?"
-  },
-  {
-    "objectID": "lecture01.html#what-is-quarto",
-    "href": "lecture01.html#what-is-quarto",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "What is Quarto?",
-    "text": "What is Quarto?\n\nQuarto: successor of RMarkdown\nmarkdown contrasts markup languages (e.g. HTML) which require heavy syntax\nQuarto provides a literate programming framework for data science.\nLiterate programming: narrative + code in the same document.\nReproducible research: analyses can be reproduced the same way by someone else."
-  },
-  {
-    "objectID": "lecture01.html#what-is-quarto-1",
-    "href": "lecture01.html#what-is-quarto-1",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "What is Quarto?",
-    "text": "What is Quarto?\n\nIn a nutshell, Quarto builds on Pandoc and execution engines (Knitr for R, Jupyter for Python/Julia/Observable). It allows embedding code into Markdown documents, which can be rendered into multiple formats (HTML, PDF, Word, …)."
-  },
-  {
-    "objectID": "lecture01.html#create-a-quarto-document",
-    "href": "lecture01.html#create-a-quarto-document",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Create a Quarto document",
-    "text": "Create a Quarto document\nIn RStudio or VSCode, click File → New File → Quarto Document. Or simply create a .qmd file."
-  },
-  {
-    "objectID": "lecture01.html#important-features-of-markdown",
-    "href": "lecture01.html#important-features-of-markdown",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Important features of markdown",
-    "text": "Important features of markdown\n\nThree aspects:\n\nYAML metadata\nText\nCode cells/chunks"
-  },
-  {
-    "objectID": "lecture01.html#yaml-yaml-aint-markup-language",
-    "href": "lecture01.html#yaml-yaml-aint-markup-language",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "YAML (YAML Ain’t Markup Language)",
-    "text": "YAML (YAML Ain’t Markup Language)\n\nHeader where options are defined.\nSurrounded by ---\nOptions include: author, date, output format, table of contents, themes, code folding, …\n\nExample:\n---\ntitle: \"My Report\"\nauthor: \"Jane Doe\"\nformat: html\ntoc: true\n---"
-  },
-  {
-    "objectID": "lecture01.html#text-in-markdown",
-    "href": "lecture01.html#text-in-markdown",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Text in Markdown",
-    "text": "Text in Markdown\n\nCore body, essential for explaining your analysis.\nMarkdown syntax:\n\n*italics*, **bold**, code style\nheaders (#, ##, ###)\nlists (*, -, +, 1.)\nlinks: [Quarto](https://quarto.org)\nblockquotes (&gt; …)\nimages: ![](path/to/img.png)\ntables (basic Markdown or functions like knitr::kable())"
-  },
-  {
-    "objectID": "lecture01.html#extended-text-features",
-    "href": "lecture01.html#extended-text-features",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Extended text features",
-    "text": "Extended text features\n\nMath: in \\(\\LaTeX\\) via $...$ inline or $$...$$ display.\nCross-references: @fig-label or @sec-label.\nCitations with .bib files ([@doe2023]).\nYou can always use HTML when needed."
-  },
-  {
-    "objectID": "lecture01.html#code-cells-in-quarto",
-    "href": "lecture01.html#code-cells-in-quarto",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Code cells in Quarto",
-    "text": "Code cells in Quarto\nQuarto supports R, Python, Julia, and ObservableJS.\nCode cell delimiters:\n```r\n# R code here\n```\n\n```python\n# Python code here\n```\n\nIn Jupyter notebooks, the same concepts apply — each code cell is language-specific."
-  },
-  {
-    "objectID": "lecture01.html#chunk-cell-options",
-    "href": "lecture01.html#chunk-cell-options",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Chunk / cell options",
-    "text": "Chunk / cell options\nQuarto syntax uses YAML-like #| comments:\n```r\n#| echo: false\n#| eval: true\n#| warning: false\n#| cache: false\n1 + 1\n```\nOptions you’ll use most often:\n\neval: run code?\necho: show code?\nwarning: show warnings?\ncache: reuse computations?"
-  },
-  {
-    "objectID": "lecture01.html#figures-in-code-cells",
-    "href": "lecture01.html#figures-in-code-cells",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Figures in code cells",
-    "text": "Figures in code cells\nOptions for plots:\n```r\n#| fig-width: 6\n#| fig-height: 4\n#| fig-align: center\n#| fig-cap: \"A scatterplot\"\nplot(iris$Sepal.Length, iris$Sepal.Width)\n```\n\nA scatterplot"
-  },
-  {
-    "objectID": "lecture01.html#printing-tables-with-knitrkable",
-    "href": "lecture01.html#printing-tables-with-knitrkable",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Printing tables with knitr::kable()",
-    "text": "Printing tables with knitr::kable()\n```r\n#| echo: true\n#| fig-height: 5\ndata(\"iris\")\nknitr::kable(iris[1:5,])\n```\n\n\n\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\n5.1\n3.5\n1.4\n0.2\nsetosa\n\n\n4.9\n3.0\n1.4\n0.2\nsetosa\n\n\n4.7\n3.2\n1.3\n0.2\nsetosa\n\n\n4.6\n3.1\n1.5\n0.2\nsetosa\n\n\n5.0\n3.6\n1.4\n0.2\nsetosa\n\n\n\n\n\nFor enhanced tables: kableExtra."
-  },
-  {
-    "objectID": "lecture01.html#extended-tables-with-kableextra",
-    "href": "lecture01.html#extended-tables-with-kableextra",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Extended tables with kableExtra",
-    "text": "Extended tables with kableExtra\n\nlibrary(kableExtra)\nmtcars[1:3, 1:8] %&gt;%\n  kbl() %&gt;%\n  kable_paper(full_width = T)\n\n\n\n\n\nmpg\ncyl\ndisp\nhp\ndrat\nwt\nqsec\nvs\n\n\n\n\nMazda RX4\n21.0\n6\n160\n110\n3.90\n2.620\n16.46\n0\n\n\nMazda RX4 Wag\n21.0\n6\n160\n110\n3.90\n2.875\n17.02\n0\n\n\nDatsun 710\n22.8\n4\n108\n93\n3.85\n2.320\n18.61\n1"
-  },
-  {
-    "objectID": "lecture01.html#mathpix-for-equations",
-    "href": "lecture01.html#mathpix-for-equations",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Mathpix for equations",
-    "text": "Mathpix for equations\nMathpix Snip digitizes handwritten/printed math and pastes directly into Markdown/LaTeX/Word."
-  },
-  {
-    "objectID": "lecture01.html#live-preview",
-    "href": "lecture01.html#live-preview",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Live preview",
-    "text": "Live preview\n\nRStudio: quarto preview\nVSCode: Quarto extension\nJupyter: live interactive editing\n\nInstant feedback without full rebuilds."
-  },
-  {
-    "objectID": "lecture01.html#why-github",
-    "href": "lecture01.html#why-github",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Why GitHub?",
-    "text": "Why GitHub?\n\nWork with others on the same project without endless email exchanges\n\nAvoid “file_v1”, “file_v2”, “final_version_really.R” chaos\n\nTrack who changed what and when\n\nDiscuss, review, and plan changes in one place\n\n\n\n\n\n\n\nTip\n\n\n💡 Think of GitHub as both a time machine and a teamwork hub."
-  },
-  {
-    "objectID": "lecture01.html#why-github-for-this-course",
-    "href": "lecture01.html#why-github-for-this-course",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Why GitHub for this course?",
-    "text": "Why GitHub for this course?\nWe will use GitHub to:\n- Work in groups on projects\n- Submit homeworks\n- Develop programs"
-  },
-  {
-    "objectID": "lecture01.html#what-is-git",
-    "href": "lecture01.html#what-is-git",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "What is Git?",
-    "text": "What is Git?\nGit is a distributed version control system:\n\nDistributed: every copy of a project has the full history\n\nVersion control: keeps track of all changes to your project\n\n\n\n\n\n\n\nImportant\n\n\nInstead of dozens of “final” files, Git records every change in one clean history."
-  },
-  {
-    "objectID": "lecture01.html#types-of-version-control-systems",
-    "href": "lecture01.html#types-of-version-control-systems",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Types of Version Control Systems",
-    "text": "Types of Version Control Systems\n\nLocal – on your own computer\n\nCentralized – one main server (risk of failure!)\n\nDistributed – full history on every machine (Git)"
-  },
-  {
-    "objectID": "lecture01.html#why-version-control",
-    "href": "lecture01.html#why-version-control",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Why Version Control?",
-    "text": "Why Version Control?\n\nCollaborate safely with others\n\nRoll back mistakes\n\nExplore new ideas with branches\n\nReduce risks of file loss or corruption"
-  },
-  {
-    "objectID": "lecture01.html#git-github",
-    "href": "lecture01.html#git-github",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Git ≠ GitHub",
-    "text": "Git ≠ GitHub\n\nGit = software for version control\n\nGitHub = website/platform that hosts Git repositories\n\nAlternatives: GitLab, BitBucket, SourceForge"
-  },
-  {
-    "objectID": "lecture01.html#file-states-in-git",
-    "href": "lecture01.html#file-states-in-git",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "File States in Git",
-    "text": "File States in Git\nA file can be:\n- Untracked – new, not in Git yet\n- Modified – changed, not saved in history\n- Staged – marked for next snapshot\n- Committed – safely stored in the repository"
-  },
-  {
-    "objectID": "lecture01.html#ignoring-files",
-    "href": "lecture01.html#ignoring-files",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Ignoring Files",
-    "text": "Ignoring Files\nUse a .gitignore file to tell Git which files to skip:\n- Temporary files (.Rhistory, .DS_Store)\n- Large data files\n- Secrets or keys"
-  },
-  {
-    "objectID": "lecture01.html#github-basic-workflow",
-    "href": "lecture01.html#github-basic-workflow",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "GitHub: Basic Workflow",
-    "text": "GitHub: Basic Workflow\n\nOpen your RStudio project (linked to GitHub)\n\nWork locally as usual\n\nSave often\n\nCommit snapshots of your changes\n\nPush commits to GitHub\n\nOn another computer (or from a teammate) → Pull updates\n\n\n\n\n\n\n\nTip\n\n\nAlways pull before you push to avoid conflicts!"
-  },
-  {
-    "objectID": "lecture01.html#commits",
-    "href": "lecture01.html#commits",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Commits",
-    "text": "Commits\n\nCommit = snapshot of your work\n\nGood commit messages explain why you changed something, not just what"
-  },
-  {
-    "objectID": "lecture01.html#common-issues-fixes",
-    "href": "lecture01.html#common-issues-fixes",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Common Issues & Fixes",
-    "text": "Common Issues & Fixes\n\nWrong repo → Double-check you’re in the right project\n\nLarge files (&gt;100MB) → use another service (Dropbox, Zenodo, etc.)\n\nConflicts → someone else changed the same file → git pull --rebase\n\nMerge conflicts → same lines changed → talk to your teammate + edit manually"
-  },
-  {
-    "objectID": "lecture01.html#new-habits-with-github",
-    "href": "lecture01.html#new-habits-with-github",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "New Habits with GitHub",
-    "text": "New Habits with GitHub\n\nCommit often\n\nPush regularly\n\nPull before you start working\n\nCommunicate with teammates"
-  },
-  {
-    "objectID": "lecture01.html#collaboration-rituals",
-    "href": "lecture01.html#collaboration-rituals",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Collaboration Rituals",
-    "text": "Collaboration Rituals\n\nBranch → small PR → peer review → merge\nUse Issues with labels (“bug”, “enhancement”, “question”)\nTemplates: PULL_REQUEST_TEMPLATE.md, ISSUE_TEMPLATE.md\nDocument decisions in CHANGELOG.md\n\n\n\n\n\n\n\nNote\n\n\nActivity (2’): In pairs, outline a PR description for adding a new utils/plot.R with one function and one test."
-  },
-  {
-    "objectID": "lecture01.html#example-pr-description",
-    "href": "lecture01.html#example-pr-description",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Example PR Description",
-    "text": "Example PR Description\nPR Title\nAdd utils/plot.R with basic plotting function and test\nSummary\n- Add plot_scatter() in utils/plot.R\n- Add test in tests/testthat/test-plot.R\nDetails\n- Input validation (numeric vectors of equal length)\n- Uses ggplot2\n- Tests:\n- Error if unequal lengths\n- Output is \"ggplot\""
-  },
-  {
-    "objectID": "lecture01.html#example-pr-description-cont.",
-    "href": "lecture01.html#example-pr-description-cont.",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Example PR Description (cont.)",
-    "text": "Example PR Description (cont.)\nChecklist\n- [x] Function implemented\n- [x] Tests added\n- [x] Documentation with roxygen2\n- [ ] CI checks pass\nRelated Issues\nCloses #12 (feature request: plotting utilities)"
-  },
-  {
-    "objectID": "lecture01.html#github-in-a-nutshell",
-    "href": "lecture01.html#github-in-a-nutshell",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "GitHub in a Nutshell",
-    "text": "GitHub in a Nutshell\n\nGit gets easier once you get the basic idea that branches are homeomorphic endofunctors mapping submanifolds of a Hilbert space.\n—Isaac Wolkerstorfer (joking)"
-  },
-  {
-    "objectID": "lecture01.html#git-in-6-commands",
-    "href": "lecture01.html#git-in-6-commands",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Git in 6 commands",
-    "text": "Git in 6 commands\ngit status\ngit add -A\ngit commit -m \"Explain what/why, not how\"\ngit pull --rebase\ngit push\ngit switch -c feature/your-topic   # create a feature branch\n\n\n\n\n\n\nNote\n\n\nActivity (think‑pair‑share):\nWhat makes a good commit message? Write one for “fixed weird bug in script” that would help your future self."
-  },
-  {
-    "objectID": "lecture01.html#reproducibility-why-it-matters",
-    "href": "lecture01.html#reproducibility-why-it-matters",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Reproducibility: Why it matters",
-    "text": "Reproducibility: Why it matters\nSymptoms of non‑reproducible work (raise your hand if you’ve seen these):\n- “It works on my machine.”\n- “I changed nothing and it broke.”\n- “Which file is the final_final_v3.R?”\nPrinciples\n- Deterministic environments\n- Versioned code and data contracts\n- Scripts, not clicks\n- Single‑source of truth (parameters, config)\n- Literate programming (Markdown/Quarto)\n- Automated checks (CI later in course)"
-  },
-  {
-    "objectID": "lecture01.html#is-there-a-reproducibility-crisis",
-    "href": "lecture01.html#is-there-a-reproducibility-crisis",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Is there a reproducibility crisis?",
-    "text": "Is there a reproducibility crisis?"
-  },
-  {
-    "objectID": "lecture01.html#environments-determinism",
-    "href": "lecture01.html#environments-determinism",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Environments (determinism)",
-    "text": "Environments (determinism)\n\n\nR — renv\ninstall.packages(\"renv\")\nrenv::init()\nrenv::snapshot()   # lock versions\nrenv::restore()    # reproduce elsewhere\n\nPython — Conda (recommended)\n# create & activate\nconda create -n bia python=3.11 pandas scikit-learn jupyterlab -c conda-forge\nconda activate bia\n\n# share exact env\nconda env export --from-history &gt; environment.yml\n# reproduce elsewhere\nconda env create -f environment.yml\n\nPython — Poetry (alternative)\n# once\npoetry config virtualenvs.in-project true\n# in project\npoetry init\npoetry add pandas scikit-learn jupyter\npoetry install           # recreate from poetry.lock\n\n\n\n\n\n\n\nNote\n\n\nExercise (1′): List one package you rely on in R and in Python. Why lock its version?"
-  },
-  {
-    "objectID": "lecture01.html#nondeterminism-in-llm",
-    "href": "lecture01.html#nondeterminism-in-llm",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Nondeterminism in LLM",
-    "text": "Nondeterminism in LLM\n\nReproducibility is a bedrock of scientific progress. However, it’s remarkably difficult to get reproducible results out of large language models.\nHorace He in collaboration with others at Thinking Machines\n\n\n\n\n\n\n\nNote\n\n\nRead the full article here"
-  },
-  {
-    "objectID": "lecture01.html#data-contracts-file-hygiene",
-    "href": "lecture01.html#data-contracts-file-hygiene",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Data Contracts & File Hygiene",
-    "text": "Data Contracts & File Hygiene\n\nNever overwrite raw/ data\nValidate schemas (columns, types, keys)\nRecord data provenance (source, timestamp)\nUse .gitignore to avoid committing large/secret files\n\n# data & local env\ndata/raw/*\n!.gitkeep\n.venv/\nrenv/library/\n*.sqlite\n*.parquet"
-  },
-  {
-    "objectID": "lecture01.html#common-pitfalls-how-to-avoid-them",
-    "href": "lecture01.html#common-pitfalls-how-to-avoid-them",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Common Pitfalls & How to Avoid Them",
-    "text": "Common Pitfalls & How to Avoid Them\n\nUndocumented notebooks → add titles, goals, outputs\nHidden state (globals) → pass parameters explicitly (next lecture)\nOne giant script → split into modules\nNo seeds → set seeds where randomness matters\nUnpinned packages → lock versions"
-  },
-  {
-    "objectID": "lecture01.html#quick-wins-you-can-adopt-today",
-    "href": "lecture01.html#quick-wins-you-can-adopt-today",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Quick Wins You Can Adopt Today",
-    "text": "Quick Wins You Can Adopt Today\n\nCreate a project with folders from the template earlier\nInitialize Git and push to GitHub\nSet up renv or .venv or equivalent\nConvert one analysis to Quarto"
-  },
-  {
-    "objectID": "lecture01.html#whats-next",
-    "href": "lecture01.html#whats-next",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "What’s Next",
-    "text": "What’s Next\n\nNext lecture: Programming foundations (R & Python)\nBefore next time: ensure you can\n\nclone a GitHub repo,\ncreate a branch & commit,\nrender a Quarto .qmd to HTML,\nset up renv or .venv.\n\n\n\n\n\n\n\n\nTip\n\n\nIf stuck: ask on Slack—show error, steps tried, and minimal example."
-  },
-  {
-    "objectID": "lecture01.html#mini-exercise-1-r",
-    "href": "lecture01.html#mini-exercise-1-r",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Mini-exercise (1): R",
-    "text": "Mini-exercise (1): R\n\nOpen RStudio (or your preferred IDE).\n\nCreate a new R script named exercise1.R.\n\nWrite R code that:\n\nCreates a numeric vector of length 5.\n\nComputes its mean.\n\nPrints the result with a short message.\n\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Use c() for vectors, mean() for averages, and paste() for printing messages."
-  },
-  {
-    "objectID": "lecture01.html#mini-exercise-2-python",
-    "href": "lecture01.html#mini-exercise-2-python",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Mini-exercise (2): Python",
-    "text": "Mini-exercise (2): Python\n\nCreate a new Python file named exercise2.py.\n\nWrite a script that:\n\nCreates a list of 5 numbers.\n\nComputes their average.\n\nPrints the result.\n\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Use sum() and len() to calculate an average."
-  },
-  {
-    "objectID": "lecture01.html#mini-exercise-3-quarto",
-    "href": "lecture01.html#mini-exercise-3-quarto",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Mini-exercise (3): Quarto",
-    "text": "Mini-exercise (3): Quarto\n\nCreate a new Quarto document named exercise3.qmd.\n\nAdd:\n\nA title and author.\n\nOne R code chunk that prints \"Hello R!\".\n\nOne Python code chunk that prints \"Hello Python!\".\n\n\nRender the document to HTML.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Use ```{r} and ```{python} for chunks."
-  },
-  {
-    "objectID": "lecture01.html#mini-exercise-4-github",
-    "href": "lecture01.html#mini-exercise-4-github",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Mini-exercise (4): GitHub",
-    "text": "Mini-exercise (4): GitHub\n\nCreate a new GitHub repository called first-exercises.\n\nAdd the three files you created (exercise1.R, exercise2.py, exercise3.qmd).\n\nWrite a short README.md describing what each file does.\n\nCommit and push your changes.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Use GitHub Desktop, git on the command line, or RStudio’s Git interface."
-  },
-  {
-    "objectID": "lecture01.html#mini-exercise-5-r-data",
-    "href": "lecture01.html#mini-exercise-5-r-data",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Mini-exercise (5): R + Data",
-    "text": "Mini-exercise (5): R + Data\n\nIn R, load the built-in dataset mtcars.\n\nCompute the average miles per gallon (mpg) by the number of cylinders (cyl).\n\nMake a simple scatterplot of mpg vs hp (horsepower).\n\nSave the script as exercise5.R.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: Look at aggregate() or dplyr::group_by() + summarise(). Use plot() for a quick scatterplot."
-  },
-  {
-    "objectID": "lecture01.html#mini-exercise-6-python-visualization",
-    "href": "lecture01.html#mini-exercise-6-python-visualization",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Mini-exercise (6): Python + Visualization",
-    "text": "Mini-exercise (6): Python + Visualization\n\nIn Python, use the pandas and matplotlib libraries.\n\nLoad the dataset iris (you can import it from sklearn.datasets).\n\nCompute the average petal length per species.\n\nMake a histogram of sepal lengths.\n\nSave the script as exercise6.py.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: pandas.DataFrame.groupby() is useful for summaries."
-  },
-  {
-    "objectID": "lecture01.html#mini-exercise-7-quarto-reproducibility",
-    "href": "lecture01.html#mini-exercise-7-quarto-reproducibility",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Mini-exercise (7): Quarto + Reproducibility",
-    "text": "Mini-exercise (7): Quarto + Reproducibility\n\nCreate a Quarto document called exercise7.qmd.\n\nInclude:\n\nA title, author, and date.\n\nA short text section explaining what the document does.\n\nOne R chunk producing a table of summary statistics (e.g., summary(mtcars)).\n\nOne Python chunk producing a plot of the iris dataset.\n\n\nRender both HTML and PDF versions.\n\n\n\n\n\n\n\nNote\n\n\n💡 Tip: To render PDF, you may need LaTeX installed. Use quarto render exercise7.qmd --to pdf."
-  },
-  {
-    "objectID": "lecture01.html#mini-exercise-8-all-together",
-    "href": "lecture01.html#mini-exercise-8-all-together",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Mini-exercise (8): All Together 🎯",
-    "text": "Mini-exercise (8): All Together 🎯\n\nCreate a new Quarto document named exercise8.qmd.\n\nInside it:\n\nAdd a short introduction paragraph.\n\nAn R chunk that computes and prints the mean of mtcars$mpg.\n\nA Python chunk that loads iris and plots sepal length vs sepal width.\n\n\nRender the document to HTML.\n\nPush the .qmd, the HTML output, and any supporting files to your GitHub repo first-exercises.\n\nUpdate your README.md to include a short description of this integrated exercise.\n\n\n\n\n\n\n\nNote\n\n\n💡 Goal: Practice combining R + Python code in Quarto, and making results reproducible via GitHub."
-  },
-  {
-    "objectID": "lecture01.html#bonus-opportunity",
-    "href": "lecture01.html#bonus-opportunity",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "💡 Bonus Opportunity",
-    "text": "💡 Bonus Opportunity\n\nIf you prepare a solution to one of the mini-exercises\n\nand present it briefly during the next practical session\n👉 You may receive a bonus point (participation credit).\n\n\n\n\n\n\n\nNote\n\n\n🌟 Tip: The focus is on sharing your approach, not on having a perfect solution."
-  },
-  {
-    "objectID": "lecture01.html#qa",
-    "href": "lecture01.html#qa",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Q&A",
-    "text": "Q&A\nThanks!\nOptional: After class, try converting one old analysis to Quarto and push it to GitHub with a short README."
-  },
-  {
-    "objectID": "lecture01.html#solution-1-r",
-    "href": "lecture01.html#solution-1-r",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Solution (1): R",
-    "text": "Solution (1): R\n# exercise1.R\nx &lt;- c(3, 7, 9, 2, 5)\nm &lt;- mean(x)\nmessage(paste(\"The mean is\", m))"
-  },
-  {
-    "objectID": "lecture01.html#solution-2-python",
-    "href": "lecture01.html#solution-2-python",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Solution (2): Python",
-    "text": "Solution (2): Python\n# exercise2.py\nnums = [3, 7, 9, 2, 5]\navg = sum(nums) / len(nums)\nprint(f\"The average is {avg}\")"
-  },
-  {
-    "objectID": "lecture01.html#solution-3-quarto",
-    "href": "lecture01.html#solution-3-quarto",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Solution (3): Quarto",
-    "text": "Solution (3): Quarto\n---\ntitle: \"Exercise 3\"\nauthor: \"Your Name\"\nformat: html\n---\n\n```r\n\"Hello R!\"\n```\n\n```python\nprint(\"Hello Python!\")\n```"
-  },
-  {
-    "objectID": "lecture01.html#solution-4-github",
-    "href": "lecture01.html#solution-4-github",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Solution (4): GitHub",
-    "text": "Solution (4): GitHub\n# In a fresh folder:\ngit init\ngit branch -M main\ngit remote add origin https://github.com/&lt;user&gt;/first-exercises.git\n\n# Add files\ngit add exercise1.R exercise2.py exercise3.qmd README.md\ngit commit -m \"Add first three exercises\"\ngit push -u origin main\nExample README.md:\n# first-exercises\n- `exercise1.R`: vector + mean (R)\n- `exercise2.py`: list + average (Python)\n- `exercise3.qmd`: R & Python chunks (Quarto)"
-  },
-  {
-    "objectID": "lecture01.html#solution-5-r-data",
-    "href": "lecture01.html#solution-5-r-data",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Solution (5): R + Data",
-    "text": "Solution (5): R + Data\n# exercise5.R\n# A. summary by cylinders\naggregate(mpg ~ cyl, data = mtcars, FUN = mean)\n\n# Using dplyr (optional)\n# library(dplyr)\n# mtcars |&gt;\n#   group_by(cyl) |&gt;\n#   summarise(mean_mpg = mean(mpg))\n\n# B. scatterplot mpg vs hp\nplot(mtcars$hp, mtcars$mpg,\n     xlab = \"Horsepower (hp)\", ylab = \"Miles per gallon (mpg)\",\n     main = \"mtcars: mpg vs hp\")"
-  },
-  {
-    "objectID": "lecture01.html#solution-6-python-visualization",
-    "href": "lecture01.html#solution-6-python-visualization",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Solution (6): Python + Visualization",
-    "text": "Solution (6): Python + Visualization\n# exercise6.py\nimport pandas as pd\nimport matplotlib.pyplot as plt\nfrom sklearn.datasets import load_iris\n\n# Load iris\niris_bunch = load_iris(as_frame=True)\ndf = iris_bunch.frame  # columns: sepal length (cm), sepal width (cm), ...\ndf[\"species\"] = df[\"target\"].map(dict(enumerate(iris_bunch.target_names)))\n\n# Average petal length per species\navg_petal = df.groupby(\"species\")[\"petal length (cm)\"].mean()\nprint(avg_petal)\n\n# Histogram of sepal lengths\nplt.figure()\ndf[\"sepal length (cm)\"].hist()\nplt.title(\"Histogram: Sepal Length\")\nplt.xlabel(\"Sepal length (cm)\")\nplt.ylabel(\"Count\")\nplt.tight_layout()\nplt.show()"
-  },
-  {
-    "objectID": "lecture01.html#solution-7-quarto-reproducibility",
-    "href": "lecture01.html#solution-7-quarto-reproducibility",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Solution (7): Quarto + Reproducibility",
-    "text": "Solution (7): Quarto + Reproducibility\n---\ntitle: \"Exercise 7\"\nauthor: \"Your Name\"\nformat:\n  html: default\n  pdf: default\n---\n\nThis document shows basic R summaries and a Python plot.\n\n```r\nsummary(mtcars)\n```\n\n```python\nimport matplotlib.pyplot as plt\nfrom sklearn.datasets import load_iris\niris = load_iris(as_frame=True).frame\nplt.figure()\nplt.scatter(iris[\"sepal length (cm)\"], iris[\"sepal width (cm)\"])\nplt.title(\"Iris: Sepal length vs width\")\nplt.xlabel(\"Sepal length (cm)\")\nplt.ylabel(\"Sepal width (cm)\")\nplt.tight_layout()\nplt.show()\n```\nRender:\nquarto render exercise7.qmd --to html\nquarto render exercise7.qmd --to pdf   # requires LaTeX"
-  },
-  {
-    "objectID": "lecture01.html#solution-8-all-together",
-    "href": "lecture01.html#solution-8-all-together",
-    "title": "Lecture 1 — Introduction & Tools",
-    "section": "Solution (8): All Together 🎯",
-    "text": "Solution (8): All Together 🎯\n---\ntitle: \"Exercise 8 (Capstone)\"\nauthor: \"Your Name\"\nformat: html\n---\n\nThis Quarto file combines R + Python and is tracked on GitHub.\n\n```r\nmean(mtcars$mpg)\n```\n\n```python\nfrom sklearn.datasets import load_iris\nimport matplotlib.pyplot as plt\niris = load_iris(as_frame=True).frame\nplt.figure()\nplt.scatter(iris[\"sepal length (cm)\"], iris[\"sepal width (cm)\"])\nplt.title(\"Iris: Sepal length vs width\")\nplt.xlabel(\"Sepal length (cm)\")\nplt.ylabel(\"Sepal width (cm)\")\nplt.tight_layout()\nplt.show()\n```\nPush results:\nquarto render exercise8.qmd\ngit add exercise8.qmd exercise8.html\ngit commit -m \"Add capstone exercise with R+Python\"\ngit push"
   }
 ]
