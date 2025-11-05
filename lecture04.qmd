@@ -2,7 +2,7 @@
 title: "Lecture 4 — Software Engineering for Data Science"
 subtitle: "Data & Code Management: From Collection to Application"
 author: "Samuel Orso"
-date: "2025-10-30"
+date: "2025-11-06"
 format:
   revealjs:
     theme: [default, dracula]
