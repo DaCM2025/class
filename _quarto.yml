@@ -6,6 +6,7 @@ project:
     - lecture01.qmd
     - lecture02.qmd
     - lecture03.qmd
+    - lecture04.qmd
 
 format:
   revealjs:

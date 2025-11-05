@@ -31,4 +31,5 @@ __pycache__/
 **/*.quarto_ipynb
 
 old/
+new/
 additional_exercises/
