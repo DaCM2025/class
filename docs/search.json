@@ -119,18 +119,18 @@
     "text": "Namespaces (how functions are found)\n\nThe namespace controls how R looks up variables: it searches your package namespace, then imports, then base, then the regular search path.\n\n\nGenerated automatically by roxygen2.\nUse @export to expose a function; @importFrom pkg fun to bring symbols in."
   },
   {
-    "objectID": "lecture04.html#testing-via-examples",
-    "href": "lecture04.html#testing-via-examples",
-    "title": "Lecture 4 — Software Engineering for Data Science",
-    "section": "“Testing” via examples",
-    "text": "“Testing” via examples\n\nExamples (in roxygen) are shown to users and run under R CMD check.\nFor bigger snippets, place files under inst/examples/ and reference them:\n\n\n#' @examples\n#' @example inst/examples/eg_reg_coef.R\n\ninst/examples/eg_reg_coef.R:\n\n## linear regression\ncars$speed %r% cars$dist"
-  },
-  {
     "objectID": "lecture04.html#a-toy-function-to-test",
     "href": "lecture04.html#a-toy-function-to-test",
     "title": "Lecture 4 — Software Engineering for Data Science",
     "section": "A toy function to test",
     "text": "A toy function to test\nIn R/reg_coef.R:\n\n#' Compute regression coefficients\n#'\n#' @param x Design \\code{matrix} or vector.\n#' @param y Response \\code{vector}.\n#' @details Uses \\link[stats]{lm} then \\link[stats]{coef}.\n#' @importFrom stats lm coef\n#' @seealso \\code{\\link[stats]{lm}}, \\code{\\link[stats]{coef}}\n#' @example inst/examples/eg_reg_coef.R\n#' @export\n`%r%` &lt;- function(y, x) {\n  fit &lt;- lm(y ~ x)\n  coef(fit)\n}"
+  },
+  {
+    "objectID": "lecture04.html#testing-via-examples",
+    "href": "lecture04.html#testing-via-examples",
+    "title": "Lecture 4 — Software Engineering for Data Science",
+    "section": "“Testing” via examples",
+    "text": "“Testing” via examples\n\nExamples (in roxygen) are shown to users and run under R CMD check.\nFor bigger snippets, place files under inst/examples/ and reference them:\n\n\n#' @examples\n#' @example inst/examples/eg_reg_coef.R\n\ninst/examples/eg_reg_coef.R:\n\n## linear regression\ncars$speed %r% cars$dist"
   },
   {
     "objectID": "lecture04.html#what-happens-on-check",
@@ -235,7 +235,7 @@
     "href": "lecture04.html#resources",
     "title": "Lecture 4 — Software Engineering for Data Science",
     "section": "Resources",
-    "text": "Resources\n\nCode shown here: https://github.com/ptds2024/pkgtest\nR Packages (2e): https://r-pkgs.org/\nWriting R Extensions: https://cran.r-project.org/doc/manuals/r-release/R-exts.html\nBook chapter: An Introduction to Statistical Programming Methods with R — Packages section: https://smac-group.github.io/ds/section-r-packages.html\n\nAwesome—let’s mirror your R package examples one-for-one in a simple Python library deck. Save as python-library-parallel.qmd. It uses setup.py + wheel (like your previous “simple” flow), and parallels: hello() → dataset snipes → regression coefficients → examples → tests → CI → docs & release."
+    "text": "Resources\n\nCode shown here: https://github.com/ptds2024/pkgtest\nR Packages (2e): https://r-pkgs.org/\nWriting R Extensions: https://cran.r-project.org/doc/manuals/r-release/R-exts.html\nBook chapter: An Introduction to Statistical Programming Methods with R — Packages section: https://smac-group.github.io/ds/section-r-packages.html"
   },
   {
     "objectID": "lecture04.html#why-a-python-library-r-parallels",
@@ -487,7 +487,7 @@
     "href": "lecture04.html#peeking-at-generics-r",
     "title": "Lecture 4 — Software Engineering for Data Science",
     "section": "Peeking at generics (R)",
-    "text": "Peeking at generics (R)\n\nsummary\n\nfunction (object, ...) \nUseMethod(\"summary\")\n&lt;bytecode: 0x55a6ec101048&gt;\n&lt;environment: namespace:base&gt;\n\nhead(summary.default)\n\n                                                    \n1 function (object, ..., digits, quantile.type = 7) \n2 {                                                 \n3     if (is.factor(object))                        \n4         return(summary.factor(object, ...))       \n5     else if (is.matrix(object)) {                 \n6         if (missing(digits))                      \n\nhead(summary.lm)\n\n                                                               \n1 function (object, correlation = FALSE, symbolic.cor = FALSE, \n2     ...)                                                     \n3 {                                                            \n4     z &lt;- object                                              \n5     p &lt;- z$rank                                              \n6     rdf &lt;- z$df.residual"
+    "text": "Peeking at generics (R)\n\nsummary\n\nfunction (object, ...) \nUseMethod(\"summary\")\n&lt;bytecode: 0x55780ebeff88&gt;\n&lt;environment: namespace:base&gt;\n\nhead(summary.default)\n\n                                                    \n1 function (object, ..., digits, quantile.type = 7) \n2 {                                                 \n3     if (is.factor(object))                        \n4         return(summary.factor(object, ...))       \n5     else if (is.matrix(object)) {                 \n6         if (missing(digits))                      \n\nhead(summary.lm)\n\n                                                               \n1 function (object, correlation = FALSE, symbolic.cor = FALSE, \n2     ...)                                                     \n3 {                                                            \n4     z &lt;- object                                              \n5     p &lt;- z$rank                                              \n6     rdf &lt;- z$df.residual"
   },
   {
     "objectID": "lecture04.html#forwarding-extra-arguments",
@@ -2286,7 +2286,7 @@
     "href": "lecture03.html#r-openweathermap-json-to-tibble",
     "title": "Lecture 3 — Data Management & Collection",
     "section": "R: OpenWeatherMap → JSON to tibble",
-    "text": "R: OpenWeatherMap → JSON to tibble\n\n# packages\nlibrary(httr2)\nlibrary(dplyr)\n\n# store your key in an env var before class: Sys.setenv(OPENWEATHERMAP_API_KEY=\"...\")\nokey &lt;- Sys.getenv(\"OPENWEATHERMAP_API_KEY\")\n\nresp &lt;- request(\"https://api.openweathermap.org/data/2.5/weather\") |&gt;\n  req_url_query(q = \"Lausanne\", units = \"metric\", appid = okey) |&gt;\n  req_perform()\n\nwx &lt;- resp_body_json(resp, simplifyVector = TRUE)\n\n# extract a compact summary row\nwx_row &lt;- tibble::tibble(\n  city        = wx$name,\n  country     = wx$sys$country,\n  temperature = wx$main$temp,\n  feels_like  = wx$main$feels_like,\n  humidity    = wx$main$humidity,\n  wind_ms     = wx$wind$speed,\n  condition   = wx$weather$description,\n  timestamp   = as.POSIXct(wx$dt, origin = \"1970-01-01\", tz = \"UTC\")\n)\nwx_row\n\n# A tibble: 1 × 8\n  city     country temperature feels_like humidity wind_ms condition      \n  &lt;chr&gt;    &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          \n1 Lausanne CH             14.4       13.6       67    0.97 overcast clouds\n# ℹ 1 more variable: timestamp &lt;dttm&gt;\n\n\n\nGlobal execute: { eval: false } prevents live HTTP calls during render. Run interactively if needed."
+    "text": "R: OpenWeatherMap → JSON to tibble\n\n# packages\nlibrary(httr2)\nlibrary(dplyr)\n\n# store your key in an env var before class: Sys.setenv(OPENWEATHERMAP_API_KEY=\"...\")\nokey &lt;- Sys.getenv(\"OPENWEATHERMAP_API_KEY\")\n\nresp &lt;- request(\"https://api.openweathermap.org/data/2.5/weather\") |&gt;\n  req_url_query(q = \"Lausanne\", units = \"metric\", appid = okey) |&gt;\n  req_perform()\n\nwx &lt;- resp_body_json(resp, simplifyVector = TRUE)\n\n# extract a compact summary row\nwx_row &lt;- tibble::tibble(\n  city        = wx$name,\n  country     = wx$sys$country,\n  temperature = wx$main$temp,\n  feels_like  = wx$main$feels_like,\n  humidity    = wx$main$humidity,\n  wind_ms     = wx$wind$speed,\n  condition   = wx$weather$description,\n  timestamp   = as.POSIXct(wx$dt, origin = \"1970-01-01\", tz = \"UTC\")\n)\nwx_row\n\n# A tibble: 1 × 8\n  city     country temperature feels_like humidity wind_ms condition      \n  &lt;chr&gt;    &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          \n1 Lausanne CH              7.4        7.4       73    0.54 overcast clouds\n# ℹ 1 more variable: timestamp &lt;dttm&gt;\n\n\n\nGlobal execute: { eval: false } prevents live HTTP calls during render. Run interactively if needed."
   },
   {
     "objectID": "lecture03.html#python-openweathermap-json-to-dataframe",
@@ -2307,7 +2307,7 @@
     "href": "lecture03.html#r-alpha-vantage-tidy-daily-prices",
     "title": "Lecture 3 — Data Management & Collection",
     "section": "R: Alpha Vantage → tidy daily prices",
-    "text": "R: Alpha Vantage → tidy daily prices\n\nlibrary(httr2)\nlibrary(purrr)\nlibrary(dplyr)\n\nakey &lt;- Sys.getenv(\"ALPHAVANTAGE_API_KEY\", unset = \"demo\")\nresp &lt;- request(\"https://www.alphavantage.co/query\") |&gt;\n  req_url_query(`function` = \"TIME_SERIES_DAILY\", symbol = \"MSFT\", apikey = akey) |&gt;\n  req_perform()\njs &lt;- resp_body_json(resp, simplifyVector = TRUE)\n\ndaily &lt;- js[[\"Time Series (Daily)\"]]\nprices &lt;- imap_dfr(daily, ~ tibble::tibble(\n  date   = as.Date(.y),\n  open   = as.numeric(.x[[\"1. open\"]]),\n  high   = as.numeric(.x[[\"2. high\"]]),\n  low    = as.numeric(.x[[\"3. low\"]]),\n  close  = as.numeric(.x[[\"4. close\"]]),\n  volume = as.numeric(.x[[\"5. volume\"]])\n)) |&gt;\n  arrange(date)\nprices\n\n# A tibble: 100 × 6\n   date        open  high   low close   volume\n   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;\n 1 2025-06-13  476.  479.  473.  475. 16814456\n 2 2025-06-16  475.  481.  475   479. 15626104\n 3 2025-06-17  475.  479.  474.  478. 15414128\n 4 2025-06-18  478   481   474.  480. 17526452\n 5 2025-06-20  482.  483.  477.  477. 37576206\n 6 2025-06-23  478.  488.  473.  486  24863952\n 7 2025-06-24  489.  492.  487.  490. 22305642\n 8 2025-06-25  492.  495.  489.  492. 17495099\n 9 2025-06-26  493.  498.  493.  497. 21578853\n10 2025-06-27  498.  499.  493.  496. 34539236\n# ℹ 90 more rows"
+    "text": "R: Alpha Vantage → tidy daily prices\n\nlibrary(httr2)\nlibrary(purrr)\nlibrary(dplyr)\n\nakey &lt;- Sys.getenv(\"ALPHAVANTAGE_API_KEY\", unset = \"demo\")\nresp &lt;- request(\"https://www.alphavantage.co/query\") |&gt;\n  req_url_query(`function` = \"TIME_SERIES_DAILY\", symbol = \"MSFT\", apikey = akey) |&gt;\n  req_perform()\njs &lt;- resp_body_json(resp, simplifyVector = TRUE)\n\ndaily &lt;- js[[\"Time Series (Daily)\"]]\nprices &lt;- imap_dfr(daily, ~ tibble::tibble(\n  date   = as.Date(.y),\n  open   = as.numeric(.x[[\"1. open\"]]),\n  high   = as.numeric(.x[[\"2. high\"]]),\n  low    = as.numeric(.x[[\"3. low\"]]),\n  close  = as.numeric(.x[[\"4. close\"]]),\n  volume = as.numeric(.x[[\"5. volume\"]])\n)) |&gt;\n  arrange(date)\nprices\n\n# A tibble: 100 × 6\n   date        open  high   low close   volume\n   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;\n 1 2025-06-16  475.  481.  475   479. 15626104\n 2 2025-06-17  475.  479.  474.  478. 15414128\n 3 2025-06-18  478   481   474.  480. 17526452\n 4 2025-06-20  482.  483.  477.  477. 37576206\n 5 2025-06-23  478.  488.  473.  486  24863952\n 6 2025-06-24  489.  492.  487.  490. 22305642\n 7 2025-06-25  492.  495.  489.  492. 17495099\n 8 2025-06-26  493.  498.  493.  497. 21578853\n 9 2025-06-27  498.  499.  493.  496. 34539236\n10 2025-06-30  497.  501.  495.  497. 28368991\n# ℹ 90 more rows"
   },
   {
     "objectID": "lecture03.html#python-alpha-vantage-tidy-daily-prices",

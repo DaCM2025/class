@@ -471,6 +471,25 @@ Samuel Orso
 <li>Use <code>@export</code> to expose a function; <code>@importFrom pkg fun</code> to bring symbols in.</li>
 </ul>
 </section>
+<section id="a-toy-function-to-test" class="slide level2">
+<h2>A toy function to test</h2>
+<p>In <code>R/reg_coef.R</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="co">#' Compute regression coefficients</span></span>
+<span id="cb16-2"><a></a><span class="co">#'</span></span>
+<span id="cb16-3"><a></a><span class="co">#' @param x Design \code{matrix} or vector.</span></span>
+<span id="cb16-4"><a></a><span class="co">#' @param y Response \code{vector}.</span></span>
+<span id="cb16-5"><a></a><span class="co">#' @details Uses \link[stats]{lm} then \link[stats]{coef}.</span></span>
+<span id="cb16-6"><a></a><span class="co">#' @importFrom stats lm coef</span></span>
+<span id="cb16-7"><a></a><span class="co">#' @seealso \code{\link[stats]{lm}}, \code{\link[stats]{coef}}</span></span>
+<span id="cb16-8"><a></a><span class="co">#' @example inst/examples/eg_reg_coef.R</span></span>
+<span id="cb16-9"><a></a><span class="co">#' @export</span></span>
+<span id="cb16-10"><a></a><span class="st">`</span><span class="at">%r%</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(y, x) {</span>
+<span id="cb16-11"><a></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
+<span id="cb16-12"><a></a>  <span class="fu">coef</span>(fit)</span>
+<span id="cb16-13"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
 <section id="testing-via-examples" class="slide level2">
 <h2>“Testing” via examples</h2>
 <ul>
@@ -478,32 +497,13 @@ Samuel Orso
 <li>For bigger snippets, place files under <code>inst/examples/</code> and reference them:</li>
 </ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="co">#' @examples</span></span>
-<span id="cb16-2"><a></a><span class="co">#' @example inst/examples/eg_reg_coef.R</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a><span class="co">#' @examples</span></span>
+<span id="cb17-2"><a></a><span class="co">#' @example inst/examples/eg_reg_coef.R</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>inst/examples/eg_reg_coef.R</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a><span class="do">## linear regression</span></span>
-<span id="cb17-2"><a></a>cars<span class="sc">$</span>speed <span class="sc">%r%</span> cars<span class="sc">$</span>dist</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</section>
-<section id="a-toy-function-to-test" class="slide level2">
-<h2>A toy function to test</h2>
-<p>In <code>R/reg_coef.R</code>:</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a><span class="co">#' Compute regression coefficients</span></span>
-<span id="cb18-2"><a></a><span class="co">#'</span></span>
-<span id="cb18-3"><a></a><span class="co">#' @param x Design \code{matrix} or vector.</span></span>
-<span id="cb18-4"><a></a><span class="co">#' @param y Response \code{vector}.</span></span>
-<span id="cb18-5"><a></a><span class="co">#' @details Uses \link[stats]{lm} then \link[stats]{coef}.</span></span>
-<span id="cb18-6"><a></a><span class="co">#' @importFrom stats lm coef</span></span>
-<span id="cb18-7"><a></a><span class="co">#' @seealso \code{\link[stats]{lm}}, \code{\link[stats]{coef}}</span></span>
-<span id="cb18-8"><a></a><span class="co">#' @example inst/examples/eg_reg_coef.R</span></span>
-<span id="cb18-9"><a></a><span class="co">#' @export</span></span>
-<span id="cb18-10"><a></a><span class="st">`</span><span class="at">%r%</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="cf">function</span>(y, x) {</span>
-<span id="cb18-11"><a></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
-<span id="cb18-12"><a></a>  <span class="fu">coef</span>(fit)</span>
-<span id="cb18-13"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a><span class="do">## linear regression</span></span>
+<span id="cb18-2"><a></a>cars<span class="sc">$</span>speed <span class="sc">%r%</span> cars<span class="sc">$</span>dist</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="what-happens-on-check" class="slide level2">
@@ -665,7 +665,6 @@ Samuel Orso
 <li><strong>Writing R Extensions</strong>: <a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html">https://cran.r-project.org/doc/manuals/r-release/R-exts.html</a></li>
 <li><strong>Book chapter</strong>: <em>An Introduction to Statistical Programming Methods with R</em> — Packages section: <a href="https://smac-group.github.io/ds/section-r-packages.html">https://smac-group.github.io/ds/section-r-packages.html</a></li>
 </ul>
-<p>Awesome—let’s mirror your <strong>R package</strong> examples one-for-one in a <strong>simple Python library</strong> deck. Save as <code>python-library-parallel.qmd</code>. It uses <strong>setup.py + wheel</strong> (like your previous “simple” flow), and parallels: <code>hello()</code> → dataset <strong>snipes</strong> → <strong>regression coefficients</strong> → <strong>examples</strong> → <strong>tests</strong> → <strong>CI</strong> → <strong>docs &amp; release</strong>.</p>
 </section>
 <section class="slide level2">
 
@@ -1308,7 +1307,7 @@ F-statistic: 89.57 on 1 and 48 DF,  p-value: 1.49e-12</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>function (object, ...) 
 UseMethod("summary")
-&lt;bytecode: 0x55a6ec101048&gt;
+&lt;bytecode: 0x55780ebeff88&gt;
 &lt;environment: namespace:base&gt;</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a></a><span class="fu">head</span>(summary.default)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

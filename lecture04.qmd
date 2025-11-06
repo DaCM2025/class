@@ -348,27 +348,6 @@ Remember to list `knitr` and `rmarkdown` under `Suggests`.
 
 ---
 
-## “Testing” via examples
-
-* Examples (in roxygen) are **shown to users** and run under `R CMD check`.
-* For bigger snippets, place files under `inst/examples/` and reference them:
-
-```{r}
-#| eval: false
-#' @examples
-#' @example inst/examples/eg_reg_coef.R
-```
-
-`inst/examples/eg_reg_coef.R`:
-
-```{r}
-#| eval: false
-## linear regression
-cars$speed %r% cars$dist
-```
-
----
-
 ## A toy function to test
 
 In `R/reg_coef.R`:
@@ -388,6 +367,28 @@ In `R/reg_coef.R`:
   coef(fit)
 }
 ```
+
+---
+
+## “Testing” via examples
+
+* Examples (in roxygen) are **shown to users** and run under `R CMD check`.
+* For bigger snippets, place files under `inst/examples/` and reference them:
+
+```{r}
+#| eval: false
+#' @examples
+#' @example inst/examples/eg_reg_coef.R
+```
+
+`inst/examples/eg_reg_coef.R`:
+
+```{r}
+#| eval: false
+## linear regression
+cars$speed %r% cars$dist
+```
+
 
 ---
 
@@ -599,8 +600,6 @@ usethis::use_tidy_description()    # sort/format DESCRIPTION
 * **Writing R Extensions**: [https://cran.r-project.org/doc/manuals/r-release/R-exts.html](https://cran.r-project.org/doc/manuals/r-release/R-exts.html)
 * **Book chapter**: *An Introduction to Statistical Programming Methods with R* — Packages section: [https://smac-group.github.io/ds/section-r-packages.html](https://smac-group.github.io/ds/section-r-packages.html)
 
-
-Awesome—let’s mirror your **R package** examples one-for-one in a **simple Python library** deck. Save as `python-library-parallel.qmd`. It uses **setup.py + wheel** (like your previous “simple” flow), and parallels: `hello()` → dataset **snipes** → **regression coefficients** → **examples** → **tests** → **CI** → **docs & release**.
 
 ---
 
