@@ -33,3 +33,5 @@ __pycache__/
 old/
 new/
 additional_exercises/
+workshop/
+test_shiny/

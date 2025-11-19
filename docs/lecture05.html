@@ -1,0 +1,3045 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-be2dad9397c9b99732ed2a04f2c65f62.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-99.9.9">
+
+  <meta name="author" content="Samuel Orso">
+  <meta name="dcterms.date" content="2025-11-20">
+  <title>Lecture 5 — Modern Tools: BI &amp; LLMs</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #f07178; } /* Alert */
+    code span.an { color: #d4d0ab; } /* Annotation */
+    code span.at { color: #00e0e0; } /* Attribute */
+    code span.bn { color: #d4d0ab; } /* BaseN */
+    code span.bu { color: #abe338; } /* BuiltIn */
+    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #abe338; } /* Char */
+    code span.cn { color: #ffd700; } /* Constant */
+    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
+    code span.cv { color: #ffd700; } /* CommentVar */
+    code span.do { color: #f8f8f2; } /* Documentation */
+    code span.dt { color: #ffa07a; } /* DataType */
+    code span.dv { color: #d4d0ab; } /* DecVal */
+    code span.er { color: #f07178; text-decoration: underline; } /* Error */
+    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
+    code span.fl { color: #d4d0ab; } /* Float */
+    code span.fu { color: #ffa07a; } /* Function */
+    code span.im { color: #abe338; } /* Import */
+    code span.in { color: #d4d0ab; } /* Information */
+    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
+    code span.op { color: #ffa07a; } /* Operator */
+    code span.ot { color: #00e0e0; } /* Other */
+    code span.pp { color: #dcc6e0; } /* Preprocessor */
+    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
+    code span.sc { color: #abe338; } /* SpecialChar */
+    code span.ss { color: #abe338; } /* SpecialString */
+    code span.st { color: #abe338; } /* String */
+    code span.va { color: #00e0e0; } /* Variable */
+    code span.vs { color: #abe338; } /* VerbatimString */
+    code span.wa { color: #dcc6e0; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-4672a6d53a7f172c9e50360c0960cbcc.css">
+  <link rel="stylesheet" href="theme_dacm.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-dark">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Lecture 5 — Modern Tools: BI &amp; LLMs</h1>
+  <p class="subtitle">Data &amp; Code Management: From Collection to Application</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Samuel Orso 
+</div>
+</div>
+</div>
+
+  <p class="date">2025-11-20</p>
+</section><section id="TOC">
+<nav role="doc-toc"> 
+<h2 id="toc-title">Table of contents</h2>
+<ul>
+<li><a href="#/group-project-overview" id="/toc-group-project-overview">Group project overview</a></li>
+<li><a href="#/shiny-web-app" id="/toc-shiny-web-app">Shiny web app</a></li>
+<li><a href="#/streamlit-web-app" id="/toc-streamlit-web-app">Streamlit web app</a></li>
+<li><a href="#/ai-for-data-visualization-dashboards" id="/toc-ai-for-data-visualization-dashboards">AI for Data Visualization &amp; Dashboards</a></li>
+<li><a href="#/power-bi-in-the-dashboard-landscape" id="/toc-power-bi-in-the-dashboard-landscape">Power BI in the dashboard landscape</a></li>
+</ul>
+</nav>
+</section>
+<section>
+<section id="group-project-overview" class="title-slide slide level1 center">
+<h1>Group project overview</h1>
+
+</section>
+<section id="group-project-overview-1" class="slide level2">
+<h2>Group project overview</h2>
+
+<img data-src="images/team_project.png" width="518" class="r-stretch"></section>
+<section id="group-project-structure-roles" class="slide level2">
+<h2>Group project: structure &amp; roles</h2>
+<ul>
+<li>Groups of <strong>3 students</strong></li>
+<li>Each group focuses on 3 complementary dimensions:
+<ol type="1">
+<li><strong>Data gathering &amp; wrangling</strong> → Lecture on <em>Data Management &amp; Collection</em></li>
+<li><strong>Package development &amp; website</strong> → Lecture on <em>Software Engineering for Data Science</em></li>
+<li><strong>Dashboard / web app development</strong> → Lecture on <em>Modern Tools: BI &amp; LLMs</em></li>
+</ol></li>
+<li>Idea: each student is <em>lead</em> on one dimension,<br>
+but everyone should understand the full pipeline.</li>
+</ul>
+</section>
+<section id="project-goals" class="slide level2">
+<h2>Project goals</h2>
+<ul>
+<li>Experience a <strong>mini end-to-end data project</strong>:
+<ul>
+<li>from raw data collection<br>
+</li>
+<li>to a reusable <strong>package</strong><br>
+</li>
+<li>to an interactive <strong>dashboard/web app</strong></li>
+</ul></li>
+<li>Practice:
+<ul>
+<li><strong>Reproducible workflows</strong> (Git, GitHub, environments)</li>
+<li><strong>Team collaboration</strong> (issues, branches, pull requests)</li>
+<li><strong>Good engineering habits</strong> (tests, docs, CI where possible)</li>
+</ul></li>
+</ul>
+</section>
+<section id="role-1-data-gathering-wrangling" class="slide level2">
+<h2>Role 1 – Data gathering &amp; wrangling</h2>
+<p><strong>Main responsibility:</strong> bring high-quality, analysis-ready data.</p>
+<ul>
+<li>Identify and justify <strong>data sources</strong>
+<ul>
+<li>APIs, web scraping, open data portals, files from stakeholders, …</li>
+</ul></li>
+<li>Design and document the <strong>data collection pipeline</strong>
+<ul>
+<li>Scripts in R or Python (no manual copy-paste)</li>
+<li>Clear description of licences, limitations, biases</li>
+</ul></li>
+<li>Perform <strong>cleaning &amp; wrangling</strong>
+<ul>
+<li>Tidy structures, variable names, types, missing values</li>
+<li>Reproducible transformations (no edits in Excel)</li>
+</ul></li>
+<li>Deliver:
+<ul>
+<li><code>data_raw/</code>, <code>data/</code>, and scripts</li>
+<li>A short <strong>data report</strong> (Quarto) describing the pipeline</li>
+</ul></li>
+</ul>
+</section>
+<section id="role-2-package-development-website" class="slide level2">
+<h2>Role 2 – Package development &amp; website</h2>
+<p><strong>Main responsibility:</strong> make the code reusable and documented.</p>
+<ul>
+<li>Organise core code into an <strong>R package or Python library</strong>:
+<ul>
+<li>Functions for: data loading, cleaning, key computations, plots, models</li>
+<li>Minimal tests for critical functions</li>
+</ul></li>
+<li>Ensure <strong>reproducibility</strong>:
+<ul>
+<li><code>DESCRIPTION</code> / <code>pyproject.toml</code> or similar</li>
+<li>Run CI on GitHub (e.g.&nbsp;with GitHub Actions)</li>
+<li>Make sure it can be installed from the repo</li>
+</ul></li>
+<li>Publish a small <strong>documentation website</strong>:
+<ul>
+<li>Quarto or MkDocs + GitHub Pages</li>
+<li>Pages: <em>Overview</em>, <em>Installation</em>, <em>Get started</em>, <em>Examples</em>, <em>API reference</em></li>
+</ul></li>
+<li>Deliver:
+<ul>
+<li>One private GitHub repo on one member personal account</li>
+<li>Package repository structure</li>
+<li>Online or locally-buildable <strong>docs site</strong></li>
+</ul></li>
+</ul>
+</section>
+<section id="role-3-dashboard-web-app-development" class="slide level2">
+<h2>Role 3 – Dashboard / web app development</h2>
+<p><strong>Main responsibility:</strong> communicate insights interactively.</p>
+<ul>
+<li>Build a <strong>dashboard or web app</strong> using e.g.:
+<ul>
+<li>R: Shiny / Shiny for Python</li>
+<li>Python: Streamlit, Dash</li>
+<li>Or: Power BI dashboard (with R/Python where relevant)</li>
+</ul></li>
+<li>Consume the <strong>package functions</strong> whenever possible<br>
+(no copy-pasted logic from scripts)</li>
+<li>Provide:
+<ul>
+<li>At least <strong>2–3 interactive views</strong> (filters, drill-downs, tooltips…)</li>
+<li>Clear layout and consistent visual design</li>
+<li>Short text explanations for a non-technical audience</li>
+</ul></li>
+<li>Deliver:
+<ul>
+<li>App code + instructions to run it locally</li>
+<li>Screenshots / short demo GIF or video (optional but encouraged)</li>
+<li>One private GitHub repo on the organization</li>
+</ul></li>
+</ul>
+</section>
+<section id="shared-responsibilities-all-roles" class="slide level2">
+<h2>Shared responsibilities (all roles)</h2>
+<p>Regardless of your lead role, <strong>everyone</strong> is responsible for:</p>
+<ul>
+<li><strong>Defining the project question</strong>
+<ul>
+<li>What do you want to understand / monitor / predict / explain?</li>
+</ul></li>
+<li><strong>Choosing tools</strong> (R / Python / mix) and architecture together</li>
+<li><strong>Version control</strong>
+<ul>
+<li>Git branching, pull requests, code review</li>
+</ul></li>
+<li><strong>Code quality</strong>
+<ul>
+<li>Consistent style, comments where needed, avoid dead code</li>
+</ul></li>
+<li><strong>Final presentation</strong>
+<ul>
+<li>Each member presents the part they led <strong>and</strong> shows understanding of the whole pipeline</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>All 3 students collaborate on the idea, the story, and the final presentation.</p>
+</blockquote>
+</section>
+<section id="suggested-timeline-3-weeks-presentations" class="slide level2">
+<h2>Suggested timeline (3 weeks + presentations)</h2>
+<ul>
+<li><strong>Week 1 – Topic &amp; data</strong>
+<ul>
+<li>Choose topic &amp; research questions<br>
+</li>
+<li>Find data sources &amp; write first collection scripts<br>
+</li>
+<li>Do quick EDA to check feasibility</li>
+</ul></li>
+<li><strong>Week 2 – Package &amp; app (v1)</strong>
+<ul>
+<li>Stabilise data pipeline (raw → cleaned)<br>
+</li>
+<li>Set up package + key functions<br>
+</li>
+<li>Build first working dashboard/web app</li>
+</ul></li>
+<li><strong>Week 3 – Polish &amp; integrate</strong>
+<ul>
+<li>Improve package (API, docs, a few tests)<br>
+</li>
+<li>Refine dashboard (design, story, robustness)<br>
+</li>
+<li>Finalise README + “How to run” + environment</li>
+</ul></li>
+<li><strong>Presentation week</strong>
+<ul>
+<li>Present project &amp; live demo<br>
+</li>
+<li>Answer questions on data, package, and app</li>
+</ul></li>
+</ul>
+</section>
+<section id="project-grading-40-points" class="slide level2">
+<h2>Project grading (40 points)</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Points</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Data gathering &amp; wrangling</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>Package development &amp; documentation</td>
+<td>10</td>
+</tr>
+<tr class="odd">
+<td>Dashboard / web app</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>Reproducibility &amp; project management</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>Presentation &amp; individual contribution</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td><strong>40</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Each group is graded on the <strong>whole project</strong>, not only on their “role”.</li>
+<li>Roles (data / package / app) help structure the work,<br>
+but <strong>everyone</strong> should understand the full pipeline.</li>
+</ul>
+</section>
+<section id="next-steps" class="slide level2">
+<h2>Next steps</h2>
+<ul>
+<li>Form groups of <strong>3 students</strong></li>
+<li>Pick a <strong>topic</strong> that:
+<ul>
+<li>has accessible data sources, and</li>
+<li>can benefit from a dashboard or web app</li>
+</ul></li>
+<li>Decide <strong>who leads what</strong> (roles can still evolve)</li>
+<li>Create your <strong>GitHub repository</strong> and write:
+<ul>
+<li>A short <code>README</code> with:
+<ul>
+<li>topic</li>
+<li>research questions</li>
+<li>preliminary plan for the 3 dimensions</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="shiny-web-app" class="title-slide slide level1 center">
+<h1>Shiny web app</h1>
+
+</section>
+<section id="shiny-web-app-1" class="slide level2">
+<h2>Shiny web app</h2>
+<ul>
+<li><strong>Communication</strong>: allow users to interact with data and analysis in the browser.</li>
+<li>Shiny enables <strong>rapid development</strong> of web applications in R — no need to master HTML/CSS/JS (though they help!).</li>
+<li>Widely used in industry for <strong>collaboration</strong>, <strong>dashboards</strong>, <strong>prototyping</strong>, and <strong>internal tools</strong>.</li>
+<li>Runs locally, on a server, or in Posit Connect/Shinyapps.io/Docker.</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Shiny apps are just <strong>R code</strong>: a UI that declares outputs and inputs, and a <strong>server</strong> that reacts to them.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="example-interact-with-graphics" class="slide level2">
+<h2>Example: interact with graphics</h2>
+<div class="cell">
+<iframe src="https://gallery.shinyapps.io/095-plot-interaction-advanced/" width="960" height="400px" data-external="1">
+</iframe>
+</div>
+<p><em>Source: <a href="https://shiny.posit.co/r/gallery">https://shiny.posit.co/r/gallery</a></em></p>
+</section>
+<section id="example-download-a-report" class="slide level2">
+<h2>Example: download a report</h2>
+<div class="cell">
+<iframe src="https://gallery.shinyapps.io/016-knitr-pdf/" width="960" height="400px" data-external="1">
+</iframe>
+</div>
+<p><em>Source: <a href="https://shiny.posit.co/r/gallery">https://shiny.posit.co/r/gallery</a></em></p>
+</section>
+<section id="example-rental-cashflow-calculator" class="slide level2">
+<h2>Example: rental cashflow calculator</h2>
+<div class="cell">
+<iframe src="https://cashflowcalc.com/" width="960" height="400px" data-external="1">
+</iframe>
+</div>
+<p><em>Source: <a href="https://deanattali.com/">https://deanattali.com/</a></em></p>
+</section>
+<section id="example-movie-explorer" class="slide level2">
+<h2>Example: Movie explorer</h2>
+<div class="cell">
+<iframe src="https://gallery.shinyapps.io/051-movie-explorer/" width="960" height="400px" data-external="1">
+</iframe>
+</div>
+<p><em>Source: <a href="https://shiny.posit.co/">https://shiny.posit.co/</a></em></p>
+</section>
+<section id="example-be-a-dj" class="slide level2">
+<h2>Example: Be a DJ</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>OSUICode<span class="sc">::</span><span class="fu">run_example</span>(<span class="st">"intro/dj-system"</span>, <span class="at">package =</span> <span class="st">"OSUICode"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><em>Ref: <a href="https://github.com/DivadNojnarg/OSUICode">https://github.com/DivadNojnarg/OSUICode</a></em></p>
+</section>
+<section id="hello-world" class="slide level2">
+<h2>Hello, world!</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">library</span>(shiny)</span>
+<span id="cb2-2"><a></a><span class="co"># User interface</span></span>
+<span id="cb2-3"><a></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb2-4"><a></a>  <span class="st">"Hello, world!"</span></span>
+<span id="cb2-5"><a></a>)</span>
+<span id="cb2-6"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {}</span>
+<span id="cb2-7"><a></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+
+<img data-src="images/helloworld.png" class="quarto-figure quarto-figure-center r-stretch" width="450"></section>
+<section id="ui-vs-server-the-two-halves" class="slide level2">
+<h2>UI vs Server — the two halves</h2>
+<ul>
+<li><strong>User interface (UI)</strong>: HTML-like description of widgets and output placeholders.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>ui</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;div class="container-fluid"&gt;Hello, world!&lt;/div&gt;</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Server back-end</strong>: R code that computes results and fills outputs.</li>
+<li>Run the app with <code>shinyApp(ui, server)</code> (or <code>runApp()</code>).</li>
+</ul>
+</section>
+<section id="step-1-back-end-r-code-data-plot" class="slide level2">
+<h2>Step 1: Back-end R code (data &amp; plot)</h2>
+<p>We’ll build a histogram of waiting time between eruptions (<code>faithful</code>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>x <span class="ot">&lt;-</span> faithful[, <span class="dv">2</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="add-parameters-bins" class="slide level2">
+<h2>Add parameters (bins)</h2>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>cells <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb6-2"><a></a>breaks <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x), <span class="at">length.out =</span> cells <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb6-3"><a></a><span class="fu">hist</span>(x, <span class="at">breaks =</span> breaks)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture05_files/figure-revealjs/unnamed-chunk-13-1.png" class="quarto-figure quarto-figure-center r-stretch" width="480"></section>
+<section id="add-parameters-labels" class="slide level2">
+<h2>Add parameters (labels)</h2>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a>label_x <span class="ot">&lt;-</span> <span class="st">"Waiting time to next eruption (min)"</span></span>
+<span id="cb7-2"><a></a>title   <span class="ot">&lt;-</span> <span class="st">"Old Faithful Geyser Data"</span></span>
+<span id="cb7-3"><a></a>cells   <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb7-4"><a></a>breaks  <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x), <span class="at">length.out =</span> cells <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb7-5"><a></a><span class="fu">hist</span>(x, <span class="at">breaks =</span> breaks, <span class="at">xlab =</span> label_x, <span class="at">main =</span> title)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="lecture05_files/figure-revealjs/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center r-stretch" width="480"></section>
+<section id="step-2-user-interface-ui-front-end" class="slide level2">
+<h2>Step 2: User Interface (UI) / front-end</h2>
+<p>Once the back-end logic is clear, design the UI.</p>
+</section>
+<section id="page-structure-helpers" class="slide level2">
+<h2>Page structure helpers</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>fluidPage()</code></td>
+<td>Create a fluid page layout</td>
+</tr>
+<tr class="even">
+<td><code>titlePanel()</code></td>
+<td>Application title</td>
+</tr>
+<tr class="odd">
+<td><code>sidebarLayout()</code></td>
+<td>Sidebar + main area layout</td>
+</tr>
+<tr class="even">
+<td><code>sidebarPanel()</code></td>
+<td>Sidebar with inputs</td>
+</tr>
+<tr class="odd">
+<td><code>mainPanel()</code></td>
+<td>Main content (plots, tables, …)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Alternatives to <code>fluidPage()</code>: <code>fixedPage()</code> (fixed width) and <code>fillPage()</code> (full height).</li>
+<li><code>sidebarLayout()</code> is built on <code>fluidRow()</code>/<code>column()</code> for finer control.</li>
+</ul>
+</section>
+<section id="layout-example-quarto-columns" class="slide level2">
+<h2>Layout example (Quarto columns)</h2>
+<div class="columns">
+<div class="column">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/shiny_layout.png" class="quarto-figure quarto-figure-center" width="250"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a><span class="fu">fluidPage</span>(</span>
+<span id="cb8-2"><a></a>  <span class="fu">titlePanel</span>(<span class="st">"My App"</span>),</span>
+<span id="cb8-3"><a></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb8-4"><a></a>    <span class="fu">sidebarPanel</span>(),</span>
+<span id="cb8-5"><a></a>    <span class="fu">mainPanel</span>()</span>
+<span id="cb8-6"><a></a>  )</span>
+<span id="cb8-7"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div></div>
+</section>
+<section id="multi-row-layout-with-columns" class="slide level2">
+<h2>Multi-row layout with columns</h2>
+<div class="columns">
+<div class="column">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/shiny_layout2.png" class="quarto-figure quarto-figure-center" width="247"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="fu">fluidPage</span>(</span>
+<span id="cb9-2"><a></a>  <span class="fu">fluidRow</span>(</span>
+<span id="cb9-3"><a></a>    <span class="fu">column</span>(<span class="dv">4</span>, ...),</span>
+<span id="cb9-4"><a></a>    <span class="fu">column</span>(<span class="dv">8</span>, ...)</span>
+<span id="cb9-5"><a></a>  ),</span>
+<span id="cb9-6"><a></a>  <span class="fu">fluidRow</span>(</span>
+<span id="cb9-7"><a></a>    <span class="fu">column</span>(<span class="dv">6</span>, ...),</span>
+<span id="cb9-8"><a></a>    <span class="fu">column</span>(<span class="dv">6</span>, ...)</span>
+<span id="cb9-9"><a></a>  )</span>
+<span id="cb9-10"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div></div>
+</section>
+<section id="input-controls" class="slide level2">
+<h2>Input controls</h2>
+<ul>
+<li>Users provide inputs through <strong>widgets</strong>.</li>
+<li>All inputs follow <code>someInput(inputId, …)</code>. Access in server as <code>input$inputId</code>.</li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>numericInput()</code></td>
+<td>Number entry</td>
+</tr>
+<tr class="even">
+<td><code>radioButtons()</code></td>
+<td>Radio selection</td>
+</tr>
+<tr class="odd">
+<td><code>selectInput()</code></td>
+<td>Dropdown menu</td>
+</tr>
+<tr class="even">
+<td><code>sliderInput()</code></td>
+<td>Range/slider</td>
+</tr>
+<tr class="odd">
+<td><code>submitButton()</code></td>
+<td>Submission button</td>
+</tr>
+<tr class="even">
+<td><code>textInput()</code></td>
+<td>Text box</td>
+</tr>
+<tr class="odd">
+<td><code>checkboxInput()</code></td>
+<td>Single checkbox</td>
+</tr>
+<tr class="even">
+<td><code>dateInput()</code></td>
+<td>Date selector</td>
+</tr>
+<tr class="odd">
+<td><code>fileInput()</code></td>
+<td>Upload a file</td>
+</tr>
+<tr class="even">
+<td><code>helpText()</code></td>
+<td>Describe input field</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="output-controls-renderers" class="slide level2">
+<h2>Output controls &amp; renderers</h2>
+<ul>
+<li><strong>Outputs</strong> create placeholders; <strong>render</strong> functions fill them.</li>
+<li>Access in server as <code>output$outputId</code>.</li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Output</th>
+<th>Render</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>plotOutput()</code></td>
+<td><code>renderPlot()</code></td>
+<td>Plots</td>
+</tr>
+<tr class="even">
+<td><code>tableOutput()</code></td>
+<td><code>renderTable()</code></td>
+<td>Simple tables</td>
+</tr>
+<tr class="odd">
+<td><code>textOutput()</code></td>
+<td><code>renderText()</code></td>
+<td>Text</td>
+</tr>
+<tr class="even">
+<td><code>uiOutput()</code> / <code>htmlOutput()</code></td>
+<td><code>renderUI()</code></td>
+<td>HTML / dynamic UI</td>
+</tr>
+<tr class="odd">
+<td><code>verbatimTextOutput()</code></td>
+<td><code>renderPrint()</code></td>
+<td>Console-like text</td>
+</tr>
+<tr class="even">
+<td><code>imageOutput()</code></td>
+<td><code>renderImage()</code></td>
+<td>Images</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ui-example-histogram-app" class="slide level2">
+<h2>UI example: histogram app</h2>
+<div class="columns">
+<div class="column">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a><span class="co"># Define UI for application that draws a histogram</span></span>
+<span id="cb10-2"><a></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb10-3"><a></a>  <span class="fu">titlePanel</span>(<span class="st">"Old Faithful Geyser Data"</span>),</span>
+<span id="cb10-4"><a></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb10-5"><a></a>    <span class="fu">sidebarPanel</span>(</span>
+<span id="cb10-6"><a></a>      <span class="fu">sliderInput</span>(</span>
+<span id="cb10-7"><a></a>        <span class="at">inputId =</span> <span class="st">"cells"</span>,</span>
+<span id="cb10-8"><a></a>        <span class="at">label   =</span> <span class="st">"Number of cells:"</span>,</span>
+<span id="cb10-9"><a></a>        <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">50</span>, <span class="at">value =</span> <span class="dv">30</span></span>
+<span id="cb10-10"><a></a>      ),</span>
+<span id="cb10-11"><a></a>      <span class="fu">textInput</span>(<span class="at">inputId =</span> <span class="st">"label_x"</span>, <span class="at">label =</span> <span class="st">"X-axis label:"</span>),</span>
+<span id="cb10-12"><a></a>      <span class="fu">textInput</span>(<span class="at">inputId =</span> <span class="st">"title"</span>,   <span class="at">label =</span> <span class="st">"Plot title:"</span>)</span>
+<span id="cb10-13"><a></a>    ),</span>
+<span id="cb10-14"><a></a>    <span class="fu">mainPanel</span>(</span>
+<span id="cb10-15"><a></a>      <span class="fu">plotOutput</span>(<span class="at">outputId =</span> <span class="st">"distPlot"</span>)</span>
+<span id="cb10-16"><a></a>    )</span>
+<span id="cb10-17"><a></a>  )</span>
+<span id="cb10-18"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="images/shiny_example.png" width="544"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="step-3-implementing-the-back-end" class="slide level2">
+<h2>Step 3: Implementing the back-end</h2>
+<ul>
+<li>The server <strong>reacts</strong> to user actions (reactive programming).</li>
+<li>Prototype: <code>server &lt;- function(input, output, session) { … }</code>.</li>
+<li><code>input</code>/<code>output</code> are list-like and reactive.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb11-2"><a></a>  <span class="fu">sliderInput</span>(<span class="at">inputId =</span> <span class="st">"cells"</span>,   <span class="at">label =</span> <span class="st">"Cells"</span>, <span class="at">min =</span> <span class="dv">1</span>, <span class="at">max =</span> <span class="dv">50</span>, <span class="at">value =</span> <span class="dv">30</span>),</span>
+<span id="cb11-3"><a></a>  <span class="fu">textInput</span> (<span class="at">inputId =</span> <span class="st">"label_x"</span>, <span class="at">label =</span> <span class="st">"X-axis label"</span>),</span>
+<span id="cb11-4"><a></a>  <span class="fu">textInput</span> (<span class="at">inputId =</span> <span class="st">"title"</span>,   <span class="at">label =</span> <span class="st">"Plot title"</span>),</span>
+<span id="cb11-5"><a></a>  <span class="fu">plotOutput</span>(<span class="at">outputId =</span> <span class="st">"distPlot"</span>)</span>
+<span id="cb11-6"><a></a>)</span>
+<span id="cb11-7"><a></a></span>
+<span id="cb11-8"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb11-9"><a></a>  output<span class="sc">$</span>distPlot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb11-10"><a></a>    x      <span class="ot">&lt;-</span> faithful[, <span class="dv">2</span>]</span>
+<span id="cb11-11"><a></a>    breaks <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x), <span class="at">length.out =</span> input<span class="sc">$</span>cells <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb11-12"><a></a>    <span class="fu">hist</span>(x, <span class="at">breaks =</span> breaks, <span class="at">col =</span> <span class="st">'darkgray'</span>, <span class="at">border =</span> <span class="st">'white'</span>,</span>
+<span id="cb11-13"><a></a>         <span class="at">xlab =</span> input<span class="sc">$</span>label_x, <span class="at">main =</span> input<span class="sc">$</span>title)</span>
+<span id="cb11-14"><a></a>  })</span>
+<span id="cb11-15"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="declarative-reactive-graph" class="slide level2">
+<h2>Declarative &amp; reactive graph</h2>
+<ul>
+<li>Shiny is <strong>declarative</strong>: you state dependencies; Shiny figures out when to run code.</li>
+<li>Execution follows the <strong>reactive graph</strong>, not line order.</li>
+</ul>
+
+<img data-src="images/reactive_graph_ex.png" class="quarto-figure quarto-figure-center r-stretch" width="181"></section>
+<section id="reactive-expressions" class="slide level2">
+<h2>Reactive expressions</h2>
+<ul>
+<li>In the previous app, changing any input recomputed <code>x</code> and <code>breaks</code>.</li>
+<li>Use <strong>reactive expressions</strong> so values are recomputed <strong>only when their inputs change</strong>.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb12-2"><a></a>  x      <span class="ot">&lt;-</span> <span class="fu">reactive</span>(faithful[, <span class="dv">2</span>])                  <span class="co"># &lt;- cached</span></span>
+<span id="cb12-3"><a></a>  breaks <span class="ot">&lt;-</span> <span class="fu">reactive</span>(<span class="fu">seq</span>(<span class="fu">min</span>(<span class="fu">x</span>()), <span class="fu">max</span>(<span class="fu">x</span>()),        </span>
+<span id="cb12-4"><a></a>                         <span class="at">length.out =</span> input<span class="sc">$</span>cells <span class="sc">+</span> <span class="dv">1</span>))</span>
+<span id="cb12-5"><a></a>  output<span class="sc">$</span>distPlot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb12-6"><a></a>    <span class="fu">hist</span>(<span class="fu">x</span>(), <span class="at">breaks =</span> <span class="fu">breaks</span>(), <span class="at">col =</span> <span class="st">'darkgray'</span>, <span class="at">border =</span> <span class="st">'white'</span>,</span>
+<span id="cb12-7"><a></a>         <span class="at">xlab =</span> input<span class="sc">$</span>label_x, <span class="at">main =</span> input<span class="sc">$</span>title)</span>
+<span id="cb12-8"><a></a>  })</span>
+<span id="cb12-9"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Order of reactive expressions in the file does not matter (dependencies determine execution), but <strong>readability</strong> does.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="reactive-graph-after-refactor" class="slide level2">
+<h2>Reactive graph (after refactor)</h2>
+
+<img data-src="images/reactive_graph_ex2.png" class="quarto-figure quarto-figure-center r-stretch" width="181"><ul>
+<li><code>breaks()</code> updates only when <code>cells</code> (or <code>x()</code>) changes.</li>
+</ul>
+</section>
+<section id="reactive-context-matters" class="slide level2">
+<h2>Reactive context matters</h2>
+<ul>
+<li><strong>Input values cannot be accessed outside a reactive context</strong>.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb13-2"><a></a>  <span class="co"># Not reactive: evaluated once at session start</span></span>
+<span id="cb13-3"><a></a>  breaks <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x), <span class="at">length.out =</span> input<span class="sc">$</span>cells <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb13-4"><a></a>  output<span class="sc">$</span>distPlot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({...})</span>
+<span id="cb13-5"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>A function wrapper will recompute <strong>every time</strong>:</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb14-2"><a></a>  breaks <span class="ot">&lt;-</span> <span class="cf">function</span>() <span class="fu">seq</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x), <span class="at">length.out =</span> input<span class="sc">$</span>cells <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb14-3"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Prefer <strong><code>reactive()</code></strong> to recompute <strong>only when needed</strong>.</li>
+</ul>
+</section>
+<section id="control-evaluation-time" class="slide level2">
+<h2>Control evaluation time</h2>
+<ul>
+<li>For heavy computations, let the user trigger updates with an <strong><code>actionButton</code></strong>.</li>
+<li>Use <code>eventReactive()</code> or <code>bindEvent()</code> to react only on button clicks.</li>
+</ul>
+<h3 id="ui-add-a-button" class="anchored">UI — add a button</h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb15-2"><a></a>  ...,</span>
+<span id="cb15-3"><a></a>  <span class="fu">actionButton</span>(<span class="at">inputId =</span> <span class="st">"make_graph"</span>, <span class="at">label =</span> <span class="st">"Make the plot!"</span>,</span>
+<span id="cb15-4"><a></a>               <span class="at">icon =</span> <span class="fu">icon</span>(<span class="st">"drafting-compass"</span>))</span>
+<span id="cb15-5"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<h3 id="server-use-eventreactive" class="anchored">Server — use <code>eventReactive()</code></h3>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb16-2"><a></a>  x      <span class="ot">&lt;-</span> <span class="fu">reactive</span>(faithful[, <span class="dv">2</span>])</span>
+<span id="cb16-3"><a></a>  breaks <span class="ot">&lt;-</span> <span class="fu">eventReactive</span>(input<span class="sc">$</span>make_graph, {</span>
+<span id="cb16-4"><a></a>    <span class="fu">seq</span>(<span class="fu">min</span>(<span class="fu">x</span>()), <span class="fu">max</span>(<span class="fu">x</span>()), <span class="at">length.out =</span> input<span class="sc">$</span>cells <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb16-5"><a></a>  })</span>
+<span id="cb16-6"><a></a>  xlab   <span class="ot">&lt;-</span> <span class="fu">eventReactive</span>(input<span class="sc">$</span>make_graph, input<span class="sc">$</span>label_x)</span>
+<span id="cb16-7"><a></a>  title  <span class="ot">&lt;-</span> <span class="fu">eventReactive</span>(input<span class="sc">$</span>make_graph, input<span class="sc">$</span>title)</span>
+<span id="cb16-8"><a></a>  output<span class="sc">$</span>distPlot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb16-9"><a></a>    <span class="fu">hist</span>(<span class="fu">x</span>(), <span class="at">breaks =</span> <span class="fu">breaks</span>(), <span class="at">col =</span> <span class="st">'darkgray'</span>, <span class="at">border =</span> <span class="st">'white'</span>,</span>
+<span id="cb16-10"><a></a>         <span class="at">xlab =</span> <span class="fu">xlab</span>(), <span class="at">main =</span> <span class="fu">title</span>())</span>
+<span id="cb16-11"><a></a>  })</span>
+<span id="cb16-12"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="alternative-bindevent-shiny-1.6.0" class="slide level2">
+<h2>Alternative: <code>bindEvent()</code> (Shiny ≥ 1.6.0)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb17-2"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb17-3"><a></a>  x      <span class="ot">&lt;-</span> <span class="fu">reactive</span>(faithful[, <span class="dv">2</span>])</span>
+<span id="cb17-4"><a></a>  breaks <span class="ot">&lt;-</span> <span class="fu">reactive</span>(<span class="fu">seq</span>(<span class="fu">min</span>(<span class="fu">x</span>()), <span class="fu">max</span>(<span class="fu">x</span>()), <span class="at">length.out =</span> input<span class="sc">$</span>cells <span class="sc">+</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-5"><a></a>              <span class="fu">bindEvent</span>(input<span class="sc">$</span>make_graph)</span>
+<span id="cb17-6"><a></a>  xlab   <span class="ot">&lt;-</span> <span class="fu">reactive</span>(input<span class="sc">$</span>label_x) <span class="sc">%&gt;%</span> <span class="fu">bindEvent</span>(input<span class="sc">$</span>make_graph)</span>
+<span id="cb17-7"><a></a>  title  <span class="ot">&lt;-</span> <span class="fu">reactive</span>(input<span class="sc">$</span>title)   <span class="sc">%&gt;%</span> <span class="fu">bindEvent</span>(input<span class="sc">$</span>make_graph)</span>
+<span id="cb17-8"><a></a>  output<span class="sc">$</span>distPlot <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb17-9"><a></a>    <span class="fu">hist</span>(<span class="fu">x</span>(), <span class="at">breaks =</span> <span class="fu">breaks</span>(), <span class="at">col =</span> <span class="st">'darkgray'</span>, <span class="at">border =</span> <span class="st">'white'</span>,</span>
+<span id="cb17-10"><a></a>         <span class="at">xlab =</span> <span class="fu">xlab</span>(), <span class="at">main =</span> <span class="fu">title</span>())</span>
+<span id="cb17-11"><a></a>  })</span>
+<span id="cb17-12"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="what-users-see-with-eventreactive" class="slide level2">
+<h2>What users see with <code>eventReactive</code></h2>
+
+<img data-src="images/shiny_ex_1.png" width="617" class="r-stretch"></section>
+<section id="what-users-see-with-eventreactive-1" class="slide level2">
+<h2>What users see with <code>eventReactive</code></h2>
+
+<img data-src="images/shiny_ex_2.png" width="614" class="r-stretch"></section>
+<section id="what-users-see-with-eventreactive-2" class="slide level2">
+<h2>What users see with <code>eventReactive</code></h2>
+
+<img data-src="images/shiny_ex_3.png" width="615" class="r-stretch"></section>
+<section id="observers-side-effects" class="slide level2">
+<h2>Observers (side-effects)</h2>
+<ul>
+<li>Use <strong>observers</strong> for side-effects (logging, DB writes, JS messages, …).</li>
+<li><code>observeEvent()</code> works like <code>eventReactive()</code> but <strong>returns no value</strong>.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb18-2"><a></a>  <span class="fu">observeEvent</span>(input<span class="sc">$</span>make_graph, <span class="fu">message</span>(<span class="st">"Make a new graph"</span>))</span>
+<span id="cb18-3"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="step-4-connect-ui-and-server" class="slide level2">
+<h2>Step 4: Connect UI and server</h2>
+<ul>
+<li><code>shinyApp(ui = ui, server = server)</code> creates an app object and runs on print.</li>
+<li>Alternative: wrap in a function and <code>runApp()</code> it.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a>my_app <span class="ot">&lt;-</span> <span class="fu">shinyApp</span>(<span class="at">ui =</span> ui, <span class="at">server =</span> server)</span>
+<span id="cb19-2"><a></a><span class="fu">runApp</span>(my_app)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="workflow" class="slide level2">
+<h2>Workflow</h2>
+<div class="columns">
+<div class="column">
+<ol type="1">
+<li>Write UI &amp; server in a single <code>app.R</code>.</li>
+<li>Launch (<code>Ctrl/Cmd</code> + <code>Shift</code> + <code>Enter</code>).</li>
+<li>Play with the app.</li>
+<li>Close and iterate.</li>
+</ol>
+</div><div class="column">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a><span class="co"># Minimal app.R</span></span>
+<span id="cb20-2"><a></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>()</span>
+<span id="cb20-3"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {}</span>
+<span id="cb20-4"><a></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div></div>
+<p>You can choose the view you prefer.</p>
+
+<img data-src="images/shiny_view.png" width="110" class="r-stretch"></section>
+<section id="modularizing-shiny" class="slide level2">
+<h2>Modularizing Shiny</h2>
+<blockquote>
+<p>Modules are one of the most powerful tools for building shiny applications in a maintainable and sustainable manner. <cite>Engineering Production-Grade Shiny Apps</cite></p>
+</blockquote>
+</section>
+<section id="why-modules" class="slide level2">
+<h2>Why modules?</h2>
+<ul>
+<li><strong>Divide &amp; conquer</strong> large apps into small, testable pieces.</li>
+<li>Improves readability and reuse. Rule of thumb: <em>copy–paste thrice? Make a function/module.</em></li>
+<li>In Shiny, <strong>IDs are global</strong>. Modules create <strong>namespaces</strong> to avoid conflicts.</li>
+</ul>
+</section>
+<section id="namespaces-refresher-r-packages" class="slide level2">
+<h2>Namespaces refresher (R packages)</h2>
+<ul>
+<li>Namespaces ensure packages behave consistently regardless of attach order.</li>
+<li>Exported functions live in the <strong>package environment</strong>; internals live in the <strong>namespace</strong>.</li>
+<li>Each namespace has an <strong>imports</strong> env → parent is <strong>base</strong> → parent is <strong>global</strong>.</li>
+</ul>
+</section>
+<section id="simple-app-before-modules" class="slide level2">
+<h2>Simple app (before modules)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a><span class="fu">library</span>(shiny)</span>
+<span id="cb21-2"><a></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb21-3"><a></a>  <span class="fu">selectInput</span>(<span class="st">"var"</span>, <span class="st">"Variable"</span>, <span class="fu">names</span>(mtcars)),</span>
+<span id="cb21-4"><a></a>  <span class="fu">numericInput</span>(<span class="st">"bins"</span>, <span class="st">"bins"</span>, <span class="dv">10</span>, <span class="at">min =</span> <span class="dv">1</span>),</span>
+<span id="cb21-5"><a></a>  <span class="fu">plotOutput</span>(<span class="st">"hist"</span>)</span>
+<span id="cb21-6"><a></a>)</span>
+<span id="cb21-7"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb21-8"><a></a>  data <span class="ot">&lt;-</span> <span class="fu">reactive</span>(mtcars[[input<span class="sc">$</span>var]])</span>
+<span id="cb21-9"><a></a>  output<span class="sc">$</span>hist <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb21-10"><a></a>    <span class="fu">hist</span>(<span class="fu">data</span>(), <span class="at">breaks =</span> input<span class="sc">$</span>bins, <span class="at">main =</span> input<span class="sc">$</span>var)</span>
+<span id="cb21-11"><a></a>  }, <span class="at">res =</span> <span class="dv">96</span>)</span>
+<span id="cb21-12"><a></a>}</span>
+<span id="cb21-13"><a></a><span class="fu">shinyApp</span>(<span class="at">ui =</span> ui, <span class="at">server =</span> server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="ui-module" class="slide level2">
+<h2>UI module</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a></a>histogramUI <span class="ot">&lt;-</span> <span class="cf">function</span>(id) {</span>
+<span id="cb22-2"><a></a>  ns <span class="ot">&lt;-</span> <span class="fu">NS</span>(id)   <span class="co"># prefix all input/output IDs with module namespace</span></span>
+<span id="cb22-3"><a></a>  <span class="fu">tagList</span>(</span>
+<span id="cb22-4"><a></a>    <span class="fu">selectInput</span>(<span class="fu">ns</span>(<span class="st">"var"</span>),  <span class="st">"Variable"</span>, <span class="at">choices =</span> <span class="fu">names</span>(mtcars)),</span>
+<span id="cb22-5"><a></a>    <span class="fu">numericInput</span>(<span class="fu">ns</span>(<span class="st">"bins"</span>), <span class="st">"bins"</span>, <span class="at">value =</span> <span class="dv">10</span>, <span class="at">min =</span> <span class="dv">1</span>),</span>
+<span id="cb22-6"><a></a>    <span class="fu">plotOutput</span>(<span class="fu">ns</span>(<span class="st">"hist"</span>))</span>
+<span id="cb22-7"><a></a>  )</span>
+<span id="cb22-8"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Wrap UI in a function taking <code>id</code>.</li>
+<li>Use <code>ns &lt;- NS(id)</code> and <code>ns("inputId")</code> for all IDs.</li>
+</ul>
+</section>
+<section id="server-module" class="slide level2">
+<h2>Server module</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a>histogramServer <span class="ot">&lt;-</span> <span class="cf">function</span>(id) {</span>
+<span id="cb23-2"><a></a>  <span class="fu">moduleServer</span>(id, <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb23-3"><a></a>    data <span class="ot">&lt;-</span> <span class="fu">reactive</span>(mtcars[[input<span class="sc">$</span>var]])</span>
+<span id="cb23-4"><a></a>    output<span class="sc">$</span>hist <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb23-5"><a></a>      <span class="fu">hist</span>(<span class="fu">data</span>(), <span class="at">breaks =</span> input<span class="sc">$</span>bins, <span class="at">main =</span> input<span class="sc">$</span>var)</span>
+<span id="cb23-6"><a></a>    }, <span class="at">res =</span> <span class="dv">96</span>)</span>
+<span id="cb23-7"><a></a>  })</span>
+<span id="cb23-8"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li><code>moduleServer(id, function(input, output, session) { ... })</code> defines the server logic.</li>
+</ul>
+</section>
+<section id="using-the-module-in-the-app" class="slide level2">
+<h2>Using the module in the app</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb24-2"><a></a>  <span class="fu">histogramUI</span>(<span class="st">"hist1"</span>)</span>
+<span id="cb24-3"><a></a>)</span>
+<span id="cb24-4"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb24-5"><a></a>  <span class="fu">histogramServer</span>(<span class="st">"hist1"</span>)</span>
+<span id="cb24-6"><a></a>}</span>
+<span id="cb24-7"><a></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Use the <strong>same <code>id</code></strong> in UI and server.</li>
+</ul>
+</section>
+<section id="namespacing-in-shiny-modules" class="slide level2">
+<h2>Namespacing in Shiny modules</h2>
+<ul>
+<li>UI: explicit (<code>ns &lt;- NS(id)</code>; wrap IDs with <code>ns()</code>).</li>
+<li>Server: implicit — Shiny applies the same namespace internally.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb25-2"><a></a>  <span class="fu">histogramUI</span>(<span class="st">"hist1"</span>),</span>
+<span id="cb25-3"><a></a>  <span class="fu">sliderInput</span>(<span class="st">"bins"</span>, <span class="st">"Another bins:"</span>, <span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">5</span>)</span>
+<span id="cb25-4"><a></a>)</span>
+<span id="cb25-5"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb25-6"><a></a>  <span class="fu">histogramServer</span>(<span class="st">"hist1"</span>)  <span class="co"># uses its own namespaced input$bins</span></span>
+<span id="cb25-7"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>The global <code>input$bins</code> (from the extra slider) does <strong>not</strong> affect the module’s <code>input$bins</code>.</li>
+</ul>
+</section>
+<section id="sharing-data-between-modules" class="slide level2">
+<h2>Sharing data between modules</h2>
+<ul>
+<li>Return a <strong><code>reactive()</code></strong> from one module and pass it to another.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a>histogramServer <span class="ot">&lt;-</span> <span class="cf">function</span>(id, data, <span class="at">title =</span> <span class="fu">reactive</span>(<span class="st">"Histogram"</span>)) {</span>
+<span id="cb26-2"><a></a>  <span class="fu">stopifnot</span>(<span class="fu">is.reactive</span>(data))</span>
+<span id="cb26-3"><a></a>  <span class="fu">moduleServer</span>(id, <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb26-4"><a></a>    output<span class="sc">$</span>hist <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({</span>
+<span id="cb26-5"><a></a>      <span class="fu">hist</span>(<span class="fu">data</span>(), <span class="at">breaks =</span> input<span class="sc">$</span>bins, <span class="at">main =</span> <span class="fu">title</span>())</span>
+<span id="cb26-6"><a></a>    }, <span class="at">res =</span> <span class="dv">96</span>)</span>
+<span id="cb26-7"><a></a>  })</span>
+<span id="cb26-8"><a></a>}</span>
+<span id="cb26-9"><a></a></span>
+<span id="cb26-10"><a></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(<span class="fu">histogramUI</span>(<span class="st">"hist1"</span>))</span>
+<span id="cb26-11"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session) {</span>
+<span id="cb26-12"><a></a>  data <span class="ot">&lt;-</span> <span class="fu">reactive</span>(mtcars<span class="sc">$</span>mpg)</span>
+<span id="cb26-13"><a></a>  <span class="fu">histogramServer</span>(<span class="st">"hist1"</span>, data)</span>
+<span id="cb26-14"><a></a>}</span>
+<span id="cb26-15"><a></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="alternative-sharing-strategies" class="slide level2">
+<h2>Alternative sharing strategies</h2>
+<ul>
+<li><strong>“Petit r”</strong>: a global <code>reactiveValues()</code> object passed around modules.</li>
+<li><strong>“Grand R6”</strong>: organize state &amp; logic in R6 classes, then bridge to Shiny.</li>
+<li>See also <strong>tidymodules</strong> (R6-based) for structured modular patterns.</li>
+</ul>
+</section>
+<section id="structuring-an-application-as-a-package" class="slide level2">
+<h2>Structuring an application as a package</h2>
+<ul>
+<li>Strongly recommended for larger apps: better <strong>structure, docs, tests, CI, deployment</strong>.</li>
+<li>Put functions/modules in <code>R/</code>, assets in <code>inst/app/</code>, etc.</li>
+<li>Wrap the app in a function:</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a><span class="co">#' Run the application</span></span>
+<span id="cb27-2"><a></a><span class="co">#' @title App for bacteria mobility</span></span>
+<span id="cb27-3"><a></a><span class="co">#' @importFrom shiny shinyApp</span></span>
+<span id="cb27-4"><a></a><span class="co">#' @export</span></span>
+<span id="cb27-5"><a></a>run_app <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
+<span id="cb27-6"><a></a>  <span class="fu">shinyApp</span>(<span class="at">ui =</span> ui, <span class="at">server =</span> server, ...)</span>
+<span id="cb27-7"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Minimal example: <a href="https://github.com/ptds2024/bacteria">https://github.com/ptds2024/bacteria</a></li>
+</ul>
+</section>
+<section id="to-go-further" class="slide level2">
+<h2>To go further</h2>
+<ul>
+<li><strong>Book</strong>: <em>Mastering Shiny</em> — <a href="https://mastering-shiny.org/">https://mastering-shiny.org/</a></li>
+<li><strong>Articles</strong>: Shiny articles — <a href="https://shiny.posit.co/r/articles/">https://shiny.posit.co/r/articles/</a></li>
+<li><strong>Course notes</strong>: <em>An Introduction to Statistical Programming Methods with R</em> — <a href="https://smac-group.github.io/ds/section-shiny-web-applications.html">https://smac-group.github.io/ds/section-shiny-web-applications.html</a></li>
+<li><strong>Engineering</strong>: <em>Engineering Production-Grade Shiny Apps</em> — <a href="https://engineering-shiny.org/">https://engineering-shiny.org/</a></li>
+</ul>
+</section>
+<section id="rapid-ui-prototyping-with-shinyuieditor" class="slide level2">
+<h2>Rapid UI prototyping with <code>shinyuieditor</code></h2>
+<ul>
+<li><code>shinyuieditor</code> is an <strong>RStudio add-in</strong> to design Shiny UIs <strong>visually</strong> (drag &amp; drop), then export clean UI code.</li>
+<li>Typical workflow:
+<ol type="1">
+<li>Start from a <strong>blank</strong> or template app.</li>
+<li>Drag <strong>inputs</strong>, <strong>outputs</strong>, and <strong>layout</strong> elements (rows, columns, tabs, etc.).</li>
+<li>Adjust labels, IDs, and options in the side panel.</li>
+<li>Copy the generated <code>ui &lt;- fluidPage(...)</code> code into your app and connect it to your <strong>server</strong> logic.</li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a><span class="co"># Install (once)</span></span>
+<span id="cb28-2"><a></a><span class="fu">install.packages</span>(<span class="st">"shinyuieditor"</span>)</span>
+<span id="cb28-3"><a></a></span>
+<span id="cb28-4"><a></a><span class="co"># Launch the visual editor (from R console)</span></span>
+<span id="cb28-5"><a></a>shinyuieditor<span class="sc">::</span><span class="fu">launch_editor</span>(<span class="at">app_loc =</span> <span class="st">"path/to/your/app"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="generating-a-shiny-dashboard-with-chatgpt" class="slide level2">
+<h2>Generating a Shiny dashboard with ChatGPT</h2>
+<ul>
+<li>You can use ChatGPT as a <strong>UI &amp; server code generator</strong> for Shiny apps.</li>
+<li>Typical workflow:
+<ol type="1">
+<li><strong>Describe your goal</strong> clearly<br>
+&gt; “Build a Shiny dashboard with a sidebar, filters for <code>year</code> and <code>region</code>, and a main panel with a time-series plot and a summary table using my <code>sales</code> data.”</li>
+<li><strong>Paste a sample of your data</strong> (or its structure with <code>str()</code> / <code>glimpse()</code>).</li>
+<li>Ask for <strong>complete minimal code</strong> (<code>app.R</code>) with <code>ui</code>, <code>server</code>, and <code>shinyApp(ui, server)</code>.</li>
+<li>Run the generated app locally, then <strong>iterate</strong>:
+<ul>
+<li>“Add a download button for filtered data.”</li>
+<li>“Color bars by product category.”</li>
+<li>“Turn this into a <code>shinydashboard</code> layout.”</li>
+</ul></li>
+</ol></li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Keep ChatGPT for <strong>boilerplate &amp; layout</strong>; you remain responsible for <strong>data logic, validation, and interpretation</strong>.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="streamlit-web-app" class="title-slide slide level1 center">
+<h1>Streamlit web app</h1>
+
+</section>
+<section id="streamlit-web-app-1" class="slide level2">
+<h2>Streamlit web app</h2>
+<ul>
+<li><strong>Purpose</strong>: build <strong>interactive web apps</strong> for data exploration, dashboards, and prototypes — using <strong>pure Python</strong>.</li>
+<li><strong>Zero front‑end boilerplate</strong>: write from top to bottom; Streamlit turns widgets into UI.</li>
+<li><strong>Rerun model</strong>: the script <strong>re-executes top-to-bottom</strong> on any user interaction; widgets persist state.</li>
+<li><strong>Deploy anywhere</strong>: Streamlit Community Cloud, on-prem, Docker, or any VM.</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Think of Streamlit as: <em>Python script → reactive UI</em> (without callbacks unless you need them).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="example-gallery" class="slide level2">
+<h2>Example gallery</h2>
+<div class="cell">
+<iframe src="https://streamlit.io/gallery" width="960" height="400px" data-external="1">
+</iframe>
+</div>
+</section>
+<section id="hello-world-1" class="slide level2">
+<h2>Hello, world!</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb29-2"><a></a>st.title(<span class="st">"Hello, Streamlit 👋"</span>)</span>
+<span id="cb29-3"><a></a>st.write(<span class="st">"This is a minimal app."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Run:</strong> <code>streamlit run app.py</code></p>
+</section>
+<section id="ui-building-blocks" class="slide level2">
+<h2>UI building blocks</h2>
+<ul>
+<li><strong>Text &amp; media</strong>: <code>st.title</code>, <code>st.header</code>, <code>st.write</code>, <code>st.image</code>, <code>st.video</code></li>
+<li><strong>Widgets</strong> (inputs): <code>st.slider</code>, <code>st.selectbox</code>, <code>st.text_input</code>, <code>st.date_input</code>, <code>st.file_uploader</code>, …</li>
+<li><strong>Outputs</strong>: <code>st.table</code>, <code>st.dataframe</code>, <code>st.code</code>, <code>st.map</code>, <code>st.plotly_chart</code>, <code>st.pyplot</code>, …</li>
+<li><strong>Layout</strong>: <code>st.sidebar</code>, <code>st.columns</code>, <code>st.container</code>, <code>st.tabs</code>, <code>st.expander</code></li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Each widget takes a <strong><code>key</code></strong> (optional) and writes to <strong><code>st.session_state[key]</code></strong>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="quick-histogram-app-parallel-to-the-shiny-demo" class="slide level2">
+<h2>Quick histogram app (parallel to the Shiny demo)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb30-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb30-3"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb30-4"><a></a></span>
+<span id="cb30-5"><a></a>st.title(<span class="st">"Old Faithful (demo with random data)"</span>)</span>
+<span id="cb30-6"><a></a></span>
+<span id="cb30-7"><a></a><span class="co"># Inputs</span></span>
+<span id="cb30-8"><a></a>bins    <span class="op">=</span> st.slider(<span class="st">"Number of bins"</span>, min_value<span class="op">=</span><span class="dv">1</span>, max_value<span class="op">=</span><span class="dv">50</span>, value<span class="op">=</span><span class="dv">30</span>, key<span class="op">=</span><span class="st">"bins"</span>)</span>
+<span id="cb30-9"><a></a>label_x <span class="op">=</span> st.text_input(<span class="st">"X-axis label"</span>, value<span class="op">=</span><span class="st">"Value"</span>, key<span class="op">=</span><span class="st">"label_x"</span>)</span>
+<span id="cb30-10"><a></a>title   <span class="op">=</span> st.text_input(<span class="st">"Plot title"</span>, value<span class="op">=</span><span class="st">"Histogram"</span>, key<span class="op">=</span><span class="st">"title"</span>)</span>
+<span id="cb30-11"><a></a></span>
+<span id="cb30-12"><a></a><span class="co"># Data &amp; plot</span></span>
+<span id="cb30-13"><a></a>x <span class="op">=</span> np.random.normal(size<span class="op">=</span><span class="dv">272</span>)</span>
+<span id="cb30-14"><a></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb30-15"><a></a>ax.hist(x, bins<span class="op">=</span>bins, edgecolor<span class="op">=</span><span class="st">"white"</span>)</span>
+<span id="cb30-16"><a></a>ax.set_xlabel(label_x)</span>
+<span id="cb30-17"><a></a>ax.set_title(title)</span>
+<span id="cb30-18"><a></a>st.pyplot(fig)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="rerun-model-vs.-reactive-graph" class="slide level2">
+<h2>Rerun model vs.&nbsp;reactive graph</h2>
+<ul>
+<li><strong>Streamlit</strong>: any widget change <strong>reruns</strong> the script from the top; state lives in <code>st.session_state</code>.</li>
+<li><strong>Shiny</strong>: uses a <strong>reactive graph</strong> and recomputes only dependent nodes.</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Use <strong>caching</strong> (<code>@st.cache_data</code>, <code>@st.cache_resource</code>) to avoid recomputing expensive work on each rerun.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="caching-essentials" class="slide level2">
+<h2>Caching essentials</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb31-2"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb31-3"><a></a></span>
+<span id="cb31-4"><a></a><span class="at">@st.cache_data</span>(ttl<span class="op">=</span><span class="dv">600</span>)</span>
+<span id="cb31-5"><a></a><span class="kw">def</span> load_data(path: <span class="bu">str</span>) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb31-6"><a></a>    <span class="cf">return</span> pd.read_csv(path)</span>
+<span id="cb31-7"><a></a></span>
+<span id="cb31-8"><a></a><span class="at">@st.cache_resource</span></span>
+<span id="cb31-9"><a></a><span class="kw">def</span> get_big_model():</span>
+<span id="cb31-10"><a></a>    <span class="co"># expensive initialization</span></span>
+<span id="cb31-11"><a></a>    <span class="cf">return</span> <span class="bu">object</span>()</span>
+<span id="cb31-12"><a></a></span>
+<span id="cb31-13"><a></a><span class="co"># Usage</span></span>
+<span id="cb31-14"><a></a><span class="co"># df = load_data("data.csv")</span></span>
+<span id="cb31-15"><a></a><span class="co"># model = get_big_model()</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li><code>cache_data</code> = memoize <strong>data/compute</strong> results; <code>ttl</code>/<code>show_spinner</code> options.</li>
+<li><code>cache_resource</code> = memoize <strong>resources</strong> (clients, models, connections).</li>
+</ul>
+</section>
+<section id="control-evaluation-time-buttons-forms" class="slide level2">
+<h2>Control evaluation time (buttons &amp; forms)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb32-2"><a></a><span class="im">import</span> time</span>
+<span id="cb32-3"><a></a></span>
+<span id="cb32-4"><a></a><span class="cf">with</span> st.form(<span class="st">"params"</span>):</span>
+<span id="cb32-5"><a></a>    n <span class="op">=</span> st.number_input(<span class="st">"N"</span>, min_value<span class="op">=</span><span class="dv">1</span>, max_value<span class="op">=</span><span class="dv">10_000</span>, value<span class="op">=</span><span class="dv">1000</span>)</span>
+<span id="cb32-6"><a></a>    submitted <span class="op">=</span> st.form_submit_button(<span class="st">"Compute"</span>)</span>
+<span id="cb32-7"><a></a></span>
+<span id="cb32-8"><a></a><span class="cf">if</span> submitted:</span>
+<span id="cb32-9"><a></a>    <span class="cf">with</span> st.spinner(<span class="st">"Crunching numbers..."</span>):</span>
+<span id="cb32-10"><a></a>        time.sleep(<span class="dv">1</span>)</span>
+<span id="cb32-11"><a></a>        st.success(<span class="ss">f"Done! Computed with N=</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li><strong>Forms</strong> group inputs and run only on <strong>submit</strong>.</li>
+<li><code>st.button</code>, <code>st.toggle</code> also gate heavy work.</li>
+</ul>
+</section>
+<section id="callbacks-session_state" class="slide level2">
+<h2>Callbacks &amp; <code>session_state</code></h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb33-2"><a></a></span>
+<span id="cb33-3"><a></a><span class="kw">def</span> on_bins_change():</span>
+<span id="cb33-4"><a></a>    st.session_state[<span class="st">"title"</span>] <span class="op">=</span> <span class="ss">f"Histogram (bins=</span><span class="sc">{</span>st<span class="sc">.</span>session_state[<span class="st">'bins'</span>]<span class="sc">}</span><span class="ss">)"</span></span>
+<span id="cb33-5"><a></a></span>
+<span id="cb33-6"><a></a>st.slider(<span class="st">"Bins"</span>, <span class="dv">1</span>, <span class="dv">50</span>, <span class="dv">30</span>, key<span class="op">=</span><span class="st">"bins"</span>, on_change<span class="op">=</span>on_bins_change)</span>
+<span id="cb33-7"><a></a>st.text_input(<span class="st">"Plot title"</span>, key<span class="op">=</span><span class="st">"title"</span>)</span>
+<span id="cb33-8"><a></a>st.write(st.session_state)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Use <code>on_change</code>/<code>on_click</code> to run <strong>callbacks</strong>.</li>
+<li><code>st.session_state</code> stores cross‑rerun <strong>state</strong>.</li>
+</ul>
+</section>
+<section id="layout-patterns" class="slide level2">
+<h2>Layout patterns</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb34-2"><a></a></span>
+<span id="cb34-3"><a></a>st.sidebar.success(<span class="st">"Filters go here"</span>)</span>
+<span id="cb34-4"><a></a></span>
+<span id="cb34-5"><a></a>left, right <span class="op">=</span> st.columns([<span class="dv">1</span>, <span class="dv">2</span>])</span>
+<span id="cb34-6"><a></a><span class="cf">with</span> left:</span>
+<span id="cb34-7"><a></a>    st.markdown(<span class="st">"### Controls"</span>)</span>
+<span id="cb34-8"><a></a>    _ <span class="op">=</span> st.selectbox(<span class="st">"Metric"</span>, [<span class="st">"RMSE"</span>, <span class="st">"MAE"</span>, <span class="st">"R^2"</span>])</span>
+<span id="cb34-9"><a></a><span class="cf">with</span> right:</span>
+<span id="cb34-10"><a></a>    st.markdown(<span class="st">"### Chart"</span>)</span>
+<span id="cb34-11"><a></a>    st.line_chart({<span class="st">"y"</span>: [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>]})</span>
+<span id="cb34-12"><a></a></span>
+<span id="cb34-13"><a></a><span class="cf">with</span> st.expander(<span class="st">"Details"</span>):</span>
+<span id="cb34-14"><a></a>    st.code(<span class="st">"print('debug info')"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="multipage-apps" class="slide level2">
+<h2>Multipage apps</h2>
+<pre><code>my_app/
+  app.py                # Home page
+  pages/
+    1_Explore.py
+    2_Model.py
+    3_Report.py</code></pre>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a></a><span class="co"># app.py</span></span>
+<span id="cb36-2"><a></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb36-3"><a></a>st.set_page_config(page_title<span class="op">=</span><span class="st">"My App"</span>, layout<span class="op">=</span><span class="st">"wide"</span>)</span>
+<span id="cb36-4"><a></a>st.title(<span class="st">"Home"</span>)</span>
+<span id="cb36-5"><a></a>st.write(<span class="st">"Welcome!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Pages appear automatically as a sidebar <strong>navigation</strong>.</li>
+<li>Prefix numbers to control ordering.</li>
+</ul>
+</section>
+<section id="components-charts" class="slide level2">
+<h2>Components &amp; charts</h2>
+<ul>
+<li><strong>Native charts</strong>: <code>st.line_chart</code>, <code>st.bar_chart</code>, <code>st.scatter_chart</code>.</li>
+<li><strong>Matplotlib/Altair/Plotly</strong>: <code>st.pyplot(fig)</code>, <code>st.altair_chart(chart)</code>, <code>st.plotly_chart(fig)</code>.</li>
+<li><strong>Custom components</strong>: third‑party JS/TS via <code>streamlit-components</code> (advanced).</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a></a><span class="co"># Altair example (declarative charts)</span></span>
+<span id="cb37-2"><a></a><span class="im">import</span> altair <span class="im">as</span> alt, pandas <span class="im">as</span> pd, streamlit <span class="im">as</span> st</span>
+<span id="cb37-3"><a></a></span>
+<span id="cb37-4"><a></a>cars <span class="op">=</span> pd.DataFrame({<span class="st">"hp"</span>: [<span class="dv">110</span>, <span class="dv">90</span>, <span class="dv">120</span>], <span class="st">"mpg"</span>: [<span class="dv">21</span>, <span class="dv">30</span>, <span class="dv">18</span>]})</span>
+<span id="cb37-5"><a></a>chart <span class="op">=</span> alt.Chart(cars).mark_circle().encode(x<span class="op">=</span><span class="st">"hp"</span>, y<span class="op">=</span><span class="st">"mpg"</span>)</span>
+<span id="cb37-6"><a></a>st.altair_chart(chart, use_container_width<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="data-display-interactivity" class="slide level2">
+<h2>Data display &amp; interactivity</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb38-2"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb38-3"><a></a></span>
+<span id="cb38-4"><a></a>st.subheader(<span class="st">"Editable table"</span>)</span>
+<span id="cb38-5"><a></a>df <span class="op">=</span> pd.DataFrame({<span class="st">"a"</span>: [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], <span class="st">"b"</span>: [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]})</span>
+<span id="cb38-6"><a></a>edited <span class="op">=</span> st.dataframe(df, use_container_width<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb38-7"><a></a></span>
+<span id="cb38-8"><a></a>st.subheader(<span class="st">"Download"</span>)</span>
+<span id="cb38-9"><a></a>st.download_button(<span class="st">"Download CSV"</span>, df.to_csv(index<span class="op">=</span><span class="va">False</span>), file_name<span class="op">=</span><span class="st">"data.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="performance-tips" class="slide level2">
+<h2>Performance tips</h2>
+<ul>
+<li>Cache heavy work with <strong><code>@st.cache_data</code></strong> and <strong><code>@st.cache_resource</code></strong>.</li>
+<li>Avoid global mutation; prefer <strong>pure functions</strong> + caching.</li>
+<li>Use <strong><code>st.experimental_fragment</code></strong> (if available) to isolate reruns on parts of the page.</li>
+<li>Minimize large <code>st.dataframe()</code> payloads; paginate or sample for previews.</li>
+<li>Offload long tasks and stream results with <code>st.write_stream</code> (if relevant) or background services.</li>
+</ul>
+</section>
+<section id="testing-quality" class="slide level2">
+<h2>Testing &amp; quality</h2>
+<ul>
+<li><strong>Unit-test</strong> pure Python logic with <code>pytest</code>.</li>
+<li><strong>Snapshot/visual tests</strong> using Playwright or Selenium on the served app.</li>
+<li>Type-check with <code>mypy</code>/<code>pyright</code>; lint with <code>ruff</code>.</li>
+<li>Organize app code into modules (<code>app/</code>, <code>components/</code>, <code>services/</code>).</li>
+</ul>
+</section>
+<section id="packaging-project-structure-suggestion" class="slide level2">
+<h2>Packaging &amp; project structure (suggestion)</h2>
+<pre><code>streamlit_app/
+  app.py
+  pages/
+  app/__init__.py
+  app/data.py        # data loading (cached)
+  app/viz.py         # plotting utilities
+  app/layout.py      # column/tab builders
+  requirements.txt
+  pyproject.toml     # optional (poetry/pdm)</code></pre>
+<ul>
+<li>Keep <strong>stateful UI</strong> thin; move logic to <strong>testable modules</strong>.</li>
+<li>Pin dependencies for <strong>reproducibility</strong>.</li>
+</ul>
+</section>
+<section id="deployment" class="slide level2">
+<h2>Deployment</h2>
+<ul>
+<li><strong>Streamlit Community Cloud</strong>: connect a Git repo, configure Python version &amp; secrets.</li>
+<li><strong>Docker</strong>: <code>FROM python:3.12-slim</code> → <code>pip install -r requirements.txt</code> → <code>streamlit run app.py --server.port 8501 --server.address 0.0.0.0</code>.</li>
+<li><strong>Reverse proxy</strong>: serve behind Nginx/Traefik; enable WebSocket support.</li>
+<li><strong>Secrets</strong>: use <code>st.secrets["key"]</code> for API tokens.</li>
+</ul>
+</section>
+<section id="common-pitfalls-how-to-avoid-them" class="slide level2">
+<h2>Common pitfalls &amp; how to avoid them</h2>
+<ul>
+<li>Forgetting <strong><code>key</code></strong> → widgets clobber each other.</li>
+<li>Doing heavy work on each rerun → add <strong>forms/buttons</strong> and <strong>cache</strong>.</li>
+<li>Mutating global objects → can break caching; prefer pure returns.</li>
+<li>Large images/tables → increase latency; downsample or paginate.</li>
+</ul>
+</section>
+<section id="minimal-template-you-can-copy" class="slide level2">
+<h2>Minimal template you can copy</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a></a><span class="co"># app.py</span></span>
+<span id="cb40-2"><a></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb40-3"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb40-4"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb40-5"><a></a></span>
+<span id="cb40-6"><a></a>st.set_page_config(page_title<span class="op">=</span><span class="st">"Template"</span>, layout<span class="op">=</span><span class="st">"wide"</span>)</span>
+<span id="cb40-7"><a></a></span>
+<span id="cb40-8"><a></a>st.title(<span class="st">"Project Title"</span>)</span>
+<span id="cb40-9"><a></a></span>
+<span id="cb40-10"><a></a><span class="cf">with</span> st.sidebar:</span>
+<span id="cb40-11"><a></a>    st.header(<span class="st">"Controls"</span>)</span>
+<span id="cb40-12"><a></a>    n <span class="op">=</span> st.slider(<span class="st">"N"</span>, <span class="dv">10</span>, <span class="dv">5000</span>, <span class="dv">500</span>)</span>
+<span id="cb40-13"><a></a>    run <span class="op">=</span> st.button(<span class="st">"Run analysis"</span>)</span>
+<span id="cb40-14"><a></a></span>
+<span id="cb40-15"><a></a><span class="at">@st.cache_data</span></span>
+<span id="cb40-16"><a></a><span class="kw">def</span> simulate(n):</span>
+<span id="cb40-17"><a></a>    <span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb40-18"><a></a>    x <span class="op">=</span> np.random.randn(n)</span>
+<span id="cb40-19"><a></a>    <span class="cf">return</span> pd.DataFrame({<span class="st">"x"</span>: x})</span>
+<span id="cb40-20"><a></a></span>
+<span id="cb40-21"><a></a><span class="cf">if</span> run:</span>
+<span id="cb40-22"><a></a>    df <span class="op">=</span> simulate(n)</span>
+<span id="cb40-23"><a></a>    st.dataframe(df.head())</span>
+<span id="cb40-24"><a></a>    fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb40-25"><a></a>    ax.hist(df[<span class="st">"x"</span>], bins<span class="op">=</span><span class="dv">30</span>, edgecolor<span class="op">=</span><span class="st">"white"</span>)</span>
+<span id="cb40-26"><a></a>    st.pyplot(fig)</span>
+<span id="cb40-27"><a></a><span class="cf">else</span>:</span>
+<span id="cb40-28"><a></a>    st.info(<span class="st">"Adjust parameters and click **Run analysis**."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="to-go-further-1" class="slide level2">
+<h2>To go further</h2>
+<ul>
+<li><strong>Docs</strong>: <a href="https://docs.streamlit.io/">https://docs.streamlit.io/</a></li>
+<li><strong>Gallery &amp; tutorials</strong>: <a href="https://streamlit.io/gallery">https://streamlit.io/gallery</a></li>
+<li><strong>Streamlit Components</strong>: <a href="https://docs.streamlit.io/develop/concepts/components">https://docs.streamlit.io/develop/concepts/components</a></li>
+<li><strong>Cheatsheet</strong>: search “Streamlit cheatsheet” for a handy reference.</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Want a <strong>side-by-side</strong> set of slides comparing <strong>Shiny vs Streamlit</strong> patterns for your course? I can generate a combined deck with parallel examples.</p>
+</div>
+</div>
+</div>
+</section>
+<section class="slide level2">
+
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="ai-for-data-visualization-dashboards" class="title-slide slide level1 center">
+<h1>AI for Data Visualization &amp; Dashboards</h1>
+
+</section>
+<section id="outcomes-agenda-60" class="slide level2">
+<h2>Outcomes &amp; Agenda (60’)</h2>
+<ul>
+<li><strong>Outcomes</strong>: tidy data → <strong>1 polished chart</strong> → <strong>1‑page web app</strong> (Streamlit or Shiny) + publication checklist.</li>
+<li><strong>Focus</strong>: We use <strong>LLMs (ChatGPT)</strong> to scaffold, critique, and polish.</li>
+<li><strong>Agenda</strong> (mins): 2 intro • 6 case &amp; prompts • 10 tidy &amp; validate • 12 chart • 20 app • 8 checklist &amp; wrap.</li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>Throughout, copy/paste <strong>prompt patterns</strong> from the “Cheatsheet” slides. Keep your schema visible when prompting.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="case-study-energy-economy-brief" class="slide level2">
+<h2>Case Study: Energy &amp; Economy Brief</h2>
+<ul>
+<li><strong>Metrics</strong>: monthly electricity price index (<code>price</code>) and inflation (<code>cpi</code>) for <strong>3–4 countries</strong>, 2019–2025.</li>
+<li><strong>Tidy table</strong> (long): <code>date, country, metric, value</code> (month‑end dates, units documented).</li>
+<li><strong>Deliverables</strong>: one publication‑ready line chart + a micro‑app (country/metric selectors, KPI card, chart, download).</li>
+</ul>
+<p><strong>Where would look for these data?</strong></p>
+<p><strong>If you don’t have data:</strong> use the <strong>synthetic fallback</strong> in the next slides (identical schema).</p>
+</section>
+<section id="synthetic-data-tests-optional" class="slide level2">
+<h2>Synthetic Data &amp; Tests (optional)</h2>
+<ul>
+<li>Generates <strong>monthly</strong> data for <strong>CH, FR, DE, IT</strong> with two metrics: <strong><code>price</code></strong> (electricity price index) and <strong><code>cpi</code></strong> (inflation index).</li>
+<li>Features: trend, <strong>seasonality</strong>, <strong>2022 energy shock</strong> with <strong>2023 partial unwind</strong>, small stochastic noise.</li>
+<li>Output: long table <code>data/golden.parquet</code> with columns: <code>date, country, metric, value</code> + sanity checks.</li>
+</ul>
+</section>
+<section id="synthetic-data-tests-optional-1" class="slide level2">
+<h2>Synthetic Data &amp; Tests (optional)</h2>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Python</a></li><li><a href="#tabset-1-2">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a></a><span class="co"># python/synth_and_tests.py</span></span>
+<span id="cb41-2"><a></a><span class="co"># Reproducible, realistic synthetic monthly data (2019-01 to 2025-12)</span></span>
+<span id="cb41-3"><a></a><span class="im">import</span> os, numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd</span>
+<span id="cb41-4"><a></a></span>
+<span id="cb41-5"><a></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">123</span>)</span>
+<span id="cb41-6"><a></a>countries <span class="op">=</span> [<span class="st">"CH"</span>, <span class="st">"FR"</span>, <span class="st">"DE"</span>, <span class="st">"IT"</span>]</span>
+<span id="cb41-7"><a></a>dates <span class="op">=</span> pd.period_range(<span class="st">"2019-01"</span>, <span class="st">"2025-12"</span>, freq<span class="op">=</span><span class="st">"M"</span>).to_timestamp(<span class="st">"M"</span>)</span>
+<span id="cb41-8"><a></a>n <span class="op">=</span> <span class="bu">len</span>(dates)</span>
+<span id="cb41-9"><a></a>t <span class="op">=</span> np.arange(n)</span>
+<span id="cb41-10"><a></a></span>
+<span id="cb41-11"><a></a><span class="kw">def</span> price_series(idx: <span class="bu">int</span>) <span class="op">-&gt;</span> np.ndarray:</span>
+<span id="cb41-12"><a></a>    <span class="co"># Electricity price index: trend + seasonality + 2022 shock + partial 2023 unwind + mild AR-like noise</span></span>
+<span id="cb41-13"><a></a>    base <span class="op">=</span> <span class="dv">100</span> <span class="op">+</span> <span class="fl">0.8</span><span class="op">*</span>idx</span>
+<span id="cb41-14"><a></a>    slope <span class="op">=</span> <span class="fl">0.12</span> <span class="op">+</span> <span class="fl">0.03</span><span class="op">*</span>idx                     <span class="co"># ~0.12–0.21 index pts/month</span></span>
+<span id="cb41-15"><a></a>    season_amp <span class="op">=</span> <span class="fl">2.0</span> <span class="op">+</span> <span class="fl">0.6</span><span class="op">*</span>idx                   <span class="co"># stronger seasonality for some countries</span></span>
+<span id="cb41-16"><a></a>    seasonal <span class="op">=</span> season_amp <span class="op">*</span> np.sin(<span class="dv">2</span><span class="op">*</span>np.pi<span class="op">*</span>(t <span class="op">%</span> <span class="dv">12</span>)<span class="op">/</span><span class="dv">12</span>)</span>
+<span id="cb41-17"><a></a></span>
+<span id="cb41-18"><a></a>    shock <span class="op">=</span> np.zeros(n)</span>
+<span id="cb41-19"><a></a>    m2022 <span class="op">=</span> (dates <span class="op">&gt;=</span> <span class="st">"2022-01-31"</span>) <span class="op">&amp;</span> (dates <span class="op">&lt;=</span> <span class="st">"2022-12-31"</span>)</span>
+<span id="cb41-20"><a></a>    ramp <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">12</span> <span class="op">+</span> <span class="dv">3</span><span class="op">*</span>idx, m2022.<span class="bu">sum</span>())          <span class="co"># build-up through 2022</span></span>
+<span id="cb41-21"><a></a>    shock[m2022] <span class="op">=</span> ramp</span>
+<span id="cb41-22"><a></a>    m2023 <span class="op">=</span> (dates <span class="op">&gt;=</span> <span class="st">"2023-01-31"</span>) <span class="op">&amp;</span> (dates <span class="op">&lt;=</span> <span class="st">"2023-12-31"</span>)</span>
+<span id="cb41-23"><a></a>    shock_end_2022 <span class="op">=</span> ramp[<span class="op">-</span><span class="dv">1</span>] <span class="cf">if</span> ramp.size <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb41-24"><a></a>    unwind <span class="op">=</span> np.linspace(shock_end_2022, <span class="dv">6</span> <span class="op">+</span> <span class="fl">1.5</span><span class="op">*</span>idx, m2023.<span class="bu">sum</span>())  <span class="co"># partial normalization through 2023</span></span>
+<span id="cb41-25"><a></a>    shock[m2023] <span class="op">=</span> unwind</span>
+<span id="cb41-26"><a></a>    <span class="co"># 2024–2025: hold residual shock level</span></span>
+<span id="cb41-27"><a></a></span>
+<span id="cb41-28"><a></a>    eps <span class="op">=</span> rng.normal(<span class="dv">0</span>, <span class="fl">0.6</span>, n)                  <span class="co"># small noise with persistence</span></span>
+<span id="cb41-29"><a></a>    noise <span class="op">=</span> np.cumsum(eps) <span class="op">*</span> <span class="fl">0.12</span></span>
+<span id="cb41-30"><a></a>    <span class="cf">return</span> base <span class="op">+</span> slope<span class="op">*</span>t <span class="op">+</span> seasonal <span class="op">+</span> shock <span class="op">+</span> noise</span>
+<span id="cb41-31"><a></a></span>
+<span id="cb41-32"><a></a><span class="kw">def</span> cpi_series(idx: <span class="bu">int</span>) <span class="op">-&gt;</span> np.ndarray:</span>
+<span id="cb41-33"><a></a>    <span class="co"># Inflation index: gradual drift, 2022 bump, 2023 cool-down, light seasonality/noise</span></span>
+<span id="cb41-34"><a></a>    base <span class="op">=</span> <span class="dv">100</span> <span class="op">+</span> <span class="fl">0.4</span><span class="op">*</span>idx</span>
+<span id="cb41-35"><a></a>    drift <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>idx, n)        <span class="co"># ~+10–16 pts by 2025</span></span>
+<span id="cb41-36"><a></a>    bump <span class="op">=</span> np.zeros(n)</span>
+<span id="cb41-37"><a></a>    m2022 <span class="op">=</span> (dates <span class="op">&gt;=</span> <span class="st">"2022-01-31"</span>) <span class="op">&amp;</span> (dates <span class="op">&lt;=</span> <span class="st">"2022-12-31"</span>)</span>
+<span id="cb41-38"><a></a>    bump[m2022] <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="fl">2.8</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">*</span>idx, m2022.<span class="bu">sum</span>())</span>
+<span id="cb41-39"><a></a>    cool <span class="op">=</span> np.zeros(n)</span>
+<span id="cb41-40"><a></a>    m2023 <span class="op">=</span> (dates <span class="op">&gt;=</span> <span class="st">"2023-01-31"</span>) <span class="op">&amp;</span> (dates <span class="op">&lt;=</span> <span class="st">"2023-12-31"</span>)</span>
+<span id="cb41-41"><a></a>    cool[m2023] <span class="op">=</span> <span class="op">-</span>np.linspace(<span class="dv">0</span>, <span class="fl">1.2</span>, m2023.<span class="bu">sum</span>())</span>
+<span id="cb41-42"><a></a>    seasonal <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> np.sin(<span class="dv">2</span><span class="op">*</span>np.pi<span class="op">*</span>(t <span class="op">%</span> <span class="dv">12</span>)<span class="op">/</span><span class="dv">12</span>)</span>
+<span id="cb41-43"><a></a>    noise <span class="op">=</span> np.cumsum(rng.normal(<span class="dv">0</span>, <span class="fl">0.15</span>, n)) <span class="op">*</span> <span class="fl">0.08</span></span>
+<span id="cb41-44"><a></a>    <span class="cf">return</span> base <span class="op">+</span> drift <span class="op">+</span> bump <span class="op">+</span> cool <span class="op">+</span> seasonal <span class="op">+</span> noise</span>
+<span id="cb41-45"><a></a></span>
+<span id="cb41-46"><a></a>rows <span class="op">=</span> []</span>
+<span id="cb41-47"><a></a><span class="cf">for</span> idx, c <span class="kw">in</span> <span class="bu">enumerate</span>(countries):</span>
+<span id="cb41-48"><a></a>    p <span class="op">=</span> price_series(idx)</span>
+<span id="cb41-49"><a></a>    cp <span class="op">=</span> cpi_series(idx)</span>
+<span id="cb41-50"><a></a>    rows <span class="op">+=</span> [(d, c, <span class="st">"price"</span>, <span class="bu">float</span>(v)) <span class="cf">for</span> d, v <span class="kw">in</span> <span class="bu">zip</span>(dates, p)]</span>
+<span id="cb41-51"><a></a>    rows <span class="op">+=</span> [(d, c, <span class="st">"cpi"</span>,   <span class="bu">float</span>(v)) <span class="cf">for</span> d, v <span class="kw">in</span> <span class="bu">zip</span>(dates, cp)]</span>
+<span id="cb41-52"><a></a></span>
+<span id="cb41-53"><a></a>df <span class="op">=</span> pd.DataFrame(rows, columns<span class="op">=</span>[<span class="st">"date"</span>, <span class="st">"country"</span>, <span class="st">"metric"</span>, <span class="st">"value"</span>]).sort_values([<span class="st">"country"</span>,<span class="st">"metric"</span>,<span class="st">"date"</span>])</span>
+<span id="cb41-54"><a></a>os.makedirs(<span class="st">"data"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb41-55"><a></a>df.to_parquet(<span class="st">"data/golden.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb41-56"><a></a></span>
+<span id="cb41-57"><a></a><span class="co"># Sanity checks</span></span>
+<span id="cb41-58"><a></a><span class="cf">assert</span> <span class="bu">set</span>(df[<span class="st">"country"</span>]) <span class="op">==</span> <span class="bu">set</span>(countries)</span>
+<span id="cb41-59"><a></a><span class="cf">assert</span> df[<span class="st">"date"</span>].nunique() <span class="op">==</span> n</span>
+<span id="cb41-60"><a></a><span class="cf">for</span> c <span class="kw">in</span> countries:</span>
+<span id="cb41-61"><a></a>    <span class="cf">for</span> m <span class="kw">in</span> [<span class="st">"price"</span>, <span class="st">"cpi"</span>]:</span>
+<span id="cb41-62"><a></a>        sub <span class="op">=</span> df[(df.country <span class="op">==</span> c) <span class="op">&amp;</span> (df.metric <span class="op">==</span> m)]</span>
+<span id="cb41-63"><a></a>        <span class="cf">assert</span> <span class="bu">len</span>(sub) <span class="op">==</span> n, <span class="ss">f"Missing months for </span><span class="sc">{</span>c<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>m<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb41-64"><a></a><span class="cf">assert</span> np.isfinite(df[<span class="st">"value"</span>]).<span class="bu">all</span>()</span>
+<span id="cb41-65"><a></a><span class="bu">print</span>(<span class="ss">f"OK: </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">:,}</span><span class="ss"> rows · </span><span class="sc">{</span><span class="bu">len</span>(countries)<span class="sc">}</span><span class="ss"> countries × 2 metrics × </span><span class="sc">{</span>n<span class="sc">}</span><span class="ss"> months"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<div id="tabset-1-2">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a></a><span class="co"># r/synth.R</span></span>
+<span id="cb42-2"><a></a><span class="co"># Reproducible, realistic synthetic monthly data (2019-01 to 2025-12)</span></span>
+<span id="cb42-3"><a></a><span class="fu">library</span>(dplyr); <span class="fu">library</span>(lubridate); <span class="fu">library</span>(purrr); <span class="fu">library</span>(arrow)</span>
+<span id="cb42-4"><a></a></span>
+<span id="cb42-5"><a></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb42-6"><a></a>countries <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"CH"</span>,<span class="st">"FR"</span>,<span class="st">"DE"</span>,<span class="st">"IT"</span>)</span>
+<span id="cb42-7"><a></a>dates <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">ymd</span>(<span class="st">"2019-01-31"</span>), <span class="fu">ymd</span>(<span class="st">"2025-12-31"</span>), <span class="at">by =</span> <span class="st">"1 month"</span>)</span>
+<span id="cb42-8"><a></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(dates)</span>
+<span id="cb42-9"><a></a>t <span class="ot">&lt;-</span> <span class="fu">seq_len</span>(n) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb42-10"><a></a></span>
+<span id="cb42-11"><a></a>price_series <span class="ot">&lt;-</span> <span class="cf">function</span>(idx){</span>
+<span id="cb42-12"><a></a>  base <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">+</span> <span class="fl">0.8</span><span class="sc">*</span>idx</span>
+<span id="cb42-13"><a></a>  slope <span class="ot">&lt;-</span> <span class="fl">0.12</span> <span class="sc">+</span> <span class="fl">0.03</span><span class="sc">*</span>idx                    <span class="co"># ~0.12–0.21 per month</span></span>
+<span id="cb42-14"><a></a>  season_amp <span class="ot">&lt;-</span> <span class="fl">2.0</span> <span class="sc">+</span> <span class="fl">0.6</span><span class="sc">*</span>idx</span>
+<span id="cb42-15"><a></a>  seasonal <span class="ot">&lt;-</span> season_amp <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>((t) <span class="sc">%%</span> <span class="dv">12</span>)<span class="sc">/</span><span class="dv">12</span>)</span>
+<span id="cb42-16"><a></a></span>
+<span id="cb42-17"><a></a>  shock <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb42-18"><a></a>  m2022 <span class="ot">&lt;-</span> dates <span class="sc">&gt;=</span> <span class="fu">ymd</span>(<span class="st">"2022-01-31"</span>) <span class="sc">&amp;</span> dates <span class="sc">&lt;=</span> <span class="fu">ymd</span>(<span class="st">"2022-12-31"</span>)</span>
+<span id="cb42-19"><a></a>  ramp <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">12</span> <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span>idx, <span class="at">length.out =</span> <span class="fu">sum</span>(m2022))</span>
+<span id="cb42-20"><a></a>  shock[m2022] <span class="ot">&lt;-</span> ramp</span>
+<span id="cb42-21"><a></a>  m2023 <span class="ot">&lt;-</span> dates <span class="sc">&gt;=</span> <span class="fu">ymd</span>(<span class="st">"2023-01-31"</span>) <span class="sc">&amp;</span> dates <span class="sc">&lt;=</span> <span class="fu">ymd</span>(<span class="st">"2023-12-31"</span>)</span>
+<span id="cb42-22"><a></a>  shock_end_2022 <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">length</span>(ramp)) <span class="fu">tail</span>(ramp, <span class="dv">1</span>) <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb42-23"><a></a>  unwind <span class="ot">&lt;-</span> <span class="fu">seq</span>(shock_end_2022, <span class="dv">6</span> <span class="sc">+</span> <span class="fl">1.5</span><span class="sc">*</span>idx, <span class="at">length.out =</span> <span class="fu">sum</span>(m2023))</span>
+<span id="cb42-24"><a></a>  shock[m2023] <span class="ot">&lt;-</span> unwind</span>
+<span id="cb42-25"><a></a>  eps <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(<span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.6</span>)) <span class="sc">*</span> <span class="fl">0.12</span>        <span class="co"># mild persistence</span></span>
+<span id="cb42-26"><a></a>  base <span class="sc">+</span> slope<span class="sc">*</span>t <span class="sc">+</span> seasonal <span class="sc">+</span> shock <span class="sc">+</span> eps</span>
+<span id="cb42-27"><a></a>}</span>
+<span id="cb42-28"><a></a></span>
+<span id="cb42-29"><a></a>cpi_series <span class="ot">&lt;-</span> <span class="cf">function</span>(idx){</span>
+<span id="cb42-30"><a></a>  base <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="sc">+</span> <span class="fl">0.4</span><span class="sc">*</span>idx</span>
+<span id="cb42-31"><a></a>  drift <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span> <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>idx, <span class="at">length.out =</span> n)   <span class="co"># ~+10–16 by 2025</span></span>
+<span id="cb42-32"><a></a>  bump <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb42-33"><a></a>  m2022 <span class="ot">&lt;-</span> dates <span class="sc">&gt;=</span> <span class="fu">ymd</span>(<span class="st">"2022-01-31"</span>) <span class="sc">&amp;</span> dates <span class="sc">&lt;=</span> <span class="fu">ymd</span>(<span class="st">"2022-12-31"</span>)</span>
+<span id="cb42-34"><a></a>  bump[m2022] <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">2.8</span> <span class="sc">+</span> <span class="fl">0.5</span><span class="sc">*</span>idx, <span class="at">length.out =</span> <span class="fu">sum</span>(m2022))</span>
+<span id="cb42-35"><a></a>  cool <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, n)</span>
+<span id="cb42-36"><a></a>  m2023 <span class="ot">&lt;-</span> dates <span class="sc">&gt;=</span> <span class="fu">ymd</span>(<span class="st">"2023-01-31"</span>) <span class="sc">&amp;</span> dates <span class="sc">&lt;=</span> <span class="fu">ymd</span>(<span class="st">"2023-12-31"</span>)</span>
+<span id="cb42-37"><a></a>  cool[m2023] <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">seq</span>(<span class="dv">0</span>, <span class="fl">1.2</span>, <span class="at">length.out =</span> <span class="fu">sum</span>(m2023))</span>
+<span id="cb42-38"><a></a>  seasonal <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>((t) <span class="sc">%%</span> <span class="dv">12</span>)<span class="sc">/</span><span class="dv">12</span>)</span>
+<span id="cb42-39"><a></a>  noise <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(<span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.15</span>)) <span class="sc">*</span> <span class="fl">0.08</span></span>
+<span id="cb42-40"><a></a>  base <span class="sc">+</span> drift <span class="sc">+</span> bump <span class="sc">+</span> cool <span class="sc">+</span> seasonal <span class="sc">+</span> noise</span>
+<span id="cb42-41"><a></a>}</span>
+<span id="cb42-42"><a></a></span>
+<span id="cb42-43"><a></a>df <span class="ot">&lt;-</span> <span class="fu">map2_dfr</span>(countries, <span class="fu">seq_along</span>(countries) <span class="sc">-</span> <span class="dv">1</span>, <span class="cf">function</span>(c, idx){</span>
+<span id="cb42-44"><a></a>  <span class="fu">tibble</span>(</span>
+<span id="cb42-45"><a></a>    <span class="at">date =</span> <span class="fu">rep</span>(dates, <span class="dv">2</span>),</span>
+<span id="cb42-46"><a></a>    <span class="at">country =</span> c,</span>
+<span id="cb42-47"><a></a>    <span class="at">metric =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"price"</span>,<span class="st">"cpi"</span>), <span class="at">each =</span> n),</span>
+<span id="cb42-48"><a></a>    <span class="at">value =</span> <span class="fu">c</span>(<span class="fu">price_series</span>(idx), <span class="fu">cpi_series</span>(idx))</span>
+<span id="cb42-49"><a></a>  )</span>
+<span id="cb42-50"><a></a>}) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(country, metric, date)</span>
+<span id="cb42-51"><a></a></span>
+<span id="cb42-52"><a></a><span class="fu">dir.create</span>(<span class="st">"data"</span>, <span class="at">showWarnings =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb42-53"><a></a>arrow<span class="sc">::</span><span class="fu">write_parquet</span>(df, <span class="st">"data/golden.parquet"</span>)</span>
+<span id="cb42-54"><a></a></span>
+<span id="cb42-55"><a></a><span class="co"># Sanity checks</span></span>
+<span id="cb42-56"><a></a><span class="fu">stopifnot</span>(<span class="fu">length</span>(<span class="fu">unique</span>(df<span class="sc">$</span>date)) <span class="sc">==</span> n)</span>
+<span id="cb42-57"><a></a><span class="fu">stopifnot</span>(<span class="fu">setequal</span>(<span class="fu">unique</span>(df<span class="sc">$</span>country), countries))</span>
+<span id="cb42-58"><a></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(df <span class="sc">%&gt;%</span> <span class="fu">count</span>(country, metric) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(n) <span class="sc">==</span> n))</span>
+<span id="cb42-59"><a></a><span class="fu">stopifnot</span>(<span class="fu">all</span>(<span class="fu">is.finite</span>(df<span class="sc">$</span>value)))</span>
+<span id="cb42-60"><a></a><span class="fu">message</span>(<span class="fu">sprintf</span>(<span class="st">"OK: %s rows · %s countries × 2 metrics × %s months"</span>, <span class="fu">nrow</span>(df), <span class="fu">length</span>(countries), n))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="prompt-cheatsheet-12" class="slide level2">
+<h2>Prompt Cheatsheet (1/2)</h2>
+<p><strong>A — Wireframes &amp; KPIs</strong></p>
+<blockquote>
+<p>Act as a visualization TA. Given columns <code>date,country,metric,value</code>, propose <strong>3 dashboard wireframes</strong> (KPI strip + main trend + small multiples). Output: titles, annotation ideas, and accessibility notes.</p>
+</blockquote>
+<p><strong>B — Tidy &amp; Validate</strong> (already done with the synthetic data)</p>
+<blockquote>
+<p>Write code to: (1) coerce month‑end dates, (2) detect duplicates on <code>(date,country,metric)</code>, (3) export <code>data/golden.parquet</code>, and (4) print a concise validation summary.</p>
+</blockquote>
+</section>
+<section id="prompt-cheatsheet-22" class="slide level2">
+<h2>Prompt Cheatsheet (2/2)</h2>
+<p><strong>C — Chart Critique</strong></p>
+<blockquote>
+<p>Given this code + chart description, propose <strong>3 concrete improvements</strong> (titles/scales/labels) and show the revised code.</p>
+</blockquote>
+<p><strong>D — App Scaffold</strong></p>
+<blockquote>
+<p>Generate a <strong>one‑page Streamlit/Shiny app</strong> with country &amp; metric selectors, a KPI card (last value + YoY%), main chart, and a download button. Keep it minimal and fast.</p>
+</blockquote>
+<p><strong>E — Publication Audit</strong></p>
+<blockquote>
+<p>Audit the chart/app against this checklist (titles, axes/units, color‑blind safety, footnotes, last updated). Return exact fixes (code + text) and a 2‑sentence executive summary.</p>
+</blockquote>
+</section>
+<section id="tidy-validate-python" class="slide level2">
+<h2>Tidy &amp; Validate — Python</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a></a><span class="co"># python/tidy.py</span></span>
+<span id="cb43-2"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd, numpy <span class="im">as</span> np, os</span>
+<span id="cb43-3"><a></a>os.makedirs(<span class="st">"data"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb43-4"><a></a></span>
+<span id="cb43-5"><a></a><span class="co"># Try to load; otherwise create synthetic fallback</span></span>
+<span id="cb43-6"><a></a><span class="cf">try</span>:</span>
+<span id="cb43-7"><a></a>    df <span class="op">=</span> pd.read_parquet(<span class="st">"data/golden.parquet"</span>)</span>
+<span id="cb43-8"><a></a><span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb43-9"><a></a>    dates <span class="op">=</span> pd.period_range(<span class="st">"2019-01"</span>, <span class="st">"2025-06"</span>, freq<span class="op">=</span><span class="st">"M"</span>).to_timestamp(<span class="st">"M"</span>)</span>
+<span id="cb43-10"><a></a>    countries <span class="op">=</span> [<span class="st">"CH"</span>,<span class="st">"FR"</span>,<span class="st">"DE"</span>]</span>
+<span id="cb43-11"><a></a>    rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
+<span id="cb43-12"><a></a>    rows <span class="op">=</span> []</span>
+<span id="cb43-13"><a></a>    <span class="cf">for</span> c <span class="kw">in</span> countries:</span>
+<span id="cb43-14"><a></a>        base <span class="op">=</span> <span class="dv">100</span> <span class="op">+</span> rng.normal(<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb43-15"><a></a>        price <span class="op">=</span> base <span class="op">+</span> np.cumsum(rng.normal(<span class="dv">0</span>,<span class="dv">1</span>,<span class="bu">len</span>(dates))) <span class="op">+</span> <span class="fl">0.15</span><span class="op">*</span>np.arange(<span class="bu">len</span>(dates))</span>
+<span id="cb43-16"><a></a>        cpi   <span class="op">=</span> <span class="dv">100</span> <span class="op">+</span> np.cumsum(np.clip(rng.normal(<span class="dv">0</span>,<span class="fl">0.3</span>,<span class="bu">len</span>(dates)), <span class="op">-</span><span class="fl">0.2</span>, <span class="fl">0.8</span>))</span>
+<span id="cb43-17"><a></a>        rows <span class="op">+=</span> [(d,c,<span class="st">"price"</span>,p) <span class="cf">for</span> d,p <span class="kw">in</span> <span class="bu">zip</span>(dates,price)]</span>
+<span id="cb43-18"><a></a>        rows <span class="op">+=</span> [(d,c,<span class="st">"cpi"</span>,v) <span class="cf">for</span> d,v <span class="kw">in</span> <span class="bu">zip</span>(dates,cpi)]</span>
+<span id="cb43-19"><a></a>    df <span class="op">=</span> pd.DataFrame(rows, columns<span class="op">=</span>[<span class="st">"date"</span>,<span class="st">"country"</span>,<span class="st">"metric"</span>,<span class="st">"value"</span>])</span>
+<span id="cb43-20"><a></a></span>
+<span id="cb43-21"><a></a><span class="co"># Coerce to month‑end, check duplicates</span></span>
+<span id="cb43-22"><a></a>df[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"date"</span>]).dt.to_period(<span class="st">"M"</span>).dt.to_timestamp(<span class="st">"M"</span>)</span>
+<span id="cb43-23"><a></a>dups <span class="op">=</span> df.duplicated([<span class="st">"date"</span>,<span class="st">"country"</span>,<span class="st">"metric"</span>]).<span class="bu">sum</span>()</span>
+<span id="cb43-24"><a></a><span class="bu">print</span>(<span class="ss">f"Rows: </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">:,}</span><span class="ss"> · Duplicates: </span><span class="sc">{</span>dups<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb43-25"><a></a></span>
+<span id="cb43-26"><a></a><span class="co"># Save tidy table</span></span>
+<span id="cb43-27"><a></a>df.to_parquet(<span class="st">"data/golden.parquet"</span>, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="tidy-validate-r" class="slide level2">
+<h2>Tidy &amp; Validate — R</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a></a><span class="co"># r/tidy.R</span></span>
+<span id="cb44-2"><a></a><span class="fu">library</span>(dplyr); <span class="fu">library</span>(lubridate); <span class="fu">library</span>(arrow)</span>
+<span id="cb44-3"><a></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(<span class="st">"data"</span>)) <span class="fu">dir.create</span>(<span class="st">"data"</span>)</span>
+<span id="cb44-4"><a></a></span>
+<span id="cb44-5"><a></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(<span class="st">"data/golden.parquet"</span>)) {</span>
+<span id="cb44-6"><a></a>  dates <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">ymd</span>(<span class="st">"2019-01-31"</span>), <span class="fu">ymd</span>(<span class="st">"2025-06-30"</span>), <span class="at">by=</span><span class="st">"1 month"</span>)</span>
+<span id="cb44-7"><a></a>  mk <span class="ot">&lt;-</span> <span class="cf">function</span>(n) <span class="fu">cumsum</span>(<span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb44-8"><a></a>  make_country <span class="ot">&lt;-</span> <span class="cf">function</span>(c) {</span>
+<span id="cb44-9"><a></a>    <span class="fu">tibble</span>(<span class="at">date=</span>dates, <span class="at">country=</span>c, <span class="at">metric=</span><span class="st">"price"</span>, <span class="at">value=</span><span class="dv">100</span> <span class="sc">+</span> <span class="fu">mk</span>(<span class="fu">length</span>(dates)) <span class="sc">+</span> <span class="fl">0.15</span><span class="sc">*</span><span class="fu">seq_along</span>(dates)) <span class="sc">|&gt;</span></span>
+<span id="cb44-10"><a></a>      <span class="fu">bind_rows</span>(<span class="fu">tibble</span>(<span class="at">date=</span>dates, <span class="at">country=</span>c, <span class="at">metric=</span><span class="st">"cpi"</span>, <span class="at">value=</span><span class="dv">100</span> <span class="sc">+</span> <span class="fu">cumsum</span>(<span class="fu">pmax</span>(<span class="fu">rnorm</span>(<span class="fu">length</span>(dates),<span class="dv">0</span>,<span class="fl">0.3</span>),<span class="sc">-</span><span class="fl">0.2</span>))))</span>
+<span id="cb44-11"><a></a>  }</span>
+<span id="cb44-12"><a></a>  df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(<span class="fu">lapply</span>(<span class="fu">c</span>(<span class="st">"CH"</span>,<span class="st">"FR"</span>,<span class="st">"DE"</span>), make_country))</span>
+<span id="cb44-13"><a></a>  <span class="fu">write_parquet</span>(df, <span class="st">"data/golden.parquet"</span>)</span>
+<span id="cb44-14"><a></a>}</span>
+<span id="cb44-15"><a></a></span>
+<span id="cb44-16"><a></a>df <span class="ot">&lt;-</span> <span class="fu">read_parquet</span>(<span class="st">"data/golden.parquet"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb44-17"><a></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">ceiling_date</span>(<span class="fu">as.Date</span>(date), <span class="st">"month"</span>) <span class="sc">-</span> <span class="fu">days</span>(<span class="dv">1</span>))</span>
+<span id="cb44-18"><a></a></span>
+<span id="cb44-19"><a></a><span class="fu">sum</span>(<span class="fu">duplicated</span>(df[<span class="fu">c</span>(<span class="st">"date"</span>,<span class="st">"country"</span>,<span class="st">"metric"</span>)]))</span>
+<span id="cb44-20"><a></a><span class="fu">write_parquet</span>(df, <span class="st">"data/golden.parquet"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="publicationready-chart-python-altair" class="slide level2">
+<h2>Publication‑Ready Chart — Python (Altair)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a></a><span class="co"># python/chart.py</span></span>
+<span id="cb45-2"><a></a><span class="im">import</span> altair <span class="im">as</span> alt, pandas <span class="im">as</span> pd</span>
+<span id="cb45-3"><a></a>alt.data_transformers.disable_max_rows()</span>
+<span id="cb45-4"><a></a></span>
+<span id="cb45-5"><a></a>df <span class="op">=</span> pd.read_parquet(<span class="st">"data/golden.parquet"</span>)</span>
+<span id="cb45-6"><a></a>price <span class="op">=</span> df.query(<span class="st">"metric=='price'"</span>)</span>
+<span id="cb45-7"><a></a></span>
+<span id="cb45-8"><a></a>chart <span class="op">=</span> (alt.Chart(price)</span>
+<span id="cb45-9"><a></a>    .mark_line()</span>
+<span id="cb45-10"><a></a>    .encode(</span>
+<span id="cb45-11"><a></a>        x<span class="op">=</span>alt.X(<span class="st">"date:T"</span>, title<span class="op">=</span><span class="va">None</span>),</span>
+<span id="cb45-12"><a></a>        y<span class="op">=</span>alt.Y(<span class="st">"value:Q"</span>, title<span class="op">=</span><span class="st">"Electricity price index (2019-12=100)"</span>),</span>
+<span id="cb45-13"><a></a>        color<span class="op">=</span>alt.Color(<span class="st">"country:N"</span>, legend<span class="op">=</span>alt.Legend(orient<span class="op">=</span><span class="st">"bottom"</span>))</span>
+<span id="cb45-14"><a></a>    )</span>
+<span id="cb45-15"><a></a>    .properties(width<span class="op">=</span><span class="dv">760</span>, height<span class="op">=</span><span class="dv">340</span>, title<span class="op">=</span><span class="st">"Electricity price index by country"</span>)</span>
+<span id="cb45-16"><a></a>)</span>
+<span id="cb45-17"><a></a></span>
+<span id="cb45-18"><a></a>chart.save(<span class="st">"figs/price_trend.svg"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>Ask ChatGPT for <strong>title/subtitle copy</strong>, <strong>annotation</strong> ideas, and <strong>accessibility tweaks</strong> (line styles, label size, legend placement).</p>
+</div>
+</div>
+</div>
+</section>
+<section id="publicationready-chart-r-ggplot2" class="slide level2">
+<h2>Publication‑Ready Chart — R (ggplot2)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a></a><span class="co"># r/chart.R</span></span>
+<span id="cb46-2"><a></a><span class="fu">library</span>(ggplot2); <span class="fu">library</span>(dplyr); <span class="fu">library</span>(arrow)</span>
+<span id="cb46-3"><a></a>df <span class="ot">&lt;-</span> <span class="fu">read_parquet</span>(<span class="st">"data/golden.parquet"</span>) <span class="sc">|&gt;</span> <span class="fu">filter</span>(metric<span class="sc">==</span><span class="st">"price"</span>)</span>
+<span id="cb46-4"><a></a></span>
+<span id="cb46-5"><a></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(date, value, <span class="at">color=</span>country)) <span class="sc">+</span></span>
+<span id="cb46-6"><a></a>  <span class="fu">geom_line</span>(<span class="at">linewidth=</span>.<span class="dv">9</span>) <span class="sc">+</span></span>
+<span id="cb46-7"><a></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Electricity price index by country"</span>,</span>
+<span id="cb46-8"><a></a>       <span class="at">subtitle=</span><span class="st">"Monthly, 2019–2025; baseline 2019-12=100"</span>,</span>
+<span id="cb46-9"><a></a>       <span class="at">x=</span><span class="cn">NULL</span>, <span class="at">y=</span><span class="st">"Index (2019-12=100)"</span>) <span class="sc">+</span></span>
+<span id="cb46-10"><a></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb46-11"><a></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"bottom"</span>)</span>
+<span id="cb46-12"><a></a></span>
+<span id="cb46-13"><a></a><span class="fu">ggsave</span>(<span class="st">"figs/price_trend.svg"</span>, <span class="at">width=</span><span class="fl">8.5</span>, <span class="at">height=</span><span class="fl">4.2</span>, <span class="at">dpi=</span><span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="microapp-python-streamlit" class="slide level2">
+<h2>Micro‑App — Python (Streamlit)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a></a><span class="co"># app.py</span></span>
+<span id="cb47-2"><a></a><span class="im">import</span> streamlit <span class="im">as</span> st, pandas <span class="im">as</span> pd, altair <span class="im">as</span> alt</span>
+<span id="cb47-3"><a></a><span class="at">@st.cache_data</span></span>
+<span id="cb47-4"><a></a><span class="kw">def</span> load(): <span class="cf">return</span> pd.read_parquet(<span class="st">"data/golden.parquet"</span>)</span>
+<span id="cb47-5"><a></a></span>
+<span id="cb47-6"><a></a>df <span class="op">=</span> load()</span>
+<span id="cb47-7"><a></a>st.title(<span class="st">"Energy &amp; Economy Brief"</span>)</span>
+<span id="cb47-8"><a></a>country <span class="op">=</span> st.selectbox(<span class="st">"Country"</span>, <span class="bu">sorted</span>(df[<span class="st">"country"</span>].unique()))</span>
+<span id="cb47-9"><a></a>metric  <span class="op">=</span> st.selectbox(<span class="st">"Metric"</span>,  <span class="bu">sorted</span>(df[<span class="st">"metric"</span>].unique()))</span>
+<span id="cb47-10"><a></a>sub <span class="op">=</span> df[(df.country<span class="op">==</span>country) <span class="op">&amp;</span> (df.metric<span class="op">==</span>metric)].sort_values(<span class="st">"date"</span>)</span>
+<span id="cb47-11"><a></a>last <span class="op">=</span> sub.value.iloc[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb47-12"><a></a>yoy  <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb47-13"><a></a><span class="cf">if</span> <span class="bu">len</span>(sub) <span class="op">&gt;</span> <span class="dv">12</span>:</span>
+<span id="cb47-14"><a></a>    yoy <span class="op">=</span> (sub.value.iloc[<span class="op">-</span><span class="dv">1</span>]<span class="op">/</span>sub.value.iloc[<span class="op">-</span><span class="dv">13</span>]<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span><span class="dv">100</span></span>
+<span id="cb47-15"><a></a>st.metric(<span class="st">"Last value"</span>, <span class="ss">f"</span><span class="sc">{</span>last<span class="sc">:.1f}</span><span class="ss">"</span>, <span class="ss">f"</span><span class="sc">{</span>yoy<span class="sc">:+.1f}</span><span class="ss">% YoY"</span> <span class="cf">if</span> yoy <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span> <span class="cf">else</span> <span class="va">None</span>)</span>
+<span id="cb47-16"><a></a>st.altair_chart(alt.Chart(sub).mark_line().encode(x<span class="op">=</span><span class="st">"date:T"</span>, y<span class="op">=</span><span class="st">"value:Q"</span>), use_container_width<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb47-17"><a></a>st.download_button(<span class="st">"Download CSV"</span>, sub.to_csv(index<span class="op">=</span><span class="va">False</span>).encode(), file_name<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>country<span class="sc">}</span><span class="ss">_</span><span class="sc">{</span>metric<span class="sc">}</span><span class="ss">.csv"</span>)</span>
+<span id="cb47-18"><a></a><span class="co"># run: streamlit run app.py</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="microapp-r-shiny" class="slide level2">
+<h2>Micro‑App — R (Shiny)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a></a><span class="co"># app.R</span></span>
+<span id="cb48-2"><a></a><span class="fu">library</span>(shiny); <span class="fu">library</span>(dplyr); <span class="fu">library</span>(ggplot2); <span class="fu">library</span>(arrow)</span>
+<span id="cb48-3"><a></a>df <span class="ot">&lt;-</span> <span class="fu">read_parquet</span>(<span class="st">"data/golden.parquet"</span>)</span>
+<span id="cb48-4"><a></a>ui <span class="ot">&lt;-</span> <span class="fu">fluidPage</span>(</span>
+<span id="cb48-5"><a></a>  <span class="fu">titlePanel</span>(<span class="st">"Energy &amp; Economy Brief"</span>),</span>
+<span id="cb48-6"><a></a>  <span class="fu">sidebarLayout</span>(</span>
+<span id="cb48-7"><a></a>    <span class="fu">sidebarPanel</span>(</span>
+<span id="cb48-8"><a></a>      <span class="fu">selectInput</span>(<span class="st">"country"</span>,<span class="st">"Country"</span>, <span class="at">choices =</span> <span class="fu">sort</span>(<span class="fu">unique</span>(df<span class="sc">$</span>country))),</span>
+<span id="cb48-9"><a></a>      <span class="fu">selectInput</span>(<span class="st">"metric"</span>,<span class="st">"Metric"</span>, <span class="at">choices =</span> <span class="fu">sort</span>(<span class="fu">unique</span>(df<span class="sc">$</span>metric)))</span>
+<span id="cb48-10"><a></a>    ),</span>
+<span id="cb48-11"><a></a>    <span class="fu">mainPanel</span>(</span>
+<span id="cb48-12"><a></a>      <span class="fu">uiOutput</span>(<span class="st">"kpi"</span>), <span class="fu">plotOutput</span>(<span class="st">"main"</span>), <span class="fu">downloadButton</span>(<span class="st">"dl"</span>,<span class="st">"Download CSV"</span>)</span>
+<span id="cb48-13"><a></a>    )</span>
+<span id="cb48-14"><a></a>  )</span>
+<span id="cb48-15"><a></a>)</span>
+<span id="cb48-16"><a></a>server <span class="ot">&lt;-</span> <span class="cf">function</span>(input, output, session){</span>
+<span id="cb48-17"><a></a>  dat <span class="ot">&lt;-</span> <span class="fu">reactive</span>(df <span class="sc">|&gt;</span> <span class="fu">filter</span>(country<span class="sc">==</span>input<span class="sc">$</span>country, metric<span class="sc">==</span>input<span class="sc">$</span>metric) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(date))</span>
+<span id="cb48-18"><a></a>  output<span class="sc">$</span>kpi <span class="ot">&lt;-</span> <span class="fu">renderUI</span>({</span>
+<span id="cb48-19"><a></a>    d <span class="ot">&lt;-</span> <span class="fu">dat</span>(); <span class="cf">if</span>(<span class="fu">nrow</span>(d)<span class="sc">&lt;</span><span class="dv">1</span>) <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
+<span id="cb48-20"><a></a>    last <span class="ot">&lt;-</span> <span class="fu">tail</span>(d<span class="sc">$</span>value,<span class="dv">1</span>); yoy <span class="ot">&lt;-</span> <span class="cf">if</span>(<span class="fu">nrow</span>(d)<span class="sc">&gt;</span><span class="dv">12</span>) <span class="fu">round</span>((last<span class="sc">/</span>d<span class="sc">$</span>value[<span class="fu">nrow</span>(d)<span class="sc">-</span><span class="dv">12</span>]<span class="sc">-</span><span class="dv">1</span>)<span class="sc">*</span><span class="dv">100</span>,<span class="dv">1</span>) <span class="cf">else</span> <span class="cn">NA</span></span>
+<span id="cb48-21"><a></a>    <span class="fu">tagList</span>(<span class="fu">h4</span>(<span class="fu">sprintf</span>(<span class="st">"Last: %.1f"</span>, last)), <span class="cf">if</span>(<span class="sc">!</span><span class="fu">is.na</span>(yoy)) <span class="fu">h5</span>(<span class="fu">sprintf</span>(<span class="st">"YoY: %.1f%%"</span>, yoy)))</span>
+<span id="cb48-22"><a></a>  })</span>
+<span id="cb48-23"><a></a>  output<span class="sc">$</span>main <span class="ot">&lt;-</span> <span class="fu">renderPlot</span>({ <span class="fu">ggplot</span>(<span class="fu">dat</span>(), <span class="fu">aes</span>(date,value)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="at">linewidth=</span>.<span class="dv">9</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>(<span class="dv">13</span>) })</span>
+<span id="cb48-24"><a></a>  output<span class="sc">$</span>dl <span class="ot">&lt;-</span> <span class="fu">downloadHandler</span>(</span>
+<span id="cb48-25"><a></a>    <span class="at">filename =</span> <span class="cf">function</span>() <span class="fu">paste0</span>(input<span class="sc">$</span>country,<span class="st">"_"</span>,input<span class="sc">$</span>metric,<span class="st">".csv"</span>),</span>
+<span id="cb48-26"><a></a>    <span class="at">content  =</span> <span class="cf">function</span>(file) <span class="fu">write.csv</span>(<span class="fu">dat</span>(), file, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb48-27"><a></a>  )</span>
+<span id="cb48-28"><a></a>}</span>
+<span id="cb48-29"><a></a><span class="fu">shinyApp</span>(ui, server)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="publicationready-checklist" class="slide level2">
+<h2>Publication‑Ready Checklist</h2>
+<ul>
+<li><strong>Clarity</strong>: informative title + scope; labeled axes; units &amp; baselines.</li>
+<li><strong>Accuracy</strong>: correct YoY and rolling logic (if any); aligned monthly periods.</li>
+<li><strong>Accessibility</strong>: color‑blind‑safe palette; readable labels; no dual axes.</li>
+<li><strong>Context</strong>: source + last updated; footnotes for methods; export <strong>SVG/PNG</strong>.</li>
+<li><strong>Reproducibility</strong>: <code>requirements.txt</code> / <code>{renv}</code> lock; decisions in README.</li>
+</ul>
+<p><strong>Prompt</strong>: <em>Audit the app &amp; chart against this checklist and output exact fixes with revised code blocks.</em></p>
+</section>
+<section id="repo-skeleton-quick-start" class="slide level2">
+<h2>Repo Skeleton &amp; Quick Start</h2>
+<pre><code>workshop/
+├─ data/               # golden.parquet lives here
+├─ python/             # tidy.py, chart.py
+├─ r/                  # tidy.R, chart.R
+├─ figs/
+├─ app.py              # Streamlit app (or app.R for Shiny)
+├─ README.md
+├─ requirements.txt    # pandas, altair, streamlit, pyarrow
+└─ renv.lock           # if using R</code></pre>
+<p><strong>Run (Python)</strong>: <code>python python/tidy.py</code> → <code>python python/chart.py</code> → <code>streamlit run app.py</code> <strong>Run (R)</strong>: <code>Rscript r/tidy.R</code> → <code>Rscript r/chart.R</code> → <code>Rscript app.R</code></p>
+</section>
+<section id="closing-next-steps" class="slide level2">
+<h2>Closing &amp; Next Steps</h2>
+<ul>
+<li>Where did <strong>LLM</strong> help most? scaffolding • critique • copywriting • QA.</li>
+<li>Extensions: small multiples; annotation layers; scenario slider; auto‑report (<strong>Quarto</strong>) bundling top charts + narrative.</li>
+</ul>
+</section>
+<section class="slide level2">
+
+</section></section>
+<section>
+<section id="power-bi-in-the-dashboard-landscape" class="title-slide slide level1 center">
+<h1>Power BI in the dashboard landscape</h1>
+<ul>
+<li><p>Same <strong>goal</strong> as Shiny and Streamlit: interactive dashboards and data apps.</p></li>
+<li><p>Different <strong>positioning</strong>:</p>
+<ul>
+<li>Power BI: enterprise BI platform, tightly integrated with <strong>Microsoft 365 / Azure</strong>.</li>
+<li>Shiny: R-centric, very flexible, great for statisticians.</li>
+<li>Streamlit: Python-centric, very fast for prototypes and ML demos.</li>
+</ul></li>
+<li><p>In many companies, Power BI is the <strong>default</strong> front-end for business dashboards.</p></li>
+</ul>
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Tip</strong></p>
+</div>
+<div class="callout-content">
+<p>In this course: Shiny &amp; Streamlit for <strong>programmable apps</strong>, Power BI for <strong>enterprise dashboards and data wrangling</strong>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="dashboards-quick-design-recap" class="slide level2">
+<h2>Dashboards: quick design recap</h2>
+<ul>
+<li><p>Dashboards are <strong>visual displays of the most important information</strong> to reach one or more objectives, shown on a <strong>single screen</strong> for at-a-glance monitoring.</p></li>
+<li><p>Strongly influenced by <strong>Stephen Few</strong> (Show Me the Numbers, Information Dashboard Design).</p></li>
+<li><p>Core principles:</p>
+<ul>
+<li>Prefer <strong>bars/lines</strong> over pies and gauges.</li>
+<li>Avoid clutter and unnecessary decoration.</li>
+<li>Highlight what matters; give enough <strong>context</strong>, not too much detail.</li>
+</ul></li>
+</ul>
+</section>
+<section id="when-to-use-power-bi-vs-shiny-vs-streamlit" class="slide level2">
+<h2>When to use Power BI vs Shiny vs Streamlit</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 28%">
+<col style="width: 25%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Question</th>
+<th>Power BI</th>
+<th>Shiny</th>
+<th>Streamlit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Target users</td>
+<td>Business users, managers</td>
+<td>Statisticians, R users</td>
+<td>Data scientists, Python users</td>
+</tr>
+<tr class="even">
+<td>Main strength</td>
+<td>Self-service BI, data models</td>
+<td>Statistical workflows in R</td>
+<td>ML &amp; prototyping in Python</td>
+</tr>
+<tr class="odd">
+<td>Governance &amp; sharing</td>
+<td>Very strong (Power BI Service)</td>
+<td>Needs server / Shiny Server</td>
+<td>Needs server / Streamlit Cloud</td>
+</tr>
+<tr class="even">
+<td>Level of coding</td>
+<td>Low/medium (M, DAX, some R/Py)</td>
+<td>Medium/high (R)</td>
+<td>Medium/high (Python)</td>
+</tr>
+<tr class="odd">
+<td>Best for</td>
+<td>KPI dashboards, corporate views</td>
+<td>Custom modelling tools</td>
+<td>Quick interactive experiments</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>In practice, you often <strong>combine</strong> them:</p>
+<ul>
+<li>Power BI for <strong>standard dashboards</strong>.</li>
+<li>Shiny/Streamlit for <strong>exploratory tools</strong> and niche analytics.</li>
+</ul></li>
+</ul>
+</section>
+<section id="power-bi-building-blocks" class="slide level2">
+<h2>Power BI building blocks</h2>
+<ul>
+<li><p><strong>Power BI Desktop</strong> (what we use in class):</p>
+<ul>
+<li>Connect to data sources.</li>
+<li>Clean and transform with <strong>Power Query</strong>.</li>
+<li>Model data (relations, star schema).</li>
+<li>Add <strong>DAX</strong> measures.</li>
+<li>Build visuals &amp; dashboards.</li>
+</ul></li>
+<li><p><strong>Power BI Service / Fabric</strong> (online):</p>
+<ul>
+<li>Publish and share.</li>
+<li>Refresh data.</li>
+<li>Manage access &amp; governance.</li>
+</ul></li>
+</ul>
+<p>We will focus on <strong>Desktop + Power Query</strong> and show where <strong>R / Python</strong> fit.</p>
+</section>
+<section id="power-query-dax-two-languages" class="slide level2">
+<h2>Power Query &amp; DAX: two languages</h2>
+<ul>
+<li><p><strong>Power Query (M language)</strong></p>
+<ul>
+<li>ETL / data wrangling: imports, column types, joins, filters, pivots, etc.</li>
+<li>Code is generated by clicking, but is <strong>traceable and reproducible</strong>.</li>
+</ul></li>
+<li><p><strong>DAX (Data Analysis Expressions)</strong></p>
+<ul>
+<li>Calculated columns &amp; measures on the <strong>semantic model</strong>.</li>
+<li>Dynamic aggregations depending on filters (visual context).</li>
+</ul></li>
+<li><p>Analogy:</p>
+<ul>
+<li>Power Query M ≈ dplyr / data.table / pandas.</li>
+<li>DAX ≈ <code>group_by</code> + <code>summarise</code> but evaluated <strong>on-the-fly</strong> in visuals.</li>
+</ul></li>
+</ul>
+</section>
+<section id="strengths-of-power-bi" class="slide level2">
+<h2>Strengths of Power BI</h2>
+<ul>
+<li>#1 or #2 tool in many large companies for <strong>dashboards</strong> and <strong>self-service BI</strong>.</li>
+<li>Strong visualization engine, good defaults.</li>
+<li>Connects to <strong>many data sources</strong>; handles large volumes.</li>
+<li><strong>Power Query</strong> gives a structured, stepwise, and <strong>documented</strong> data pipeline.</li>
+<li>Integrates with <strong>R</strong> and <strong>Python</strong> for advanced analytics and exports.</li>
+</ul>
+</section>
+<section id="typical-data-analytics-workflow-power-bi-view" class="slide level2">
+<h2>Typical data analytics workflow (Power BI view)</h2>
+<p>In many DA projects you will:</p>
+<ol type="1">
+<li><p><strong>Import</strong> data (Excel, CSV, SQL, SAP extracts, folders of files, …).</p></li>
+<li><p><strong>Clean &amp; transform</strong>:</p>
+<ul>
+<li>Change column types, rename, filter.</li>
+<li>Add new columns (custom formulas).</li>
+<li>Group &amp; summarize.</li>
+<li>Append / merge tables.</li>
+</ul></li>
+<li><p><strong>Model</strong> the data (relations, star schemas).</p></li>
+<li><p><strong>Visualize</strong> with charts and tables.</p></li>
+<li><p><strong>Export</strong> / reuse the prepared data (Power BI visuals, CSVs, R/Python).</p></li>
+</ol>
+<p>Power BI + Power Query cover steps <strong>1–4</strong>, and we can integrate R/Python in <strong>2, 4 &amp; 5</strong>.</p>
+</section>
+<section id="getting-data-into-power-bi" class="slide level2">
+<h2>Getting data into Power BI</h2>
+<ul>
+<li><p>Use <strong>Home → Get data</strong>.</p></li>
+<li><p>Common sources in this course:</p>
+<ul>
+<li>Excel workbooks (multiple sheets = multiple tables).</li>
+<li>CSV / text files (delimiters: <code>,</code>, <code>;</code>, tab, …).</li>
+<li>Folders of files (for monthly SAP extracts, etc.).</li>
+</ul></li>
+<li><p>After import you can:</p>
+<ul>
+<li>Load directly to the model; or</li>
+<li>Click <strong>Transform data</strong> to open <strong>Power Query</strong>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="power-query-basics" class="slide level2">
+<h2>Power Query basics</h2>
+<p>The Power Query editor shows:</p>
+<ul>
+<li><strong>Queries pane</strong>: list of tables (queries).</li>
+<li><strong>Data preview</strong>: sample rows.</li>
+<li><strong>Applied Steps</strong>: ordered list of transformations.</li>
+<li><strong>Formula bar</strong>: M code for the current step.</li>
+</ul>
+<p>Key ideas:</p>
+<ul>
+<li>Every transformation adds a <strong>step</strong> and corresponding <strong>M expression</strong>.</li>
+<li>You can <strong>rename, reorder, delete</strong> steps.</li>
+<li>This gives full <strong>traceability</strong> for your data pipeline.</li>
+</ul>
+</section>
+<section id="column-types-distribution-profiles" class="slide level2">
+<h2>Column types, distribution &amp; profiles</h2>
+<ul>
+<li><p>Each column has a <strong>type</strong> (text, number, date, …).</p></li>
+<li><p>Use the <strong>Column quality / distribution / profile</strong> options to:</p>
+<ul>
+<li>See missing values, distinct values.</li>
+<li>Check minimum, maximum, mean, etc.</li>
+</ul></li>
+<li><p>Fix suspicious types early (e.g.&nbsp;IDs imported as numbers instead of text).</p></li>
+</ul>
+<p>This is the Power BI counterpart of doing <code>str()</code> / <code>summary()</code> / <code>skim()</code> in R or <code>df.info()</code> / <code>df.describe()</code> in Python.</p>
+</section>
+<section id="append-files-stacking-data" class="slide level2">
+<h2>Append files (stacking data)</h2>
+<p>Use this when you have <strong>multiple files with the same structure</strong>:</p>
+<ol type="1">
+<li><code>Get data → Folder</code> and select the folder with files.</li>
+<li>In Power Query, click <strong>Combine → Combine &amp; Transform</strong>.</li>
+<li>Choose the worksheet / table to import.</li>
+<li>Inspect the generated steps.</li>
+</ol>
+<p>Watch out:</p>
+<ul>
+<li>All files must have <strong>identical columns</strong> (names + types).</li>
+<li>If Power Query infers wrong types in the last step, <strong>delete or edit</strong> that step.</li>
+</ul>
+</section>
+<section id="merge-join-tables" class="slide level2">
+<h2>Merge / join tables</h2>
+<ul>
+<li><p><code>Home → Merge queries</code> to join tables.</p></li>
+<li><p>Typical use case: add <strong>master data</strong> (e.g.&nbsp;customers, products) to a transaction table.</p></li>
+<li><p>Choose:</p>
+<ul>
+<li>Primary table.</li>
+<li>Lookup table.</li>
+<li>Join keys (can be multiple columns).</li>
+<li>Join type (left, inner, full, …).</li>
+</ul></li>
+<li><p>Then <strong>expand</strong> the resulting column and select the fields you need.</p></li>
+</ul>
+<p>Equivalent to <code>left_join</code>, <code>inner_join</code>, etc. in dplyr or <code>merge</code> in pandas.</p>
+</section>
+<section id="grouping-and-summarizing" class="slide level2">
+<h2>Grouping and summarizing</h2>
+<p>Two main options:</p>
+<ol type="1">
+<li><p>In Power Query:</p>
+<ul>
+<li><code>Transform → Group by</code> (switch to <strong>Advanced</strong>).</li>
+<li>Choose grouping keys and aggregation (sum, count, min, max, …).</li>
+<li>Creates a new summarized table.</li>
+</ul></li>
+<li><p>In Power BI visuals:</p>
+<ul>
+<li>Add fields to a <strong>Table</strong> or <strong>Matrix</strong> visualization.</li>
+<li>Aggregations computed on the fly (using implicit or explicit DAX measures).</li>
+</ul></li>
+</ol>
+<p>Power Query summaries are <strong>static</strong> (pre-computed), DAX summaries are <strong>dynamic</strong> (reactive to filters).</p>
+</section>
+<section id="pivot-wide-pivot-long" class="slide level2">
+<h2>Pivot wide / pivot long</h2>
+<ul>
+<li><p><strong>Pivot columns</strong> (wide): turn values in a column into separate columns.</p>
+<ul>
+<li>E.g. movement types 101/102 become separate date columns.</li>
+<li>Then compute differences between dates.</li>
+</ul></li>
+<li><p><strong>Unpivot columns</strong> (long): turn multiple columns into key–value pairs.</p>
+<ul>
+<li>Useful for time series, measures in columns, etc.</li>
+</ul></li>
+</ul>
+<p>These operations mirror <code>pivot_wider</code> / <code>pivot_longer</code> in tidyr or <code>melt</code>/<code>pivot</code> in pandas.</p>
+</section>
+<section id="exporting-data-from-power-bi" class="slide level2">
+<h2>Exporting data from Power BI</h2>
+<p>Options:</p>
+<ol type="1">
+<li><p><strong>Export from a visual</strong> (up to ~30k rows):</p>
+<ul>
+<li>Use a <strong>Table</strong> visual, click <code>… → Export data</code>.</li>
+<li>Exports to CSV.</li>
+</ul></li>
+<li><p><strong>Use R or Python in Power Query</strong> to write larger tables out:</p>
+<ul>
+<li>Add a reference to the table query.</li>
+<li><code>Transform → Run R script</code> or <code>Transform → Run Python script</code>.</li>
+<li>Write to CSV or Excel in a controlled folder.</li>
+</ul></li>
+</ol>
+<p>We will use this to <strong>bridge</strong> from Power BI to external R/Python analyses.</p>
+</section>
+<section id="export-30k-rows-with-r-example" class="slide level2">
+<h2>Export &gt; 30k rows with R (example)</h2>
+<p>In Power Query, on a referenced query, add <strong>Run R script</strong> and use:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a></a><span class="co"># 'dataset' holds the input data for this script</span></span>
+<span id="cb50-2"><a></a>local_packages <span class="ot">&lt;-</span> <span class="fu">installed.packages</span>()[, <span class="dv">1</span>]</span>
+<span id="cb50-3"><a></a></span>
+<span id="cb50-4"><a></a><span class="cf">if</span> (<span class="sc">!</span><span class="st">"writexl"</span> <span class="sc">%in%</span> local_packages) {</span>
+<span id="cb50-5"><a></a>  <span class="fu">install.packages</span>(<span class="st">"writexl"</span>)</span>
+<span id="cb50-6"><a></a>}</span>
+<span id="cb50-7"><a></a></span>
+<span id="cb50-8"><a></a><span class="cf">if</span> (<span class="fu">nrow</span>(dataset) <span class="sc">&lt;=</span> <span class="dv">500000</span>) {</span>
+<span id="cb50-9"><a></a>  writexl<span class="sc">::</span><span class="fu">write_xlsx</span>(dataset, <span class="st">"C:/temp/data.xlsx"</span>)</span>
+<span id="cb50-10"><a></a>} <span class="cf">else</span> {</span>
+<span id="cb50-11"><a></a>  <span class="fu">write.table</span>(dataset, <span class="st">"C:/temp/data.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">sep =</span> <span class="st">","</span>)</span>
+<span id="cb50-12"><a></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Make sure the folder (e.g.&nbsp;<code>C:/temp/</code>) exists and is writable.</li>
+<li>Power BI will pass the current table as <code>dataset</code>.</li>
+</ul>
+</section>
+<section id="export-30k-rows-with-python-example" class="slide level2">
+<h2>Export &gt; 30k rows with Python (example)</h2>
+<p>Similarly, using <strong>Run Python script</strong> in Power Query:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a></a><span class="co"># 'dataset' holds the input data for this script</span></span>
+<span id="cb51-2"><a></a><span class="im">import</span> os</span>
+<span id="cb51-3"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb51-4"><a></a></span>
+<span id="cb51-5"><a></a>os.makedirs(<span class="st">"C:/temp"</span>, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb51-6"><a></a></span>
+<span id="cb51-7"><a></a><span class="cf">if</span> <span class="bu">len</span>(dataset) <span class="op">&lt;=</span> <span class="dv">500_000</span>:</span>
+<span id="cb51-8"><a></a>    out_path <span class="op">=</span> <span class="st">"C:/temp/data.xlsx"</span></span>
+<span id="cb51-9"><a></a>    dataset.to_excel(out_path, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb51-10"><a></a><span class="cf">else</span>:</span>
+<span id="cb51-11"><a></a>    out_path <span class="op">=</span> <span class="st">"C:/temp/data.csv"</span></span>
+<span id="cb51-12"><a></a>    dataset.to_csv(out_path, index<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Power BI provides a pandas DataFrame named <code>dataset</code>.</li>
+<li>This is a convenient way to <strong>extract</strong> large, cleaned datasets.</li>
+</ul>
+</section>
+<section id="r-python-in-power-bi-overview" class="slide level2">
+<h2>R &amp; Python in Power BI: overview</h2>
+<p>You can integrate R and Python in Power BI in three main ways:</p>
+<ol type="1">
+<li><strong>As data sources</strong> (Get data → R script / Python script).</li>
+<li><strong>As transformation steps</strong> in Power Query (Run R script / Run Python script).</li>
+<li><strong>As visuals</strong> (R visual / Python visual) on the report canvas.</li>
+</ol>
+<p>This allows you to:</p>
+<ul>
+<li>Reuse existing R / Python code.</li>
+<li>Build advanced plots with <strong>ggplot2</strong>, <strong>matplotlib</strong>, <strong>seaborn</strong>, <strong>altair</strong>, …</li>
+<li>Run niche models and show their results in Power BI.</li>
+</ul>
+</section>
+<section id="configuring-r-python-in-power-bi-desktop" class="slide level2">
+<h2>Configuring R &amp; Python in Power BI Desktop</h2>
+<p>Before you start:</p>
+<ol type="1">
+<li><p>Install <strong>R</strong> (e.g.&nbsp;from CRAN) and / or <strong>Python</strong> (e.g.&nbsp;from Anaconda or <code>python.org</code>).</p></li>
+<li><p>In <strong>File → Options and settings → Options</strong>:</p>
+<ul>
+<li>Go to <strong>R scripting</strong> and set the R home directory.</li>
+<li>Go to <strong>Python scripting</strong> and set the Python executable.</li>
+</ul></li>
+<li><p>(Optional) Set up a dedicated <strong>virtual environment</strong> for Power BI.</p></li>
+</ol>
+<p>Limitations:</p>
+<ul>
+<li>Some packages may not work in the Power BI Service.</li>
+<li>R/Python visuals are rendered as <strong>images</strong> (no interactive HTML widgets).</li>
+</ul>
+</section>
+<section id="using-r-script-as-a-data-source" class="slide level2">
+<h2>Using R script as a data source</h2>
+<ul>
+<li><code>Home → Get data → More… → Other → R script</code>.</li>
+<li>Enter R code that returns a data frame.</li>
+</ul>
+<p>Example:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a></a><span class="co"># Example R script as data source</span></span>
+<span id="cb52-2"><a></a><span class="fu">library</span>(readr)</span>
+<span id="cb52-3"><a></a></span>
+<span id="cb52-4"><a></a>sales <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"C:/data/sales.csv"</span>)</span>
+<span id="cb52-5"><a></a>customers <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"C:/data/customers.csv"</span>)</span>
+<span id="cb52-6"><a></a></span>
+<span id="cb52-7"><a></a><span class="co"># join before importing in Power BI</span></span>
+<span id="cb52-8"><a></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb52-9"><a></a>result <span class="ot">&lt;-</span> sales <span class="sc">%&gt;%</span></span>
+<span id="cb52-10"><a></a>  <span class="fu">inner_join</span>(customers, <span class="at">by =</span> <span class="st">"customer_id"</span>)</span>
+<span id="cb52-11"><a></a></span>
+<span id="cb52-12"><a></a>result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>Power BI will detect data frames and let you select which tables to load.</li>
+</ul>
+</section>
+<section id="using-python-script-as-a-data-source" class="slide level2">
+<h2>Using Python script as a data source</h2>
+<ul>
+<li><code>Home → Get data → More… → Other → Python script</code>.</li>
+<li>Enter Python code that creates pandas DataFrames.</li>
+</ul>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a></a><span class="co"># Example Python script as data source</span></span>
+<span id="cb53-2"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb53-3"><a></a></span>
+<span id="cb53-4"><a></a>sales <span class="op">=</span> pd.read_csv(<span class="st">"C:/data/sales.csv"</span>)</span>
+<span id="cb53-5"><a></a>customers <span class="op">=</span> pd.read_csv(<span class="st">"C:/data/customers.csv"</span>)</span>
+<span id="cb53-6"><a></a></span>
+<span id="cb53-7"><a></a>result <span class="op">=</span> sales.merge(customers, on<span class="op">=</span><span class="st">"customer_id"</span>, how<span class="op">=</span><span class="st">"inner"</span>)</span>
+<span id="cb53-8"><a></a></span>
+<span id="cb53-9"><a></a>result</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>All variables that are DataFrames will be offered as tables.</li>
+</ul>
+</section>
+<section id="r-python-scripts-in-power-query" class="slide level2">
+<h2>R / Python scripts in Power Query</h2>
+<ul>
+<li><p>In Power Query: <code>Transform → Run R script</code> or <code>Transform → Run Python script</code>.</p></li>
+<li><p>Power BI passes the current table as:</p>
+<ul>
+<li><code>dataset</code> (R): a data frame.</li>
+<li><code>dataset</code> (Python): a pandas DataFrame.</li>
+</ul></li>
+</ul>
+<p>Pattern:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a></a><span class="co"># R in Power Query</span></span>
+<span id="cb54-2"><a></a><span class="co"># 'dataset' is provided</span></span>
+<span id="cb54-3"><a></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb54-4"><a></a>output <span class="ot">&lt;-</span> dataset <span class="sc">%&gt;%</span></span>
+<span id="cb54-5"><a></a>  <span class="fu">mutate</span>(<span class="at">flag_large =</span> Net_Value <span class="sc">&gt;</span> <span class="dv">100000</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a></a><span class="co"># Python in Power Query</span></span>
+<span id="cb55-2"><a></a><span class="co"># 'dataset' is provided</span></span>
+<span id="cb55-3"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb55-4"><a></a></span>
+<span id="cb55-5"><a></a>output <span class="op">=</span> dataset.copy()</span>
+<span id="cb55-6"><a></a>output[<span class="st">"flag_large"</span>] <span class="op">=</span> output[<span class="st">"Net_Value"</span>] <span class="op">&gt;</span> <span class="dv">100_000</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ul>
+<li>The object <code>output</code> is then used as the next step.</li>
+</ul>
+</section>
+<section id="example-using-r-to-detect-duplicates" class="slide level2">
+<h2>Example: using R to detect duplicates</h2>
+<p>Equivalent to the VMD duplicate bank account example:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a></a><span class="co"># 'dataset' contains vendor master data with BANKS, BANKL, BANKN</span></span>
+<span id="cb56-2"><a></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb56-3"><a></a></span>
+<span id="cb56-4"><a></a><span class="co"># count rows per bank account</span></span>
+<span id="cb56-5"><a></a>counts <span class="ot">&lt;-</span> dataset <span class="sc">%&gt;%</span></span>
+<span id="cb56-6"><a></a>  <span class="fu">group_by</span>(BANKS, BANKL, BANKN) <span class="sc">%&gt;%</span></span>
+<span id="cb56-7"><a></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb56-8"><a></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">1</span>)</span>
+<span id="cb56-9"><a></a></span>
+<span id="cb56-10"><a></a><span class="co"># join back to keep only vendors with duplicated accounts</span></span>
+<span id="cb56-11"><a></a>output <span class="ot">&lt;-</span> dataset <span class="sc">%&gt;%</span></span>
+<span id="cb56-12"><a></a>  <span class="fu">inner_join</span>(counts, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"BANKS"</span>, <span class="st">"BANKL"</span>, <span class="st">"BANKN"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb56-13"><a></a>  <span class="fu">arrange</span>(BANKN, BANKL, BANKS)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This reproduces the Power Query steps using R code.</p>
+</section>
+<section id="example-using-python-to-detect-duplicates" class="slide level2">
+<h2>Example: using Python to detect duplicates</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a></a><span class="co"># 'dataset' contains vendor master data with BANKS, BANKL, BANKN</span></span>
+<span id="cb57-2"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb57-3"><a></a></span>
+<span id="cb57-4"><a></a>counts <span class="op">=</span> (</span>
+<span id="cb57-5"><a></a>    dataset</span>
+<span id="cb57-6"><a></a>    .groupby([<span class="st">"BANKS"</span>, <span class="st">"BANKL"</span>, <span class="st">"BANKN"</span>], as_index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb57-7"><a></a>    .size()</span>
+<span id="cb57-8"><a></a>    .rename(columns<span class="op">=</span>{<span class="st">"size"</span>: <span class="st">"n"</span>})</span>
+<span id="cb57-9"><a></a>)</span>
+<span id="cb57-10"><a></a></span>
+<span id="cb57-11"><a></a>counts <span class="op">=</span> counts[counts[<span class="st">"n"</span>] <span class="op">&gt;</span> <span class="dv">1</span>]</span>
+<span id="cb57-12"><a></a></span>
+<span id="cb57-13"><a></a>output <span class="op">=</span> (</span>
+<span id="cb57-14"><a></a>    dataset.merge(counts, on<span class="op">=</span>[<span class="st">"BANKS"</span>, <span class="st">"BANKL"</span>, <span class="st">"BANKN"</span>], how<span class="op">=</span><span class="st">"inner"</span>)</span>
+<span id="cb57-15"><a></a>    .sort_values([<span class="st">"BANKN"</span>, <span class="st">"BANKL"</span>, <span class="st">"BANKS"</span>])</span>
+<span id="cb57-16"><a></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Again, <code>output</code> becomes the next Power Query step.</p>
+</section>
+<section id="r-and-python-visuals" class="slide level2">
+<h2>R and Python visuals</h2>
+<p>On the report canvas you can:</p>
+<ul>
+<li>Add an <strong>R visual</strong> (blue R icon) or <strong>Python visual</strong> (yellow Py icon).</li>
+<li>Drag fields into the <strong>Values</strong> well.</li>
+<li>Write R / Python code that uses the provided <code>dataset</code> (data frame / DataFrame).</li>
+</ul>
+<p>Use this to:</p>
+<ul>
+<li>Create advanced charts (ggplot2, seaborn, altair, …).</li>
+<li>Do small model fits and display predictions.</li>
+</ul>
+<p>Note: visuals are rendered as <strong>static images</strong>; interactive HTML widgets are not supported.</p>
+</section>
+<section id="example-ggplot2-r-visual" class="slide level2">
+<h2>Example: ggplot2 R visual</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a></a><span class="co"># 'dataset' contains columns: hp, mpg, cyl</span></span>
+<span id="cb58-2"><a></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb58-3"><a></a></span>
+<span id="cb58-4"><a></a><span class="fu">ggplot</span>(dataset, <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg, <span class="at">colour =</span> <span class="fu">factor</span>(cyl))) <span class="sc">+</span></span>
+<span id="cb58-5"><a></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb58-6"><a></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb58-7"><a></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Horsepower"</span>, <span class="at">y =</span> <span class="st">"Miles per gallon"</span>, <span class="at">colour =</span> <span class="st">"Cylinders"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This is very similar to doing a scatter plot in a Shiny app, but embedded directly in Power BI.</p>
+</section>
+<section id="example-python-matplotlib-visual" class="slide level2">
+<h2>Example: Python / matplotlib visual</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a></a><span class="co"># 'dataset' contains columns: Date, Sales</span></span>
+<span id="cb59-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb59-3"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb59-4"><a></a></span>
+<span id="cb59-5"><a></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb59-6"><a></a></span>
+<span id="cb59-7"><a></a><span class="co"># Ensure Date is datetime and sorted</span></span>
+<span id="cb59-8"><a></a>data <span class="op">=</span> dataset.copy()</span>
+<span id="cb59-9"><a></a>data[<span class="st">"Date"</span>] <span class="op">=</span> pd.to_datetime(data[<span class="st">"Date"</span>])</span>
+<span id="cb59-10"><a></a>data <span class="op">=</span> data.sort_values(<span class="st">"Date"</span>)</span>
+<span id="cb59-11"><a></a></span>
+<span id="cb59-12"><a></a>ax.plot(data[<span class="st">"Date"</span>], data[<span class="st">"Sales"</span>])</span>
+<span id="cb59-13"><a></a>ax.set_xlabel(<span class="st">"Date"</span>)</span>
+<span id="cb59-14"><a></a>ax.set_ylabel(<span class="st">"Sales"</span>)</span>
+<span id="cb59-15"><a></a>ax.set_title(<span class="st">"Sales over time"</span>)</span>
+<span id="cb59-16"><a></a>fig.autofmt_xdate()</span>
+<span id="cb59-17"><a></a></span>
+<span id="cb59-18"><a></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>This mirrors a basic Streamlit time series plot.</p>
+</section>
+<section id="combining-power-bi-with-shiny-streamlit" class="slide level2">
+<h2>Combining Power BI with Shiny / Streamlit</h2>
+<p>A realistic project might look like:</p>
+<ol type="1">
+<li><p><strong>Exploration &amp; modelling</strong>:</p>
+<ul>
+<li>Use R / Python in <strong>RStudio / VS Code</strong>.</li>
+<li>Build prototypes in <strong>Shiny</strong> or <strong>Streamlit</strong>.</li>
+</ul></li>
+<li><p><strong>Industrialization</strong>:</p>
+<ul>
+<li>Move core data wrangling into <strong>Power Query</strong>.</li>
+<li>Implement key KPIs with <strong>DAX</strong>.</li>
+<li>Use small R/Python snippets for special logic or exports.</li>
+</ul></li>
+<li><p><strong>Dashboarding</strong>:</p>
+<ul>
+<li>Publish the Power BI report to your organisation.</li>
+<li>Keep Shiny / Streamlit apps for more technical audiences.</li>
+</ul></li>
+</ol>
+</section>
+<section id="good-practices-for-r-python-in-power-bi" class="slide level2">
+<h2>Good practices for R &amp; Python in Power BI</h2>
+<ul>
+<li>Keep R / Python scripts <strong>short and focused</strong>.</li>
+<li>Prefer Power Query / DAX for standard transformations and aggregations.</li>
+<li>Store R / Python code in <strong>version control</strong> (Git) and paste into Power BI.</li>
+<li>Avoid writing to arbitrary locations; agree on a small set of <strong>export folders</strong>.</li>
+<li>Document dependencies (packages, versions) so others can reproduce.</li>
+<li>Test DAX measures and R/Python results thoroughly (especially KPIs).</li>
+</ul>
+</section>
+<section id="template-for-course-projects" class="slide level2">
+<h2>Template for course projects</h2>
+<p>For a Power BI + R/Python project you can follow this template:</p>
+<ol type="1">
+<li><p>Create a <strong>.pbix</strong> file with:</p>
+<ul>
+<li>Data import + Power Query transformations.</li>
+<li>A small set of DAX measures for KPIs.</li>
+</ul></li>
+<li><p>Add one or two <strong>R/Python visuals</strong> for:</p>
+<ul>
+<li>Advanced chart(s) or model output.</li>
+</ul></li>
+<li><p>Optionally, add a <strong>Power Query R/Python step</strong> to export a cleaned dataset.</p></li>
+<li><p>Document:</p>
+<ul>
+<li>Data sources.</li>
+<li>All R/Python scripts used.</li>
+<li>The main DAX measures.</li>
+</ul></li>
+</ol>
+<p>This chapter complements the Shiny and Streamlit chapters by showing how to operate within a <strong>corporate BI tool</strong> while still leveraging your R and Python skills.</p>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="logo_dacm.svg" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>HEC Lausanne · Business Analytics · Thu 9:00–12:00</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'h.v',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const icon = "";
+        const anchorJS = new window.AnchorJS();
+        anchorJS.options = {
+          placement: 'right',
+          icon: icon
+        };
+        anchorJS.add('.anchored');
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

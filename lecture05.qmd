@@ -1,0 +1,2316 @@
+---
+title: "Lecture 5 — Modern Tools: BI & LLMs"
+subtitle: "Data & Code Management: From Collection to Application"
+author: "Samuel Orso"
+date: "2025-11-20"
+format:
+  revealjs:
+    theme: [default, dracula]
+    css: theme_dacm.css
+    slide-number: true
+    toc: true
+    toc-depth: 1
+    code-overflow: wrap
+    code-line-numbers: true
+    anchor-sections: true
+    hash: true
+    footer: "HEC Lausanne · Business Analytics · Thu 9:00–12:00"
+    navigation-mode: vertical
+    auto-animate: true
+    controls: true
+    progress: true
+    preview-links: auto
+    logo: logo_dacm.svg
+execute:
+  echo: true
+  eval: false
+---
+
+# Group project overview
+
+---
+
+## Group project overview
+
+```{r}
+#| echo: false
+#| eval: true
+knitr::include_graphics("images/team_project.png")
+```
+
+---
+
+## Group project: structure & roles
+
+- Groups of **3 students**
+- Each group focuses on 3 complementary dimensions:
+  1. **Data gathering & wrangling** →  Lecture on *Data Management & Collection*
+  2. **Package development & website** → Lecture on *Software Engineering for Data Science*
+  3. **Dashboard / web app development** → Lecture on *Modern Tools: BI & LLMs*
+- Idea: each student is *lead* on one dimension,  
+  but everyone should understand the full pipeline.
+
+---
+
+## Project goals
+
+- Experience a **mini end-to-end data project**:
+  - from raw data collection  
+  - to a reusable **package**  
+  - to an interactive **dashboard/web app**
+- Practice:
+  - **Reproducible workflows** (Git, GitHub, environments)
+  - **Team collaboration** (issues, branches, pull requests)
+  - **Good engineering habits** (tests, docs, CI where possible)
+
+---
+
+## Role 1 – Data gathering & wrangling
+
+**Main responsibility:** bring high-quality, analysis-ready data.
+
+- Identify and justify **data sources**  
+  - APIs, web scraping, open data portals, files from stakeholders, …
+- Design and document the **data collection pipeline**
+  - Scripts in R or Python (no manual copy-paste)
+  - Clear description of licences, limitations, biases
+- Perform **cleaning & wrangling**
+  - Tidy structures, variable names, types, missing values
+  - Reproducible transformations (no edits in Excel)
+- Deliver:
+  - `data_raw/`, `data/`, and scripts
+  - A short **data report** (Quarto) describing the pipeline
+
+---
+
+## Role 2 – Package development & website
+
+**Main responsibility:** make the code reusable and documented.
+
+- Organise core code into an **R package or Python library**:
+  - Functions for: data loading, cleaning, key computations, plots, models
+  - Minimal tests for critical functions
+- Ensure **reproducibility**:
+  - `DESCRIPTION` / `pyproject.toml` or similar
+  - Run CI on GitHub (e.g. with GitHub Actions)
+  - Make sure it can be installed from the repo
+- Publish a small **documentation website**:
+  - Quarto or MkDocs + GitHub Pages
+  - Pages: *Overview*, *Installation*, *Get started*, *Examples*, *API reference*
+- Deliver:
+  - One private GitHub repo on one member personal account
+  - Package repository structure
+  - Online or locally-buildable **docs site**
+
+---
+
+## Role 3 – Dashboard / web app development
+
+**Main responsibility:** communicate insights interactively.
+
+- Build a **dashboard or web app** using e.g.:
+  - R: Shiny / Shiny for Python
+  - Python: Streamlit, Dash
+  - Or: Power BI dashboard (with R/Python where relevant)
+- Consume the **package functions** whenever possible  
+  (no copy-pasted logic from scripts)
+- Provide:
+  - At least **2–3 interactive views** (filters, drill-downs, tooltips…)
+  - Clear layout and consistent visual design
+  - Short text explanations for a non-technical audience
+- Deliver:
+  - App code + instructions to run it locally
+  - Screenshots / short demo GIF or video (optional but encouraged)
+  - One private GitHub repo on the organization
+
+---
+
+## Shared responsibilities (all roles)
+
+Regardless of your lead role, **everyone** is responsible for:
+
+- **Defining the project question**
+  - What do you want to understand / monitor / predict / explain?
+- **Choosing tools** (R / Python / mix) and architecture together
+- **Version control**
+  - Git branching, pull requests, code review
+- **Code quality**
+  - Consistent style, comments where needed, avoid dead code
+- **Final presentation**
+  - Each member presents the part they led **and**
+    shows understanding of the whole pipeline
+    
+> All 3 students collaborate on the idea, the story, and the final presentation.
+
+
+---
+
+## Suggested timeline (3 weeks + presentations)
+
+- **Week 1 – Topic & data**
+  - Choose topic & research questions  
+  - Find data sources & write first collection scripts  
+  - Do quick EDA to check feasibility  
+
+- **Week 2 – Package & app (v1)**
+  - Stabilise data pipeline (raw → cleaned)  
+  - Set up package + key functions  
+  - Build first working dashboard/web app  
+
+- **Week 3 – Polish & integrate**
+  - Improve package (API, docs, a few tests)  
+  - Refine dashboard (design, story, robustness)  
+  - Finalise README + “How to run” + environment  
+
+- **Presentation week**
+  - Present project & live demo  
+  - Answer questions on data, package, and app  
+
+---
+
+## Project grading (40 points)
+
+| Dimension                              | Points |
+|----------------------------------------|--------|
+| Data gathering & wrangling             | 10     |
+| Package development & documentation    | 10     |
+| Dashboard / web app                    | 10     |
+| Reproducibility & project management   | 5      |
+| Presentation & individual contribution | 5      |
+| **Total**                              | **40** |
+
+- Each group is graded on the **whole project**, not only on their “role”.
+- Roles (data / package / app) help structure the work,  
+  but **everyone** should understand the full pipeline.
+
+
+---
+
+## Next steps
+
+- Form groups of **3 students**
+- Pick a **topic** that:
+  - has accessible data sources, and
+  - can benefit from a dashboard or web app
+- Decide **who leads what** (roles can still evolve)
+- Create your **GitHub repository** and write:
+  - A short `README` with:
+    - topic
+    - research questions
+    - preliminary plan for the 3 dimensions
+
+---
+
+# Shiny web app
+
+---
+
+## Shiny web app
+
+* **Communication**: allow users to interact with data and analysis in the browser.
+* Shiny enables **rapid development** of web applications in R — no need to master HTML/CSS/JS (though they help!).
+* Widely used in industry for **collaboration**, **dashboards**, **prototyping**, and **internal tools**.
+* Runs locally, on a server, or in Posit Connect/Shinyapps.io/Docker.
+
+::: callout-tip
+Shiny apps are just **R code**: a UI that declares outputs and inputs, and a **server** that reacts to them.
+:::
+
+---
+
+## Example: interact with graphics
+
+```{r}
+#| echo: false
+#| eval: true
+knitr::include_url("https://gallery.shinyapps.io/095-plot-interaction-advanced/")
+```
+
+*Source: [https://shiny.posit.co/r/gallery](https://shiny.posit.co/r/gallery)*
+
+---
+
+## Example: download a report
+
+```{r}
+#| echo: false
+#| eval: true
+knitr::include_url("https://gallery.shinyapps.io/016-knitr-pdf/")
+```
+
+*Source: [https://shiny.posit.co/r/gallery](https://shiny.posit.co/r/gallery)*
+
+---
+
+## Example: rental cashflow calculator
+
+```{r}
+#| echo: false
+#| eval: true
+knitr::include_url("https://cashflowcalc.com/")
+```
+
+*Source: [https://deanattali.com/](https://deanattali.com/)*
+
+---
+
+## Example: Movie explorer
+
+```{r}
+#| echo: false
+#| eval: true
+knitr::include_url("https://gallery.shinyapps.io/051-movie-explorer/")
+```
+
+*Source: [https://shiny.posit.co/](https://shiny.posit.co/)*
+
+---
+
+## Example: Be a DJ
+
+```{r}
+#| eval: false
+OSUICode::run_example("intro/dj-system", package = "OSUICode")
+```
+
+*Ref: [https://github.com/DivadNojnarg/OSUICode](https://github.com/DivadNojnarg/OSUICode)*
+
+---
+
+## Hello, world!
+
+```{r}
+#| eval: false
+library(shiny)
+# User interface
+ui <- fluidPage(
+  "Hello, world!"
+)
+server <- function(input, output, session) {}
+shinyApp(ui, server)
+```
+
+```{r}
+#| echo: false
+#| eval: true
+library(shiny)
+ui <- fluidPage(
+  "Hello, world!"
+)
+```
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| eval: true
+knitr::include_graphics("images/helloworld.png")
+```
+
+---
+
+## UI vs Server — the two halves
+
+* **User interface (UI)**: HTML-like description of widgets and output placeholders.
+
+```{r}
+#| eval: false
+ui
+```
+
+```{r}
+#| echo: false
+#| eval: true
+print(ui)
+```
+
+* **Server back-end**: R code that computes results and fills outputs.
+* Run the app with `shinyApp(ui, server)` (or `runApp()`).
+
+---
+
+## Step 1: Back-end R code (data & plot)
+
+We’ll build a histogram of waiting time between eruptions (`faithful`).
+
+```{r}
+#| eval: true
+x <- faithful[, 2]
+```
+
+---
+
+## Add parameters (bins)
+
+```{r}
+#| fig-align: center
+#| fig-height: 5
+#| fig-width: 5
+#| eval: true
+cells <- 10
+breaks <- seq(min(x), max(x), length.out = cells + 1)
+hist(x, breaks = breaks)
+```
+
+---
+
+## Add parameters (labels)
+
+```{r}
+#| fig-align: center
+#| fig-height: 5
+#| fig-width: 5
+#| eval: true
+label_x <- "Waiting time to next eruption (min)"
+title   <- "Old Faithful Geyser Data"
+cells   <- 10
+breaks  <- seq(min(x), max(x), length.out = cells + 1)
+hist(x, breaks = breaks, xlab = label_x, main = title)
+```
+
+---
+
+## Step 2: User Interface (UI) / front-end
+
+Once the back-end logic is clear, design the UI.
+
+---
+
+## Page structure helpers
+
+| Function          | Description                     |
+| ----------------- | ------------------------------- |
+| `fluidPage()`     | Create a fluid page layout      |
+| `titlePanel()`    | Application title               |
+| `sidebarLayout()` | Sidebar + main area layout      |
+| `sidebarPanel()`  | Sidebar with inputs             |
+| `mainPanel()`     | Main content (plots, tables, …) |
+
+* Alternatives to `fluidPage()`: `fixedPage()` (fixed width) and `fillPage()` (full height).
+* `sidebarLayout()` is built on `fluidRow()`/`column()` for finer control.
+
+---
+
+## Layout example (Quarto columns)
+
+::: columns
+::: column
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| eval: true
+knitr::include_graphics("images/shiny_layout.png")
+```
+
+:::
+::: column
+
+```{r}
+#| eval: false
+fluidPage(
+  titlePanel("My App"),
+  sidebarLayout(
+    sidebarPanel(),
+    mainPanel()
+  )
+)
+```
+
+:::
+:::
+
+---
+
+## Multi-row layout with columns
+
+::: columns
+::: column
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| eval: true
+knitr::include_graphics("images/shiny_layout2.png")
+```
+
+:::
+::: column
+
+```{r}
+#| eval: false
+fluidPage(
+  fluidRow(
+    column(4, ...),
+    column(8, ...)
+  ),
+  fluidRow(
+    column(6, ...),
+    column(6, ...)
+  )
+)
+```
+
+:::
+:::
+
+---
+
+## Input controls
+
+* Users provide inputs through **widgets**.
+* All inputs follow `someInput(inputId, …)`. Access in server as `input$inputId`.
+
+| Function          | Description          |
+| ----------------- | -------------------- |
+| `numericInput()`  | Number entry         |
+| `radioButtons()`  | Radio selection      |
+| `selectInput()`   | Dropdown menu        |
+| `sliderInput()`   | Range/slider         |
+| `submitButton()`  | Submission button    |
+| `textInput()`     | Text box             |
+| `checkboxInput()` | Single checkbox      |
+| `dateInput()`     | Date selector        |
+| `fileInput()`     | Upload a file        |
+| `helpText()`      | Describe input field |
+
+---
+
+## Output controls & renderers
+
+* **Outputs** create placeholders; **render** functions fill them.
+* Access in server as `output$outputId`.
+
+| Output                        | Render          | Description       |
+| ----------------------------- | --------------- | ----------------- |
+| `plotOutput()`                | `renderPlot()`  | Plots             |
+| `tableOutput()`               | `renderTable()` | Simple tables     |
+| `textOutput()`                | `renderText()`  | Text              |
+| `uiOutput()` / `htmlOutput()` | `renderUI()`    | HTML / dynamic UI |
+| `verbatimTextOutput()`        | `renderPrint()` | Console-like text |
+| `imageOutput()`               | `renderImage()` | Images            |
+
+---
+
+## UI example: histogram app
+
+::: columns
+::: column
+
+```{r}
+#| eval: false
+# Define UI for application that draws a histogram
+ui <- fluidPage(
+  titlePanel("Old Faithful Geyser Data"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput(
+        inputId = "cells",
+        label   = "Number of cells:",
+        min = 1, max = 50, value = 30
+      ),
+      textInput(inputId = "label_x", label = "X-axis label:"),
+      textInput(inputId = "title",   label = "Plot title:")
+    ),
+    mainPanel(
+      plotOutput(outputId = "distPlot")
+    )
+  )
+)
+```
+
+:::
+::: column
+
+```{r}
+#| echo: false
+#| eval: true
+knitr::include_graphics("images/shiny_example.png")
+```
+
+:::
+:::
+
+---
+
+## Step 3: Implementing the back-end
+
+* The server **reacts** to user actions (reactive programming).
+* Prototype: `server <- function(input, output, session) { … }`.
+* `input`/`output` are list-like and reactive.
+
+```{r}
+#| eval: false
+ui <- fluidPage(
+  sliderInput(inputId = "cells",   label = "Cells", min = 1, max = 50, value = 30),
+  textInput (inputId = "label_x", label = "X-axis label"),
+  textInput (inputId = "title",   label = "Plot title"),
+  plotOutput(outputId = "distPlot")
+)
+
+server <- function(input, output, session) {
+  output$distPlot <- renderPlot({
+    x      <- faithful[, 2]
+    breaks <- seq(min(x), max(x), length.out = input$cells + 1)
+    hist(x, breaks = breaks, col = 'darkgray', border = 'white',
+         xlab = input$label_x, main = input$title)
+  })
+}
+```
+
+---
+
+## Declarative & reactive graph
+
+* Shiny is **declarative**: you state dependencies; Shiny figures out when to run code.
+* Execution follows the **reactive graph**, not line order.
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| eval: true
+knitr::include_graphics("images/reactive_graph_ex.png")
+```
+
+---
+
+## Reactive expressions
+
+* In the previous app, changing any input recomputed `x` and `breaks`.
+* Use **reactive expressions** so values are recomputed **only when their inputs change**.
+
+```{r}
+#| eval: false
+server <- function(input, output, session) {
+  x      <- reactive(faithful[, 2])                  # <- cached
+  breaks <- reactive(seq(min(x()), max(x()),        
+                         length.out = input$cells + 1))
+  output$distPlot <- renderPlot({
+    hist(x(), breaks = breaks(), col = 'darkgray', border = 'white',
+         xlab = input$label_x, main = input$title)
+  })
+}
+```
+
+::: callout-note
+Order of reactive expressions in the file does not matter (dependencies determine execution), but **readability** does.
+:::
+
+---
+
+## Reactive graph (after refactor)
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| eval: true
+knitr::include_graphics("images/reactive_graph_ex2.png")
+```
+
+* `breaks()` updates only when `cells` (or `x()`) changes.
+
+---
+
+## Reactive context matters
+
+* **Input values cannot be accessed outside a reactive context**.
+
+```{r}
+#| eval: false
+server <- function(input, output, session) {
+  # Not reactive: evaluated once at session start
+  breaks <- seq(min(x), max(x), length.out = input$cells + 1)
+  output$distPlot <- renderPlot({...})
+}
+```
+
+* A function wrapper will recompute **every time**:
+
+```{r}
+#| eval: false
+server <- function(input, output, session) {
+  breaks <- function() seq(min(x), max(x), length.out = input$cells + 1)
+}
+```
+
+* Prefer **`reactive()`** to recompute **only when needed**.
+
+---
+
+## Control evaluation time
+
+* For heavy computations, let the user trigger updates with an **`actionButton`**.
+* Use `eventReactive()` or `bindEvent()` to react only on button clicks.
+
+### UI — add a button
+
+```{r}
+#| eval: false
+ui <- fluidPage(
+  ...,
+  actionButton(inputId = "make_graph", label = "Make the plot!",
+               icon = icon("drafting-compass"))
+)
+```
+
+### Server — use `eventReactive()`
+
+```{r}
+#| eval: false
+server <- function(input, output, session) {
+  x      <- reactive(faithful[, 2])
+  breaks <- eventReactive(input$make_graph, {
+    seq(min(x()), max(x()), length.out = input$cells + 1)
+  })
+  xlab   <- eventReactive(input$make_graph, input$label_x)
+  title  <- eventReactive(input$make_graph, input$title)
+  output$distPlot <- renderPlot({
+    hist(x(), breaks = breaks(), col = 'darkgray', border = 'white',
+         xlab = xlab(), main = title())
+  })
+}
+```
+
+---
+
+## Alternative: `bindEvent()` (Shiny ≥ 1.6.0)
+
+```{r}
+#| eval: false
+library(magrittr)
+server <- function(input, output, session) {
+  x      <- reactive(faithful[, 2])
+  breaks <- reactive(seq(min(x()), max(x()), length.out = input$cells + 1)) %>%
+              bindEvent(input$make_graph)
+  xlab   <- reactive(input$label_x) %>% bindEvent(input$make_graph)
+  title  <- reactive(input$title)   %>% bindEvent(input$make_graph)
+  output$distPlot <- renderPlot({
+    hist(x(), breaks = breaks(), col = 'darkgray', border = 'white',
+         xlab = xlab(), main = title())
+  })
+}
+```
+
+---
+
+## What users see with `eventReactive`
+
+```{r}
+#| echo: false
+#| eval: true
+knitr::include_graphics("images/shiny_ex_1.png")
+```
+
+---
+
+## What users see with `eventReactive`
+
+```{r}
+#| echo: false
+#| eval: true
+knitr::include_graphics("images/shiny_ex_2.png")
+```
+
+---
+
+## What users see with `eventReactive`
+
+```{r}
+#| echo: false
+#| eval: true
+knitr::include_graphics("images/shiny_ex_3.png")
+```
+
+---
+
+## Observers (side-effects)
+
+* Use **observers** for side-effects (logging, DB writes, JS messages, …).
+* `observeEvent()` works like `eventReactive()` but **returns no value**.
+
+```{r}
+#| eval: false
+server <- function(input, output, session) {
+  observeEvent(input$make_graph, message("Make a new graph"))
+}
+```
+
+---
+
+## Step 4: Connect UI and server
+
+* `shinyApp(ui = ui, server = server)` creates an app object and runs on print.
+* Alternative: wrap in a function and `runApp()` it.
+
+```{r}
+#| eval: false
+my_app <- shinyApp(ui = ui, server = server)
+runApp(my_app)
+```
+
+---
+
+## Workflow
+
+::: columns
+::: column
+
+1. Write UI & server in a single `app.R`.
+2. Launch (`Ctrl/Cmd` + `Shift` + `Enter`).
+3. Play with the app.
+4. Close and iterate.
+
+:::
+
+::: column
+
+```{r}
+#| eval: false
+# Minimal app.R
+ui <- fluidPage()
+server <- function(input, output, session) {}
+shinyApp(ui, server)
+```
+
+:::
+:::
+
+You can choose the view you prefer.
+
+```{r}
+#| echo: false
+#| eval: true
+knitr::include_graphics("images/shiny_view.png")
+```
+
+---
+
+## Modularizing Shiny
+
+> Modules are one of the most powerful tools for building shiny applications in a maintainable and sustainable manner. <cite>Engineering Production-Grade Shiny Apps</cite>
+
+---
+
+## Why modules?
+
+* **Divide & conquer** large apps into small, testable pieces.
+* Improves readability and reuse. Rule of thumb: *copy–paste thrice? Make a function/module.*
+* In Shiny, **IDs are global**. Modules create **namespaces** to avoid conflicts.
+
+---
+
+## Namespaces refresher (R packages)
+
+* Namespaces ensure packages behave consistently regardless of attach order.
+* Exported functions live in the **package environment**; internals live in the **namespace**.
+* Each namespace has an **imports** env → parent is **base** → parent is **global**.
+
+---
+
+## Simple app (before modules)
+
+```{r}
+#| eval: false
+library(shiny)
+ui <- fluidPage(
+  selectInput("var", "Variable", names(mtcars)),
+  numericInput("bins", "bins", 10, min = 1),
+  plotOutput("hist")
+)
+server <- function(input, output, session) {
+  data <- reactive(mtcars[[input$var]])
+  output$hist <- renderPlot({
+    hist(data(), breaks = input$bins, main = input$var)
+  }, res = 96)
+}
+shinyApp(ui = ui, server = server)
+```
+
+---
+
+## UI module
+
+```{r}
+#| eval: false
+histogramUI <- function(id) {
+  ns <- NS(id)   # prefix all input/output IDs with module namespace
+  tagList(
+    selectInput(ns("var"),  "Variable", choices = names(mtcars)),
+    numericInput(ns("bins"), "bins", value = 10, min = 1),
+    plotOutput(ns("hist"))
+  )
+}
+```
+
+* Wrap UI in a function taking `id`.
+* Use `ns <- NS(id)` and `ns("inputId")` for all IDs.
+
+---
+
+## Server module
+
+```{r}
+#| eval: false
+histogramServer <- function(id) {
+  moduleServer(id, function(input, output, session) {
+    data <- reactive(mtcars[[input$var]])
+    output$hist <- renderPlot({
+      hist(data(), breaks = input$bins, main = input$var)
+    }, res = 96)
+  })
+}
+```
+
+* `moduleServer(id, function(input, output, session) { ... })` defines the server logic.
+
+---
+
+## Using the module in the app
+
+```{r}
+#| eval: false
+ui <- fluidPage(
+  histogramUI("hist1")
+)
+server <- function(input, output, session) {
+  histogramServer("hist1")
+}
+shinyApp(ui, server)
+```
+
+* Use the **same `id`** in UI and server.
+
+---
+
+## Namespacing in Shiny modules
+
+* UI: explicit (`ns <- NS(id)`; wrap IDs with `ns()`).
+* Server: implicit — Shiny applies the same namespace internally.
+
+```{r}
+#| eval: false
+ui <- fluidPage(
+  histogramUI("hist1"),
+  sliderInput("bins", "Another bins:", 0, 10, 5)
+)
+server <- function(input, output, session) {
+  histogramServer("hist1")  # uses its own namespaced input$bins
+}
+```
+
+* The global `input$bins` (from the extra slider) does **not** affect the module’s `input$bins`.
+
+---
+
+## Sharing data between modules
+
+* Return a **`reactive()`** from one module and pass it to another.
+
+```{r}
+#| eval: false
+histogramServer <- function(id, data, title = reactive("Histogram")) {
+  stopifnot(is.reactive(data))
+  moduleServer(id, function(input, output, session) {
+    output$hist <- renderPlot({
+      hist(data(), breaks = input$bins, main = title())
+    }, res = 96)
+  })
+}
+
+ui <- fluidPage(histogramUI("hist1"))
+server <- function(input, output, session) {
+  data <- reactive(mtcars$mpg)
+  histogramServer("hist1", data)
+}
+shinyApp(ui, server)
+```
+
+---
+
+## Alternative sharing strategies
+
+* **“Petit r”**: a global `reactiveValues()` object passed around modules.
+* **“Grand R6”**: organize state & logic in R6 classes, then bridge to Shiny.
+* See also **tidymodules** (R6-based) for structured modular patterns.
+
+---
+
+## Structuring an application as a package
+
+* Strongly recommended for larger apps: better **structure, docs, tests, CI, deployment**.
+* Put functions/modules in `R/`, assets in `inst/app/`, etc.
+* Wrap the app in a function:
+
+```{r}
+#| eval: false
+#' Run the application
+#' @title App for bacteria mobility
+#' @importFrom shiny shinyApp
+#' @export
+run_app <- function(...) {
+  shinyApp(ui = ui, server = server, ...)
+}
+```
+
+* Minimal example: [https://github.com/ptds2024/bacteria](https://github.com/ptds2024/bacteria)
+
+---
+
+## To go further
+
+* **Book**: *Mastering Shiny* — [https://mastering-shiny.org/](https://mastering-shiny.org/)
+* **Articles**: Shiny articles — [https://shiny.posit.co/r/articles/](https://shiny.posit.co/r/articles/)
+* **Course notes**: *An Introduction to Statistical Programming Methods with R* — [https://smac-group.github.io/ds/section-shiny-web-applications.html](https://smac-group.github.io/ds/section-shiny-web-applications.html)
+* **Engineering**: *Engineering Production-Grade Shiny Apps* — [https://engineering-shiny.org/](https://engineering-shiny.org/)
+
+
+---
+
+## Rapid UI prototyping with `shinyuieditor`
+
+* `shinyuieditor` is an **RStudio add-in** to design Shiny UIs **visually** (drag & drop), then export clean UI code.
+* Typical workflow:
+  1. Start from a **blank** or template app.
+  2. Drag **inputs**, **outputs**, and **layout** elements (rows, columns, tabs, etc.).
+  3. Adjust labels, IDs, and options in the side panel.
+  4. Copy the generated `ui <- fluidPage(...)` code into your app and connect it to your **server** logic.
+
+```{r}
+#| eval: false
+# Install (once)
+install.packages("shinyuieditor")
+
+# Launch the visual editor (from R console)
+shinyuieditor::launch_editor(app_loc = "path/to/your/app")
+```
+
+## Generating a Shiny dashboard with ChatGPT
+
+* You can use ChatGPT as a **UI & server code generator** for Shiny apps.
+* Typical workflow:
+  1. **Describe your goal** clearly  
+     > “Build a Shiny dashboard with a sidebar, filters for `year` and `region`, and a main panel with a time-series plot and a summary table using my `sales` data.”
+  2. **Paste a sample of your data** (or its structure with `str()` / `glimpse()`).
+  3. Ask for **complete minimal code** (`app.R`) with `ui`, `server`, and `shinyApp(ui, server)`.
+  4. Run the generated app locally, then **iterate**:
+     - “Add a download button for filtered data.”
+     - “Color bars by product category.”
+     - “Turn this into a `shinydashboard` layout.”
+
+::: callout-tip
+Keep ChatGPT for **boilerplate & layout**; you remain responsible for **data logic, validation, and interpretation**.
+:::
+
+---
+
+# Streamlit web app
+
+---
+
+## Streamlit web app
+
+* **Purpose**: build **interactive web apps** for data exploration, dashboards, and prototypes — using **pure Python**.
+* **Zero front‑end boilerplate**: write from top to bottom; Streamlit turns widgets into UI.
+* **Rerun model**: the script **re-executes top-to-bottom** on any user interaction; widgets persist state.
+* **Deploy anywhere**: Streamlit Community Cloud, on-prem, Docker, or any VM.
+
+::: callout-tip
+Think of Streamlit as: *Python script → reactive UI* (without callbacks unless you need them).
+:::
+
+---
+
+## Example gallery 
+
+```{r}
+#| echo: false
+#| eval: true
+knitr::include_url("https://streamlit.io/gallery")
+```
+
+---
+
+## Hello, world!
+
+```{python}
+import streamlit as st
+st.title("Hello, Streamlit 👋")
+st.write("This is a minimal app.")
+```
+
+**Run:** `streamlit run app.py`
+
+---
+
+## UI building blocks
+
+* **Text & media**: `st.title`, `st.header`, `st.write`, `st.image`, `st.video`
+* **Widgets** (inputs): `st.slider`, `st.selectbox`, `st.text_input`, `st.date_input`, `st.file_uploader`, ...
+* **Outputs**: `st.table`, `st.dataframe`, `st.code`, `st.map`, `st.plotly_chart`, `st.pyplot`, ...
+* **Layout**: `st.sidebar`, `st.columns`, `st.container`, `st.tabs`, `st.expander`
+
+::: callout-note
+Each widget takes a **`key`** (optional) and writes to **`st.session_state[key]`**.
+:::
+
+---
+
+## Quick histogram app (parallel to the Shiny demo)
+
+```{python}
+import streamlit as st
+import numpy as np
+import matplotlib.pyplot as plt
+
+st.title("Old Faithful (demo with random data)")
+
+# Inputs
+bins    = st.slider("Number of bins", min_value=1, max_value=50, value=30, key="bins")
+label_x = st.text_input("X-axis label", value="Value", key="label_x")
+title   = st.text_input("Plot title", value="Histogram", key="title")
+
+# Data & plot
+x = np.random.normal(size=272)
+fig, ax = plt.subplots()
+ax.hist(x, bins=bins, edgecolor="white")
+ax.set_xlabel(label_x)
+ax.set_title(title)
+st.pyplot(fig)
+```
+
+---
+
+## Rerun model vs. reactive graph
+
+* **Streamlit**: any widget change **reruns** the script from the top; state lives in `st.session_state`.
+* **Shiny**: uses a **reactive graph** and recomputes only dependent nodes.
+
+::: callout-tip
+Use **caching** (`@st.cache_data`, `@st.cache_resource`) to avoid recomputing expensive work on each rerun.
+:::
+
+---
+
+## Caching essentials
+
+```{python}
+import streamlit as st
+import pandas as pd
+
+@st.cache_data(ttl=600)
+def load_data(path: str) -> pd.DataFrame:
+    return pd.read_csv(path)
+
+@st.cache_resource
+def get_big_model():
+    # expensive initialization
+    return object()
+
+# Usage
+# df = load_data("data.csv")
+# model = get_big_model()
+```
+
+* `cache_data` = memoize **data/compute** results; `ttl`/`show_spinner` options.
+* `cache_resource` = memoize **resources** (clients, models, connections).
+
+---
+
+## Control evaluation time (buttons & forms)
+
+```{python}
+import streamlit as st
+import time
+
+with st.form("params"):
+    n = st.number_input("N", min_value=1, max_value=10_000, value=1000)
+    submitted = st.form_submit_button("Compute")
+
+if submitted:
+    with st.spinner("Crunching numbers..."):
+        time.sleep(1)
+        st.success(f"Done! Computed with N={n}")
+```
+
+* **Forms** group inputs and run only on **submit**.
+* `st.button`, `st.toggle` also gate heavy work.
+
+---
+
+## Callbacks & `session_state`
+
+```{python}
+import streamlit as st
+
+def on_bins_change():
+    st.session_state["title"] = f"Histogram (bins={st.session_state['bins']})"
+
+st.slider("Bins", 1, 50, 30, key="bins", on_change=on_bins_change)
+st.text_input("Plot title", key="title")
+st.write(st.session_state)
+```
+
+* Use `on_change`/`on_click` to run **callbacks**.
+* `st.session_state` stores cross‑rerun **state**.
+
+---
+
+## Layout patterns
+
+```{python}
+import streamlit as st
+
+st.sidebar.success("Filters go here")
+
+left, right = st.columns([1, 2])
+with left:
+    st.markdown("### Controls")
+    _ = st.selectbox("Metric", ["RMSE", "MAE", "R^2"])
+with right:
+    st.markdown("### Chart")
+    st.line_chart({"y": [1, 3, 2, 4]})
+
+with st.expander("Details"):
+    st.code("print('debug info')")
+```
+
+---
+
+## Multipage apps
+
+```
+my_app/
+  app.py                # Home page
+  pages/
+    1_Explore.py
+    2_Model.py
+    3_Report.py
+```
+
+```{python}
+# app.py
+import streamlit as st
+st.set_page_config(page_title="My App", layout="wide")
+st.title("Home")
+st.write("Welcome!")
+```
+
+* Pages appear automatically as a sidebar **navigation**.
+* Prefix numbers to control ordering.
+
+---
+
+## Components & charts
+
+* **Native charts**: `st.line_chart`, `st.bar_chart`, `st.scatter_chart`.
+* **Matplotlib/Altair/Plotly**: `st.pyplot(fig)`, `st.altair_chart(chart)`, `st.plotly_chart(fig)`.
+* **Custom components**: third‑party JS/TS via `streamlit-components` (advanced).
+
+```{python}
+# Altair example (declarative charts)
+import altair as alt, pandas as pd, streamlit as st
+
+cars = pd.DataFrame({"hp": [110, 90, 120], "mpg": [21, 30, 18]})
+chart = alt.Chart(cars).mark_circle().encode(x="hp", y="mpg")
+st.altair_chart(chart, use_container_width=True)
+```
+
+---
+
+## Data display & interactivity
+
+```{python}
+import streamlit as st
+import pandas as pd
+
+st.subheader("Editable table")
+df = pd.DataFrame({"a": [1, 2, 3], "b": [4, 5, 6]})
+edited = st.dataframe(df, use_container_width=True)
+
+st.subheader("Download")
+st.download_button("Download CSV", df.to_csv(index=False), file_name="data.csv")
+```
+
+---
+
+## Performance tips
+
+* Cache heavy work with **`@st.cache_data`** and **`@st.cache_resource`**.
+* Avoid global mutation; prefer **pure functions** + caching.
+* Use **`st.experimental_fragment`** (if available) to isolate reruns on parts of the page.
+* Minimize large `st.dataframe()` payloads; paginate or sample for previews.
+* Offload long tasks and stream results with `st.write_stream` (if relevant) or background services.
+
+---
+
+## Testing & quality
+
+* **Unit-test** pure Python logic with `pytest`.
+* **Snapshot/visual tests** using Playwright or Selenium on the served app.
+* Type-check with `mypy`/`pyright`; lint with `ruff`.
+* Organize app code into modules (`app/`, `components/`, `services/`).
+
+---
+
+## Packaging & project structure (suggestion)
+
+```
+streamlit_app/
+  app.py
+  pages/
+  app/__init__.py
+  app/data.py        # data loading (cached)
+  app/viz.py         # plotting utilities
+  app/layout.py      # column/tab builders
+  requirements.txt
+  pyproject.toml     # optional (poetry/pdm)
+```
+
+* Keep **stateful UI** thin; move logic to **testable modules**.
+* Pin dependencies for **reproducibility**.
+
+---
+
+## Deployment
+
+* **Streamlit Community Cloud**: connect a Git repo, configure Python version & secrets.
+* **Docker**: `FROM python:3.12-slim` → `pip install -r requirements.txt` → `streamlit run app.py --server.port 8501 --server.address 0.0.0.0`.
+* **Reverse proxy**: serve behind Nginx/Traefik; enable WebSocket support.
+* **Secrets**: use `st.secrets["key"]` for API tokens.
+
+---
+
+## Common pitfalls & how to avoid them
+
+* Forgetting **`key`** → widgets clobber each other.
+* Doing heavy work on each rerun → add **forms/buttons** and **cache**.
+* Mutating global objects → can break caching; prefer pure returns.
+* Large images/tables → increase latency; downsample or paginate.
+
+---
+
+## Minimal template you can copy
+
+```{python}
+# app.py
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+
+st.set_page_config(page_title="Template", layout="wide")
+
+st.title("Project Title")
+
+with st.sidebar:
+    st.header("Controls")
+    n = st.slider("N", 10, 5000, 500)
+    run = st.button("Run analysis")
+
+@st.cache_data
+def simulate(n):
+    import numpy as np
+    x = np.random.randn(n)
+    return pd.DataFrame({"x": x})
+
+if run:
+    df = simulate(n)
+    st.dataframe(df.head())
+    fig, ax = plt.subplots()
+    ax.hist(df["x"], bins=30, edgecolor="white")
+    st.pyplot(fig)
+else:
+    st.info("Adjust parameters and click **Run analysis**.")
+```
+
+---
+
+## To go further
+
+* **Docs**: [https://docs.streamlit.io/](https://docs.streamlit.io/)
+* **Gallery & tutorials**: [https://streamlit.io/gallery](https://streamlit.io/gallery)
+* **Streamlit Components**: [https://docs.streamlit.io/develop/concepts/components](https://docs.streamlit.io/develop/concepts/components)
+* **Cheatsheet**: search “Streamlit cheatsheet” for a handy reference.
+
+::: callout-tip
+Want a **side-by-side** set of slides comparing **Shiny vs Streamlit** patterns for your course? I can generate a combined deck with parallel examples.
+:::
+
+---
+
+---
+
+# AI for Data Visualization & Dashboards
+
+---
+
+## Outcomes & Agenda (60')
+
+* **Outcomes**: tidy data → **1 polished chart** → **1‑page web app** (Streamlit or Shiny) + publication checklist.
+* **Focus**: We use **LLMs (ChatGPT)** to scaffold, critique, and polish.
+* **Agenda** (mins): 2 intro • 6 case & prompts • 10 tidy & validate • 12 chart • 20 app • 8 checklist & wrap.
+
+::: callout-tip
+Throughout, copy/paste **prompt patterns** from the “Cheatsheet” slides. Keep your schema visible when prompting.
+:::
+
+---
+
+## Case Study: Energy & Economy Brief
+
+* **Metrics**: monthly electricity price index (`price`) and inflation (`cpi`) for **3–4 countries**, 2019–2025.
+* **Tidy table** (long): `date, country, metric, value` (month‑end dates, units documented).
+* **Deliverables**: one publication‑ready line chart + a micro‑app (country/metric selectors, KPI card, chart, download).
+
+**Where would look for these data?**
+
+**If you don’t have data:** use the **synthetic fallback** in the next slides (identical schema).
+
+---
+
+## Synthetic Data & Tests (optional)
+
+* Generates **monthly** data for **CH, FR, DE, IT** with two metrics: **`price`** (electricity price index) and **`cpi`** (inflation index).
+* Features: trend, **seasonality**, **2022 energy shock** with **2023 partial unwind**, small stochastic noise.
+* Output: long table `data/golden.parquet` with columns: `date, country, metric, value` + sanity checks.
+
+---
+
+## Synthetic Data & Tests (optional)
+
+
+::: {.panel-tabset}
+
+### Python
+
+```{python}
+# python/synth_and_tests.py
+# Reproducible, realistic synthetic monthly data (2019-01 to 2025-12)
+import os, numpy as np, pandas as pd
+
+rng = np.random.default_rng(123)
+countries = ["CH", "FR", "DE", "IT"]
+dates = pd.period_range("2019-01", "2025-12", freq="M").to_timestamp("M")
+n = len(dates)
+t = np.arange(n)
+
+def price_series(idx: int) -> np.ndarray:
+    # Electricity price index: trend + seasonality + 2022 shock + partial 2023 unwind + mild AR-like noise
+    base = 100 + 0.8*idx
+    slope = 0.12 + 0.03*idx                     # ~0.12–0.21 index pts/month
+    season_amp = 2.0 + 0.6*idx                   # stronger seasonality for some countries
+    seasonal = season_amp * np.sin(2*np.pi*(t % 12)/12)
+
+    shock = np.zeros(n)
+    m2022 = (dates >= "2022-01-31") & (dates <= "2022-12-31")
+    ramp = np.linspace(0, 12 + 3*idx, m2022.sum())          # build-up through 2022
+    shock[m2022] = ramp
+    m2023 = (dates >= "2023-01-31") & (dates <= "2023-12-31")
+    shock_end_2022 = ramp[-1] if ramp.size else 0
+    unwind = np.linspace(shock_end_2022, 6 + 1.5*idx, m2023.sum())  # partial normalization through 2023
+    shock[m2023] = unwind
+    # 2024–2025: hold residual shock level
+
+    eps = rng.normal(0, 0.6, n)                  # small noise with persistence
+    noise = np.cumsum(eps) * 0.12
+    return base + slope*t + seasonal + shock + noise
+
+def cpi_series(idx: int) -> np.ndarray:
+    # Inflation index: gradual drift, 2022 bump, 2023 cool-down, light seasonality/noise
+    base = 100 + 0.4*idx
+    drift = np.linspace(0, 10 + 2*idx, n)        # ~+10–16 pts by 2025
+    bump = np.zeros(n)
+    m2022 = (dates >= "2022-01-31") & (dates <= "2022-12-31")
+    bump[m2022] = np.linspace(0, 2.8 + 0.5*idx, m2022.sum())
+    cool = np.zeros(n)
+    m2023 = (dates >= "2023-01-31") & (dates <= "2023-12-31")
+    cool[m2023] = -np.linspace(0, 1.2, m2023.sum())
+    seasonal = 0.5 * np.sin(2*np.pi*(t % 12)/12)
+    noise = np.cumsum(rng.normal(0, 0.15, n)) * 0.08
+    return base + drift + bump + cool + seasonal + noise
+
+rows = []
+for idx, c in enumerate(countries):
+    p = price_series(idx)
+    cp = cpi_series(idx)
+    rows += [(d, c, "price", float(v)) for d, v in zip(dates, p)]
+    rows += [(d, c, "cpi",   float(v)) for d, v in zip(dates, cp)]
+
+df = pd.DataFrame(rows, columns=["date", "country", "metric", "value"]).sort_values(["country","metric","date"])
+os.makedirs("data", exist_ok=True)
+df.to_parquet("data/golden.parquet", index=False)
+
+# Sanity checks
+assert set(df["country"]) == set(countries)
+assert df["date"].nunique() == n
+for c in countries:
+    for m in ["price", "cpi"]:
+        sub = df[(df.country == c) & (df.metric == m)]
+        assert len(sub) == n, f"Missing months for {c}-{m}"
+assert np.isfinite(df["value"]).all()
+print(f"OK: {len(df):,} rows · {len(countries)} countries × 2 metrics × {n} months")
+```
+
+### R
+
+```{r}
+# r/synth.R
+# Reproducible, realistic synthetic monthly data (2019-01 to 2025-12)
+library(dplyr); library(lubridate); library(purrr); library(arrow)
+
+set.seed(123)
+countries <- c("CH","FR","DE","IT")
+dates <- seq(ymd("2019-01-31"), ymd("2025-12-31"), by = "1 month")
+n <- length(dates)
+t <- seq_len(n) - 1
+
+price_series <- function(idx){
+  base <- 100 + 0.8*idx
+  slope <- 0.12 + 0.03*idx                    # ~0.12–0.21 per month
+  season_amp <- 2.0 + 0.6*idx
+  seasonal <- season_amp * sin(2*pi*((t) %% 12)/12)
+
+  shock <- rep(0, n)
+  m2022 <- dates >= ymd("2022-01-31") & dates <= ymd("2022-12-31")
+  ramp <- seq(0, 12 + 3*idx, length.out = sum(m2022))
+  shock[m2022] <- ramp
+  m2023 <- dates >= ymd("2023-01-31") & dates <= ymd("2023-12-31")
+  shock_end_2022 <- if (length(ramp)) tail(ramp, 1) else 0
+  unwind <- seq(shock_end_2022, 6 + 1.5*idx, length.out = sum(m2023))
+  shock[m2023] <- unwind
+  eps <- cumsum(rnorm(n, 0, 0.6)) * 0.12        # mild persistence
+  base + slope*t + seasonal + shock + eps
+}
+
+cpi_series <- function(idx){
+  base <- 100 + 0.4*idx
+  drift <- seq(0, 10 + 2*idx, length.out = n)   # ~+10–16 by 2025
+  bump <- rep(0, n)
+  m2022 <- dates >= ymd("2022-01-31") & dates <= ymd("2022-12-31")
+  bump[m2022] <- seq(0, 2.8 + 0.5*idx, length.out = sum(m2022))
+  cool <- rep(0, n)
+  m2023 <- dates >= ymd("2023-01-31") & dates <= ymd("2023-12-31")
+  cool[m2023] <- -seq(0, 1.2, length.out = sum(m2023))
+  seasonal <- 0.5 * sin(2*pi*((t) %% 12)/12)
+  noise <- cumsum(rnorm(n, 0, 0.15)) * 0.08
+  base + drift + bump + cool + seasonal + noise
+}
+
+df <- map2_dfr(countries, seq_along(countries) - 1, function(c, idx){
+  tibble(
+    date = rep(dates, 2),
+    country = c,
+    metric = rep(c("price","cpi"), each = n),
+    value = c(price_series(idx), cpi_series(idx))
+  )
+}) %>% arrange(country, metric, date)
+
+dir.create("data", showWarnings = FALSE)
+arrow::write_parquet(df, "data/golden.parquet")
+
+# Sanity checks
+stopifnot(length(unique(df$date)) == n)
+stopifnot(setequal(unique(df$country), countries))
+stopifnot(all(df %>% count(country, metric) %>% pull(n) == n))
+stopifnot(all(is.finite(df$value)))
+message(sprintf("OK: %s rows · %s countries × 2 metrics × %s months", nrow(df), length(countries), n))
+```
+
+:::
+
+
+
+---
+
+## Prompt Cheatsheet (1/2)
+
+**A — Wireframes & KPIs**
+
+> Act as a visualization TA. Given columns `date,country,metric,value`, propose **3 dashboard wireframes** (KPI strip + main trend + small multiples). Output: titles, annotation ideas, and accessibility notes.
+
+**B — Tidy & Validate** (already done with the synthetic data)
+
+> Write code to: (1) coerce month‑end dates, (2) detect duplicates on `(date,country,metric)`, (3) export `data/golden.parquet`, and (4) print a concise validation summary.
+
+---
+
+## Prompt Cheatsheet (2/2)
+
+**C — Chart Critique**
+
+> Given this code + chart description, propose **3 concrete improvements** (titles/scales/labels) and show the revised code.
+
+**D — App Scaffold**
+
+> Generate a **one‑page Streamlit/Shiny app** with country & metric selectors, a KPI card (last value + YoY%), main chart, and a download button. Keep it minimal and fast.
+
+**E — Publication Audit**
+
+> Audit the chart/app against this checklist (titles, axes/units, color‑blind safety, footnotes, last updated). Return exact fixes (code + text) and a 2‑sentence executive summary.
+
+---
+
+## Tidy & Validate — Python
+
+```{python}
+# python/tidy.py
+import pandas as pd, numpy as np, os
+os.makedirs("data", exist_ok=True)
+
+# Try to load; otherwise create synthetic fallback
+try:
+    df = pd.read_parquet("data/golden.parquet")
+except Exception:
+    dates = pd.period_range("2019-01", "2025-06", freq="M").to_timestamp("M")
+    countries = ["CH","FR","DE"]
+    rng = np.random.default_rng(0)
+    rows = []
+    for c in countries:
+        base = 100 + rng.normal(0,1)
+        price = base + np.cumsum(rng.normal(0,1,len(dates))) + 0.15*np.arange(len(dates))
+        cpi   = 100 + np.cumsum(np.clip(rng.normal(0,0.3,len(dates)), -0.2, 0.8))
+        rows += [(d,c,"price",p) for d,p in zip(dates,price)]
+        rows += [(d,c,"cpi",v) for d,v in zip(dates,cpi)]
+    df = pd.DataFrame(rows, columns=["date","country","metric","value"])
+
+# Coerce to month‑end, check duplicates
+df["date"] = pd.to_datetime(df["date"]).dt.to_period("M").dt.to_timestamp("M")
+dups = df.duplicated(["date","country","metric"]).sum()
+print(f"Rows: {len(df):,} · Duplicates: {dups}")
+
+# Save tidy table
+df.to_parquet("data/golden.parquet", index=False)
+```
+
+---
+
+## Tidy & Validate — R
+
+```{r}
+# r/tidy.R
+library(dplyr); library(lubridate); library(arrow)
+if (!dir.exists("data")) dir.create("data")
+
+if (!file.exists("data/golden.parquet")) {
+  dates <- seq(ymd("2019-01-31"), ymd("2025-06-30"), by="1 month")
+  mk <- function(n) cumsum(rnorm(n, 0, 1))
+  make_country <- function(c) {
+    tibble(date=dates, country=c, metric="price", value=100 + mk(length(dates)) + 0.15*seq_along(dates)) |>
+      bind_rows(tibble(date=dates, country=c, metric="cpi", value=100 + cumsum(pmax(rnorm(length(dates),0,0.3),-0.2))))
+  }
+  df <- bind_rows(lapply(c("CH","FR","DE"), make_country))
+  write_parquet(df, "data/golden.parquet")
+}
+
+df <- read_parquet("data/golden.parquet") |>
+  mutate(date = ceiling_date(as.Date(date), "month") - days(1))
+
+sum(duplicated(df[c("date","country","metric")]))
+write_parquet(df, "data/golden.parquet")
+```
+
+---
+
+## Publication‑Ready Chart — Python (Altair)
+
+```{python}
+# python/chart.py
+import altair as alt, pandas as pd
+alt.data_transformers.disable_max_rows()
+
+df = pd.read_parquet("data/golden.parquet")
+price = df.query("metric=='price'")
+
+chart = (alt.Chart(price)
+    .mark_line()
+    .encode(
+        x=alt.X("date:T", title=None),
+        y=alt.Y("value:Q", title="Electricity price index (2019-12=100)"),
+        color=alt.Color("country:N", legend=alt.Legend(orient="bottom"))
+    )
+    .properties(width=760, height=340, title="Electricity price index by country")
+)
+
+chart.save("figs/price_trend.svg")
+```
+
+::: callout-note
+Ask ChatGPT for **title/subtitle copy**, **annotation** ideas, and **accessibility tweaks** (line styles, label size, legend placement).
+:::
+
+---
+
+## Publication‑Ready Chart — R (ggplot2)
+
+```{r}
+# r/chart.R
+library(ggplot2); library(dplyr); library(arrow)
+df <- read_parquet("data/golden.parquet") |> filter(metric=="price")
+
+ggplot(df, aes(date, value, color=country)) +
+  geom_line(linewidth=.9) +
+  labs(title="Electricity price index by country",
+       subtitle="Monthly, 2019–2025; baseline 2019-12=100",
+       x=NULL, y="Index (2019-12=100)") +
+  theme_minimal(base_size = 13) +
+  theme(legend.position="bottom")
+
+ggsave("figs/price_trend.svg", width=8.5, height=4.2, dpi=300)
+```
+
+---
+
+## Micro‑App — Python (Streamlit)
+
+```{python}
+# app.py
+import streamlit as st, pandas as pd, altair as alt
+@st.cache_data
+def load(): return pd.read_parquet("data/golden.parquet")
+
+df = load()
+st.title("Energy & Economy Brief")
+country = st.selectbox("Country", sorted(df["country"].unique()))
+metric  = st.selectbox("Metric",  sorted(df["metric"].unique()))
+sub = df[(df.country==country) & (df.metric==metric)].sort_values("date")
+last = sub.value.iloc[-1]
+yoy  = None
+if len(sub) > 12:
+    yoy = (sub.value.iloc[-1]/sub.value.iloc[-13]-1)*100
+st.metric("Last value", f"{last:.1f}", f"{yoy:+.1f}% YoY" if yoy is not None else None)
+st.altair_chart(alt.Chart(sub).mark_line().encode(x="date:T", y="value:Q"), use_container_width=True)
+st.download_button("Download CSV", sub.to_csv(index=False).encode(), file_name=f"{country}_{metric}.csv")
+# run: streamlit run app.py
+```
+
+---
+
+## Micro‑App — R (Shiny)
+
+```{r}
+# app.R
+library(shiny); library(dplyr); library(ggplot2); library(arrow)
+df <- read_parquet("data/golden.parquet")
+ui <- fluidPage(
+  titlePanel("Energy & Economy Brief"),
+  sidebarLayout(
+    sidebarPanel(
+      selectInput("country","Country", choices = sort(unique(df$country))),
+      selectInput("metric","Metric", choices = sort(unique(df$metric)))
+    ),
+    mainPanel(
+      uiOutput("kpi"), plotOutput("main"), downloadButton("dl","Download CSV")
+    )
+  )
+)
+server <- function(input, output, session){
+  dat <- reactive(df |> filter(country==input$country, metric==input$metric) |> arrange(date))
+  output$kpi <- renderUI({
+    d <- dat(); if(nrow(d)<1) return(NULL)
+    last <- tail(d$value,1); yoy <- if(nrow(d)>12) round((last/d$value[nrow(d)-12]-1)*100,1) else NA
+    tagList(h4(sprintf("Last: %.1f", last)), if(!is.na(yoy)) h5(sprintf("YoY: %.1f%%", yoy)))
+  })
+  output$main <- renderPlot({ ggplot(dat(), aes(date,value)) + geom_line(linewidth=.9) + theme_minimal(13) })
+  output$dl <- downloadHandler(
+    filename = function() paste0(input$country,"_",input$metric,".csv"),
+    content  = function(file) write.csv(dat(), file, row.names = FALSE)
+  )
+}
+shinyApp(ui, server)
+```
+
+---
+
+## Publication‑Ready Checklist
+
+* **Clarity**: informative title + scope; labeled axes; units & baselines.
+* **Accuracy**: correct YoY and rolling logic (if any); aligned monthly periods.
+* **Accessibility**: color‑blind‑safe palette; readable labels; no dual axes.
+* **Context**: source + last updated; footnotes for methods; export **SVG/PNG**.
+* **Reproducibility**: `requirements.txt` / `{renv}` lock; decisions in README.
+
+**Prompt**: *Audit the app & chart against this checklist and output exact fixes with revised code blocks.*
+
+---
+
+## Repo Skeleton & Quick Start
+
+```
+workshop/
+├─ data/               # golden.parquet lives here
+├─ python/             # tidy.py, chart.py
+├─ r/                  # tidy.R, chart.R
+├─ figs/
+├─ app.py              # Streamlit app (or app.R for Shiny)
+├─ README.md
+├─ requirements.txt    # pandas, altair, streamlit, pyarrow
+└─ renv.lock           # if using R
+```
+
+**Run (Python)**: `python python/tidy.py` → `python python/chart.py` → `streamlit run app.py`
+**Run (R)**: `Rscript r/tidy.R` → `Rscript r/chart.R` → `Rscript app.R`
+
+---
+
+## Closing & Next Steps
+
+* Where did **LLM** help most? scaffolding • critique • copywriting • QA.
+* Extensions: small multiples; annotation layers; scenario slider; auto‑report (**Quarto**) bundling top charts + narrative.
+
+---
+
+# Power BI in the dashboard landscape
+
+* Same **goal** as Shiny and Streamlit: interactive dashboards and data apps.
+* Different **positioning**:
+
+  * Power BI: enterprise BI platform, tightly integrated with **Microsoft 365 / Azure**.
+  * Shiny: R-centric, very flexible, great for statisticians.
+  * Streamlit: Python-centric, very fast for prototypes and ML demos.
+* In many companies, Power BI is the **default** front-end for business dashboards.
+
+::: callout-tip
+In this course: Shiny & Streamlit for **programmable apps**, Power BI for **enterprise dashboards and data wrangling**.
+:::
+
+---
+
+## Dashboards: quick design recap
+
+* Dashboards are **visual displays of the most important information** to reach one or more objectives, shown on a **single screen** for at-a-glance monitoring.
+* Strongly influenced by **Stephen Few** (Show Me the Numbers, Information Dashboard Design).
+* Core principles:
+
+  * Prefer **bars/lines** over pies and gauges.
+  * Avoid clutter and unnecessary decoration.
+  * Highlight what matters; give enough **context**, not too much detail.
+
+---
+
+## When to use Power BI vs Shiny vs Streamlit
+
+| Question             | Power BI                        | Shiny                       | Streamlit                      |
+| -------------------- | ------------------------------- | --------------------------- | ------------------------------ |
+| Target users         | Business users, managers        | Statisticians, R users      | Data scientists, Python users  |
+| Main strength        | Self-service BI, data models    | Statistical workflows in R  | ML & prototyping in Python     |
+| Governance & sharing | Very strong (Power BI Service)  | Needs server / Shiny Server | Needs server / Streamlit Cloud |
+| Level of coding      | Low/medium (M, DAX, some R/Py)  | Medium/high (R)             | Medium/high (Python)           |
+| Best for             | KPI dashboards, corporate views | Custom modelling tools      | Quick interactive experiments  |
+
+* In practice, you often **combine** them:
+
+  * Power BI for **standard dashboards**.
+  * Shiny/Streamlit for **exploratory tools** and niche analytics.
+
+---
+
+## Power BI building blocks
+
+* **Power BI Desktop** (what we use in class):
+
+  * Connect to data sources.
+  * Clean and transform with **Power Query**.
+  * Model data (relations, star schema).
+  * Add **DAX** measures.
+  * Build visuals & dashboards.
+* **Power BI Service / Fabric** (online):
+
+  * Publish and share.
+  * Refresh data.
+  * Manage access & governance.
+
+We will focus on **Desktop + Power Query** and show where **R / Python** fit.
+
+---
+
+## Power Query & DAX: two languages
+
+* **Power Query (M language)**
+
+  * ETL / data wrangling: imports, column types, joins, filters, pivots, etc.
+  * Code is generated by clicking, but is **traceable and reproducible**.
+* **DAX (Data Analysis Expressions)**
+
+  * Calculated columns & measures on the **semantic model**.
+  * Dynamic aggregations depending on filters (visual context).
+* Analogy:
+
+  * Power Query M ≈ dplyr / data.table / pandas.
+  * DAX ≈ `group_by` + `summarise` but evaluated **on-the-fly** in visuals.
+
+---
+
+## Strengths of Power BI
+
+* #1 or #2 tool in many large companies for **dashboards** and **self-service BI**.
+* Strong visualization engine, good defaults.
+* Connects to **many data sources**; handles large volumes.
+* **Power Query** gives a structured, stepwise, and **documented** data pipeline.
+* Integrates with **R** and **Python** for advanced analytics and exports.
+
+---
+
+## Typical data analytics workflow (Power BI view)
+
+In many DA projects you will:
+
+1. **Import** data (Excel, CSV, SQL, SAP extracts, folders of files, …).
+2. **Clean & transform**:
+
+   * Change column types, rename, filter.
+   * Add new columns (custom formulas).
+   * Group & summarize.
+   * Append / merge tables.
+3. **Model** the data (relations, star schemas).
+4. **Visualize** with charts and tables.
+5. **Export** / reuse the prepared data (Power BI visuals, CSVs, R/Python).
+
+Power BI + Power Query cover steps **1–4**, and we can integrate R/Python in **2, 4 & 5**.
+
+---
+
+## Getting data into Power BI
+
+* Use **Home → Get data**.
+* Common sources in this course:
+
+  * Excel workbooks (multiple sheets = multiple tables).
+  * CSV / text files (delimiters: `,`, `;`, tab, …).
+  * Folders of files (for monthly SAP extracts, etc.).
+* After import you can:
+
+  * Load directly to the model; or
+  * Click **Transform data** to open **Power Query**.
+
+---
+
+## Power Query basics
+
+The Power Query editor shows:
+
+* **Queries pane**: list of tables (queries).
+* **Data preview**: sample rows.
+* **Applied Steps**: ordered list of transformations.
+* **Formula bar**: M code for the current step.
+
+Key ideas:
+
+* Every transformation adds a **step** and corresponding **M expression**.
+* You can **rename, reorder, delete** steps.
+* This gives full **traceability** for your data pipeline.
+
+---
+
+## Column types, distribution & profiles
+
+* Each column has a **type** (text, number, date, …).
+* Use the **Column quality / distribution / profile** options to:
+
+  * See missing values, distinct values.
+  * Check minimum, maximum, mean, etc.
+* Fix suspicious types early (e.g. IDs imported as numbers instead of text).
+
+This is the Power BI counterpart of doing `str()` / `summary()` / `skim()` in R or `df.info()` / `df.describe()` in Python.
+
+---
+
+## Append files (stacking data)
+
+Use this when you have **multiple files with the same structure**:
+
+1. `Get data → Folder` and select the folder with files.
+2. In Power Query, click **Combine → Combine & Transform**.
+3. Choose the worksheet / table to import.
+4. Inspect the generated steps.
+
+Watch out:
+
+* All files must have **identical columns** (names + types).
+* If Power Query infers wrong types in the last step, **delete or edit** that step.
+
+---
+
+## Merge / join tables
+
+* `Home → Merge queries` to join tables.
+* Typical use case: add **master data** (e.g. customers, products) to a transaction table.
+* Choose:
+
+  * Primary table.
+  * Lookup table.
+  * Join keys (can be multiple columns).
+  * Join type (left, inner, full, …).
+* Then **expand** the resulting column and select the fields you need.
+
+Equivalent to `left_join`, `inner_join`, etc. in dplyr or `merge` in pandas.
+
+---
+
+## Grouping and summarizing
+
+Two main options:
+
+1. In Power Query:
+
+   * `Transform → Group by` (switch to **Advanced**).
+   * Choose grouping keys and aggregation (sum, count, min, max, …).
+   * Creates a new summarized table.
+2. In Power BI visuals:
+
+   * Add fields to a **Table** or **Matrix** visualization.
+   * Aggregations computed on the fly (using implicit or explicit DAX measures).
+
+Power Query summaries are **static** (pre-computed), DAX summaries are **dynamic** (reactive to filters).
+
+---
+
+## Pivot wide / pivot long
+
+* **Pivot columns** (wide): turn values in a column into separate columns.
+
+  * E.g. movement types 101/102 become separate date columns.
+  * Then compute differences between dates.
+* **Unpivot columns** (long): turn multiple columns into key–value pairs.
+
+  * Useful for time series, measures in columns, etc.
+
+These operations mirror `pivot_wider` / `pivot_longer` in tidyr or `melt`/`pivot` in pandas.
+
+---
+
+## Exporting data from Power BI
+
+Options:
+
+1. **Export from a visual** (up to ~30k rows):
+
+   * Use a **Table** visual, click `… → Export data`.
+   * Exports to CSV.
+2. **Use R or Python in Power Query** to write larger tables out:
+
+   * Add a reference to the table query.
+   * `Transform → Run R script` or `Transform → Run Python script`.
+   * Write to CSV or Excel in a controlled folder.
+
+We will use this to **bridge** from Power BI to external R/Python analyses.
+
+---
+
+## Export > 30k rows with R (example)
+
+In Power Query, on a referenced query, add **Run R script** and use:
+
+```{r}
+# 'dataset' holds the input data for this script
+local_packages <- installed.packages()[, 1]
+
+if (!"writexl" %in% local_packages) {
+  install.packages("writexl")
+}
+
+if (nrow(dataset) <= 500000) {
+  writexl::write_xlsx(dataset, "C:/temp/data.xlsx")
+} else {
+  write.table(dataset, "C:/temp/data.csv", row.names = FALSE, sep = ",")
+}
+```
+
+* Make sure the folder (e.g. `C:/temp/`) exists and is writable.
+* Power BI will pass the current table as `dataset`.
+
+---
+
+## Export > 30k rows with Python (example)
+
+Similarly, using **Run Python script** in Power Query:
+
+```{python}
+# 'dataset' holds the input data for this script
+import os
+import pandas as pd
+
+os.makedirs("C:/temp", exist_ok=True)
+
+if len(dataset) <= 500_000:
+    out_path = "C:/temp/data.xlsx"
+    dataset.to_excel(out_path, index=False)
+else:
+    out_path = "C:/temp/data.csv"
+    dataset.to_csv(out_path, index=False)
+```
+
+* Power BI provides a pandas DataFrame named `dataset`.
+* This is a convenient way to **extract** large, cleaned datasets.
+
+---
+
+## R & Python in Power BI: overview
+
+You can integrate R and Python in Power BI in three main ways:
+
+1. **As data sources** (Get data → R script / Python script).
+2. **As transformation steps** in Power Query (Run R script / Run Python script).
+3. **As visuals** (R visual / Python visual) on the report canvas.
+
+This allows you to:
+
+* Reuse existing R / Python code.
+* Build advanced plots with **ggplot2**, **matplotlib**, **seaborn**, **altair**, …
+* Run niche models and show their results in Power BI.
+
+---
+
+## Configuring R & Python in Power BI Desktop
+
+Before you start:
+
+1. Install **R** (e.g. from CRAN) and / or **Python** (e.g. from Anaconda or `python.org`).
+2. In **File → Options and settings → Options**:
+
+   * Go to **R scripting** and set the R home directory.
+   * Go to **Python scripting** and set the Python executable.
+3. (Optional) Set up a dedicated **virtual environment** for Power BI.
+
+Limitations:
+
+* Some packages may not work in the Power BI Service.
+* R/Python visuals are rendered as **images** (no interactive HTML widgets).
+
+---
+
+## Using R script as a data source
+
+* `Home → Get data → More… → Other → R script`.
+* Enter R code that returns a data frame.
+
+Example:
+
+```{r}
+# Example R script as data source
+library(readr)
+
+sales <- read_csv("C:/data/sales.csv")
+customers <- read_csv("C:/data/customers.csv")
+
+# join before importing in Power BI
+library(dplyr)
+result <- sales %>%
+  inner_join(customers, by = "customer_id")
+
+result
+```
+
+* Power BI will detect data frames and let you select which tables to load.
+
+---
+
+## Using Python script as a data source
+
+* `Home → Get data → More… → Other → Python script`.
+* Enter Python code that creates pandas DataFrames.
+
+```{python}
+# Example Python script as data source
+import pandas as pd
+
+sales = pd.read_csv("C:/data/sales.csv")
+customers = pd.read_csv("C:/data/customers.csv")
+
+result = sales.merge(customers, on="customer_id", how="inner")
+
+result
+```
+
+* All variables that are DataFrames will be offered as tables.
+
+---
+
+## R / Python scripts in Power Query
+
+* In Power Query: `Transform → Run R script` or `Transform → Run Python script`.
+* Power BI passes the current table as:
+
+  * `dataset` (R): a data frame.
+  * `dataset` (Python): a pandas DataFrame.
+
+Pattern:
+
+```{r}
+# R in Power Query
+# 'dataset' is provided
+library(dplyr)
+output <- dataset %>%
+  mutate(flag_large = Net_Value > 100000)
+```
+
+```{python}
+# Python in Power Query
+# 'dataset' is provided
+import pandas as pd
+
+output = dataset.copy()
+output["flag_large"] = output["Net_Value"] > 100_000
+```
+
+* The object `output` is then used as the next step.
+
+---
+
+## Example: using R to detect duplicates
+
+Equivalent to the VMD duplicate bank account example:
+
+```{r}
+# 'dataset' contains vendor master data with BANKS, BANKL, BANKN
+library(dplyr)
+
+# count rows per bank account
+counts <- dataset %>%
+  group_by(BANKS, BANKL, BANKN) %>%
+  summarise(n = n(), .groups = "drop") %>%
+  filter(n > 1)
+
+# join back to keep only vendors with duplicated accounts
+output <- dataset %>%
+  inner_join(counts, by = c("BANKS", "BANKL", "BANKN")) %>%
+  arrange(BANKN, BANKL, BANKS)
+```
+
+This reproduces the Power Query steps using R code.
+
+---
+
+## Example: using Python to detect duplicates
+
+```{python}
+# 'dataset' contains vendor master data with BANKS, BANKL, BANKN
+import pandas as pd
+
+counts = (
+    dataset
+    .groupby(["BANKS", "BANKL", "BANKN"], as_index=False)
+    .size()
+    .rename(columns={"size": "n"})
+)
+
+counts = counts[counts["n"] > 1]
+
+output = (
+    dataset.merge(counts, on=["BANKS", "BANKL", "BANKN"], how="inner")
+    .sort_values(["BANKN", "BANKL", "BANKS"])
+)
+```
+
+Again, `output` becomes the next Power Query step.
+
+---
+
+## R and Python visuals
+
+On the report canvas you can:
+
+* Add an **R visual** (blue R icon) or **Python visual** (yellow Py icon).
+* Drag fields into the **Values** well.
+* Write R / Python code that uses the provided `dataset` (data frame / DataFrame).
+
+Use this to:
+
+* Create advanced charts (ggplot2, seaborn, altair, …).
+* Do small model fits and display predictions.
+
+Note: visuals are rendered as **static images**; interactive HTML widgets are not supported.
+
+---
+
+## Example: ggplot2 R visual
+
+```{r}
+# 'dataset' contains columns: hp, mpg, cyl
+library(ggplot2)
+
+ggplot(dataset, aes(x = hp, y = mpg, colour = factor(cyl))) +
+  geom_point(alpha = 0.7) +
+  theme_minimal() +
+  labs(x = "Horsepower", y = "Miles per gallon", colour = "Cylinders")
+```
+
+This is very similar to doing a scatter plot in a Shiny app, but embedded directly in Power BI.
+
+---
+
+## Example: Python / matplotlib visual
+
+```{python}
+# 'dataset' contains columns: Date, Sales
+import matplotlib.pyplot as plt
+import pandas as pd
+
+fig, ax = plt.subplots()
+
+# Ensure Date is datetime and sorted
+data = dataset.copy()
+data["Date"] = pd.to_datetime(data["Date"])
+data = data.sort_values("Date")
+
+ax.plot(data["Date"], data["Sales"])
+ax.set_xlabel("Date")
+ax.set_ylabel("Sales")
+ax.set_title("Sales over time")
+fig.autofmt_xdate()
+
+plt.show()
+```
+
+This mirrors a basic Streamlit time series plot.
+
+---
+
+## Combining Power BI with Shiny / Streamlit
+
+A realistic project might look like:
+
+1. **Exploration & modelling**:
+
+   * Use R / Python in **RStudio / VS Code**.
+   * Build prototypes in **Shiny** or **Streamlit**.
+2. **Industrialization**:
+
+   * Move core data wrangling into **Power Query**.
+   * Implement key KPIs with **DAX**.
+   * Use small R/Python snippets for special logic or exports.
+3. **Dashboarding**:
+
+   * Publish the Power BI report to your organisation.
+   * Keep Shiny / Streamlit apps for more technical audiences.
+
+---
+
+## Good practices for R & Python in Power BI
+
+* Keep R / Python scripts **short and focused**.
+* Prefer Power Query / DAX for standard transformations and aggregations.
+* Store R / Python code in **version control** (Git) and paste into Power BI.
+* Avoid writing to arbitrary locations; agree on a small set of **export folders**.
+* Document dependencies (packages, versions) so others can reproduce.
+* Test DAX measures and R/Python results thoroughly (especially KPIs).
+
+---
+
+## Template for course projects
+
+For a Power BI + R/Python project you can follow this template:
+
+1. Create a **.pbix** file with:
+
+   * Data import + Power Query transformations.
+   * A small set of DAX measures for KPIs.
+2. Add one or two **R/Python visuals** for:
+
+   * Advanced chart(s) or model output.
+3. Optionally, add a **Power Query R/Python step** to export a cleaned dataset.
+4. Document:
+
+   * Data sources.
+   * All R/Python scripts used.
+   * The main DAX measures.
+
+This chapter complements the Shiny and Streamlit chapters by showing how to operate within a **corporate BI tool** while still leveraging your R and Python skills.
+

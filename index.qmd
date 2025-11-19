@@ -7,4 +7,5 @@ page-layout: full
 - [Lecture 2 — Programming Foundations](lecture02.html)
 - [Lecture 3 — Data Management & Collection](lecture03.html)
 - [Lecture 4 — Software Engineering for Data Science](lecture04.html)
+- [Lecture 5 — Modern Tools: BI & LLMs](lecture05.html)
 
