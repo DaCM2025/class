@@ -1021,11 +1021,8 @@ Think of Streamlit as: *Python script → reactive UI* (without callbacks unless
 
 ## Example gallery 
 
-```{r}
-#| echo: false
-#| eval: true
-knitr::include_url("https://streamlit.io/gallery")
-```
+You can explore examples here:  
+[Streamlit App Gallery](https://streamlit.io/gallery){target="_blank"}
 
 ---
 
