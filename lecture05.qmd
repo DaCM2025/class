@@ -1754,7 +1754,11 @@ workshop/
 
 ---
 
-# Power BI in the dashboard landscape
+# Power BI dashboard
+
+---
+
+## Power BI in the dashboard landscape
 
 * Same **goal** as Shiny and Streamlit: interactive dashboards and data apps.
 * Different **positioning**:
@@ -2311,3 +2315,217 @@ For a Power BI + R/Python project you can follow this template:
 
 This chapter complements the Shiny and Streamlit chapters by showing how to operate within a **corporate BI tool** while still leveraging your R and Python skills.
 
+
+---
+
+# Power BI Tutorial: first steps for building a dashboard
+
+---
+
+## Goal & Dataset
+
+* **Goal**: Build one **clear, single‑page** dashboard from `data/golden.parquet`.
+* **Schema** (long): `date` (month end), `country` (CH/FR/DE/IT), `metric` (price/cpi), `value` (index).
+* **Steps**
+
+  1. No code — native visuals only
+  2. Add DAX time‑intelligence + simple M step
+  3. Add an **R visual** (ggplot2)
+  4. Add a **Python visual** (matplotlib)
+
+
+---
+
+## Step 1 — Build the dashboard **using only Power BI** (clean, robust, no code)
+
+1. **Load data**
+
+   * *Home → Get Data → Parquet →* `data/golden.parquet`.
+   * Verify columns: `date` (Date), `country` (Text), `metric` (Text), `value` (Decimal).
+
+---
+
+2. **Add slicers** (left rail)
+
+   * Insert → **Slicer** → add `country` → set to *List* → **Don’t summarize**.
+   * Insert → **Slicer** → add `metric` → set to *Dropdown* → **Don’t summarize**.
+   * Rename slicers via *Format → Title*.
+
+---
+
+3. **KPI Cards (no DAX yet)**
+
+   * Insert → **Card** → drag `value` (Don’t summarize) → Title: *Current value*.
+   * Insert → **Card** → drag `value` again → Title: *Total selected period*.
+   * Insert → **Card** → drag `value` → Title: *(placeholder)*.
+
+   > These are placeholders before enabling time intelligence in Steps 2–4.
+
+---
+
+4. **Main line chart**
+
+   * Insert → **Line chart**.
+   * X-axis: `date` (set **Type = Continuous**).
+   * Y-axis: `value`.
+   * Legend: `country`.
+   * Format: Title “Trend over time”, add reference line if desired.
+
+---
+
+## Step 2 — Add **DAX, modeling & time intelligence** (stronger analytics)
+
+### 2A — Power Query enhancements
+
+* Transform data → ensure `date` is Date.
+* Add `MonthEnd` if needed:
+
+```m
+let
+    Source = Parquet.Document(File.Contents("data/golden.parquet")),
+    #"Changed Type" = Table.TransformColumnTypes(Source, {{"date", type date}, {"country", type text}, {"metric", type text}, {"value", type number}}),
+    #"Added MonthEnd" = Table.AddColumn(#"Changed Type", "MonthEnd", each Date.EndOfMonth([date]), type date)
+in
+    #"Added MonthEnd"
+```
+---
+
+### 2B — Create **Date table** and relate it
+
+* *Model view → New table*:
+
+```DAX
+Date =
+VAR MinDate =
+    DATE ( YEAR ( MIN ( 'data'[date] ) ), MONTH ( MIN ( 'data'[date] ) ), 1 )
+VAR MaxDate =
+    EOMONTH ( MAX ( 'data'[date] ), 0 )
+RETURN
+ADDCOLUMNS (
+    CALENDAR ( MinDate, MaxDate ),
+    "Year", YEAR ( [Date] ),
+    "MonthNo", MONTH ( [Date] ),
+    "Month", FORMAT ( [Date], "MMM" ),
+    "YearMonth", FORMAT ( [Date], "YYYY-MM" ),
+    "MonthEnd", EOMONTH ( [Date], 0 )
+)
+```
+
+* *Table tools → Mark as Date table*.
+* Relationship: **Date[Date] (1)** → **data[date] (*)**.
+
+---
+
+### 2C — Add real time‑intelligence measures
+
+```DAX
+Value := SUM('data'[value])
+
+Last Visible Date := MAX('Date'[Date])
+
+Current Value := CALCULATE([Value], KEEPFILTERS('Date'[Date] = [Last Visible Date]))
+
+YoY % :=
+VAR Cur  = [Value]
+VAR Prev = CALCULATE([Value], DATEADD('Date'[Date], -1, YEAR))
+RETURN DIVIDE(Cur - Prev, Prev)
+
+Rolling 3M Avg :=
+AVERAGEX(
+    DATESINPERIOD('Date'[Date], [Last Visible Date], -3, MONTH),
+    [Value]
+)
+```
+
+Update KPI cards to:
+
+* Card 1 → **Current Value** (level this month).
+* Card 2 → **YoY %** (change vs last year).
+* Card 3 → **Rolling 3M Avg** (smoothed trend).
+
+---
+
+### 2D — Layout (improved)
+
+**Left column**: Country slicer, Metric slicer.
+**Top strip**: Cards (Current Value, YoY %, 3‑month Avg).
+**Main area**: Line chart (`Index`, legend = country).
+**Right column**: Optional bar chart (YoY % latest by country).
+
+---
+
+## Step 3 — Integrate **R** for custom visuals
+
+### Steps
+
+1. Insert → **R visual**.
+2. Add fields: `data[date]`, `data[country]`, `data[value]` (all **Don’t summarize**).
+3. Example plot:
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+df <- dataset %>%
+  rename(date =  data.date,
+         country = data.country,
+         value = data.value) %>%
+  mutate(date = as.Date(date))
+
+ggplot(df, aes(date, value, color = country)) +
+  geom_line(linewidth = 0.9) +
+  labs(title = "Electricity index by country",
+       subtitle = "Monthly values",
+       x = NULL, y = "Index") +
+  theme_minimal(base_size = 12)
+```
+
+4. Ensure **interactions** are correct (Edit interactions → avoid undesired cross‑filters).
+
+---
+
+## Step 4 — Integrate **Python** for advanced/custom visuals
+
+### Setup
+
+* Install libraries:
+
+```bash
+pip install pandas matplotlib pyarrow
+```
+
+* Power BI → Options → Python scripting → select correct Python interpreter.
+
+---
+
+### Create a Python visual
+
+1. Insert → **Python visual**.
+2. Add fields: `data[date]`, `data[country]`, `data[value]` (Don’t summarize).
+3. Example code:
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = dataset.copy()
+df.columns = [c.replace('data.', '') for c in df.columns]
+df['date'] = pd.to_datetime(df['date'])
+
+plt.figure()
+for key, grp in df.groupby('country'):
+    plt.plot(grp['date'], grp['value'], label=key, linewidth=1.2)
+
+plt.title("Electricity index by country
+Monthly values")
+plt.xlabel("")
+plt.ylabel("Index")
+plt.legend(loc="lower center", ncol=4)
+plt.tight_layout()
+```
+
+> When running the script outside Power BI, **remove Power BI’s prolog** (e.g., `matplotlib.use('Agg')`) and add `plt.show()`.
+
+---
+
+# Thank you!

@@ -630,6 +630,13 @@
     "text": "Closing & Next Steps\n\nWhere did LLM help most? scaffolding • critique • copywriting • QA.\nExtensions: small multiples; annotation layers; scenario slider; auto‑report (Quarto) bundling top charts + narrative."
   },
   {
+    "objectID": "lecture05.html#power-bi-in-the-dashboard-landscape",
+    "href": "lecture05.html#power-bi-in-the-dashboard-landscape",
+    "title": "Lecture 5 — Modern Tools: BI & LLMs",
+    "section": "Power BI in the dashboard landscape",
+    "text": "Power BI in the dashboard landscape\n\nSame goal as Shiny and Streamlit: interactive dashboards and data apps.\nDifferent positioning:\n\nPower BI: enterprise BI platform, tightly integrated with Microsoft 365 / Azure.\nShiny: R-centric, very flexible, great for statisticians.\nStreamlit: Python-centric, very fast for prototypes and ML demos.\n\nIn many companies, Power BI is the default front-end for business dashboards.\n\n\n\n\n\n\n\nTip\n\n\nIn this course: Shiny & Streamlit for programmable apps, Power BI for enterprise dashboards and data wrangling."
+  },
+  {
     "objectID": "lecture05.html#dashboards-quick-design-recap",
     "href": "lecture05.html#dashboards-quick-design-recap",
     "title": "Lecture 5 — Modern Tools: BI & LLMs",
@@ -831,6 +838,41 @@
     "title": "Lecture 5 — Modern Tools: BI & LLMs",
     "section": "Template for course projects",
     "text": "Template for course projects\nFor a Power BI + R/Python project you can follow this template:\n\nCreate a .pbix file with:\n\nData import + Power Query transformations.\nA small set of DAX measures for KPIs.\n\nAdd one or two R/Python visuals for:\n\nAdvanced chart(s) or model output.\n\nOptionally, add a Power Query R/Python step to export a cleaned dataset.\nDocument:\n\nData sources.\nAll R/Python scripts used.\nThe main DAX measures.\n\n\nThis chapter complements the Shiny and Streamlit chapters by showing how to operate within a corporate BI tool while still leveraging your R and Python skills."
+  },
+  {
+    "objectID": "lecture05.html#goal-dataset",
+    "href": "lecture05.html#goal-dataset",
+    "title": "Lecture 5 — Modern Tools: BI & LLMs",
+    "section": "Goal & Dataset",
+    "text": "Goal & Dataset\n\nGoal: Build one clear, single‑page dashboard from data/golden.parquet.\nSchema (long): date (month end), country (CH/FR/DE/IT), metric (price/cpi), value (index).\nSteps\n\nNo code — native visuals only\nAdd DAX time‑intelligence + simple M step\nAdd an R visual (ggplot2)\nAdd a Python visual (matplotlib)"
+  },
+  {
+    "objectID": "lecture05.html#step-1-build-the-dashboard-using-only-power-bi-clean-robust-no-code",
+    "href": "lecture05.html#step-1-build-the-dashboard-using-only-power-bi-clean-robust-no-code",
+    "title": "Lecture 5 — Modern Tools: BI & LLMs",
+    "section": "Step 1 — Build the dashboard using only Power BI (clean, robust, no code)",
+    "text": "Step 1 — Build the dashboard using only Power BI (clean, robust, no code)\n\nLoad data\n\nHome → Get Data → Parquet → data/golden.parquet.\nVerify columns: date (Date), country (Text), metric (Text), value (Decimal)."
+  },
+  {
+    "objectID": "lecture05.html#step-2-add-dax-modeling-time-intelligence-stronger-analytics",
+    "href": "lecture05.html#step-2-add-dax-modeling-time-intelligence-stronger-analytics",
+    "title": "Lecture 5 — Modern Tools: BI & LLMs",
+    "section": "Step 2 — Add DAX, modeling & time intelligence (stronger analytics)",
+    "text": "Step 2 — Add DAX, modeling & time intelligence (stronger analytics)\n2A — Power Query enhancements\n\nTransform data → ensure date is Date.\nAdd MonthEnd if needed:\n\nlet\n    Source = Parquet.Document(File.Contents(\"data/golden.parquet\")),\n    #\"Changed Type\" = Table.TransformColumnTypes(Source, {{\"date\", type date}, {\"country\", type text}, {\"metric\", type text}, {\"value\", type number}}),\n    #\"Added MonthEnd\" = Table.AddColumn(#\"Changed Type\", \"MonthEnd\", each Date.EndOfMonth([date]), type date)\nin\n    #\"Added MonthEnd\""
+  },
+  {
+    "objectID": "lecture05.html#step-3-integrate-r-for-custom-visuals",
+    "href": "lecture05.html#step-3-integrate-r-for-custom-visuals",
+    "title": "Lecture 5 — Modern Tools: BI & LLMs",
+    "section": "Step 3 — Integrate R for custom visuals",
+    "text": "Step 3 — Integrate R for custom visuals\nSteps\n\nInsert → R visual.\nAdd fields: data[date], data[country], data[value] (all Don’t summarize).\nExample plot:\n\n\nlibrary(dplyr)\nlibrary(ggplot2)\n\ndf &lt;- dataset %&gt;%\n  rename(date =  data.date,\n         country = data.country,\n         value = data.value) %&gt;%\n  mutate(date = as.Date(date))\n\nggplot(df, aes(date, value, color = country)) +\n  geom_line(linewidth = 0.9) +\n  labs(title = \"Electricity index by country\",\n       subtitle = \"Monthly values\",\n       x = NULL, y = \"Index\") +\n  theme_minimal(base_size = 12)\n\n\nEnsure interactions are correct (Edit interactions → avoid undesired cross‑filters)."
+  },
+  {
+    "objectID": "lecture05.html#step-4-integrate-python-for-advancedcustom-visuals",
+    "href": "lecture05.html#step-4-integrate-python-for-advancedcustom-visuals",
+    "title": "Lecture 5 — Modern Tools: BI & LLMs",
+    "section": "Step 4 — Integrate Python for advanced/custom visuals",
+    "text": "Step 4 — Integrate Python for advanced/custom visuals\nSetup\n\nInstall libraries:\n\npip install pandas matplotlib pyarrow\n\nPower BI → Options → Python scripting → select correct Python interpreter."
   },
   {
     "objectID": "lecture03.html#learning-goals",
@@ -1180,7 +1222,7 @@
     "href": "lecture03.html#r-openweathermap-json-to-tibble",
     "title": "Lecture 3 — Data Management & Collection",
     "section": "R: OpenWeatherMap → JSON to tibble",
-    "text": "R: OpenWeatherMap → JSON to tibble\n\n# packages\nlibrary(httr2)\nlibrary(dplyr)\n\n# store your key in an env var before class: Sys.setenv(OPENWEATHERMAP_API_KEY=\"...\")\nokey &lt;- Sys.getenv(\"OPENWEATHERMAP_API_KEY\")\n\nresp &lt;- request(\"https://api.openweathermap.org/data/2.5/weather\") |&gt;\n  req_url_query(q = \"Lausanne\", units = \"metric\", appid = okey) |&gt;\n  req_perform()\n\nwx &lt;- resp_body_json(resp, simplifyVector = TRUE)\n\n# extract a compact summary row\nwx_row &lt;- tibble::tibble(\n  city        = wx$name,\n  country     = wx$sys$country,\n  temperature = wx$main$temp,\n  feels_like  = wx$main$feels_like,\n  humidity    = wx$main$humidity,\n  wind_ms     = wx$wind$speed,\n  condition   = wx$weather$description,\n  timestamp   = as.POSIXct(wx$dt, origin = \"1970-01-01\", tz = \"UTC\")\n)\nwx_row\n\n# A tibble: 1 × 8\n  city     country temperature feels_like humidity wind_ms condition      \n  &lt;chr&gt;    &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;          \n1 Lausanne CH             1.96      -1.67       88     3.7 overcast clouds\n# ℹ 1 more variable: timestamp &lt;dttm&gt;\n\n\n\nGlobal execute: { eval: false } prevents live HTTP calls during render. Run interactively if needed."
+    "text": "R: OpenWeatherMap → JSON to tibble\n\n# packages\nlibrary(httr2)\nlibrary(dplyr)\n\n# store your key in an env var before class: Sys.setenv(OPENWEATHERMAP_API_KEY=\"...\")\nokey &lt;- Sys.getenv(\"OPENWEATHERMAP_API_KEY\")\n\nresp &lt;- request(\"https://api.openweathermap.org/data/2.5/weather\") |&gt;\n  req_url_query(q = \"Lausanne\", units = \"metric\", appid = okey) |&gt;\n  req_perform()\n\nwx &lt;- resp_body_json(resp, simplifyVector = TRUE)\n\n# extract a compact summary row\nwx_row &lt;- tibble::tibble(\n  city        = wx$name,\n  country     = wx$sys$country,\n  temperature = wx$main$temp,\n  feels_like  = wx$main$feels_like,\n  humidity    = wx$main$humidity,\n  wind_ms     = wx$wind$speed,\n  condition   = wx$weather$description,\n  timestamp   = as.POSIXct(wx$dt, origin = \"1970-01-01\", tz = \"UTC\")\n)\nwx_row\n\n# A tibble: 1 × 8\n  city     country temperature feels_like humidity wind_ms condition       \n  &lt;chr&gt;    &lt;chr&gt;         &lt;dbl&gt;      &lt;dbl&gt;    &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;           \n1 Lausanne CH             1.87      -1.55       89    3.37 scattered clouds\n# ℹ 1 more variable: timestamp &lt;dttm&gt;\n\n\n\nGlobal execute: { eval: false } prevents live HTTP calls during render. Run interactively if needed."
   },
   {
     "objectID": "lecture03.html#python-openweathermap-json-to-dataframe",
@@ -1201,7 +1243,7 @@
     "href": "lecture03.html#r-alpha-vantage-tidy-daily-prices",
     "title": "Lecture 3 — Data Management & Collection",
     "section": "R: Alpha Vantage → tidy daily prices",
-    "text": "R: Alpha Vantage → tidy daily prices\n\nlibrary(httr2)\nlibrary(purrr)\nlibrary(dplyr)\n\nakey &lt;- Sys.getenv(\"ALPHAVANTAGE_API_KEY\", unset = \"demo\")\nresp &lt;- request(\"https://www.alphavantage.co/query\") |&gt;\n  req_url_query(`function` = \"TIME_SERIES_DAILY\", symbol = \"MSFT\", apikey = akey) |&gt;\n  req_perform()\njs &lt;- resp_body_json(resp, simplifyVector = TRUE)\n\ndaily &lt;- js[[\"Time Series (Daily)\"]]\nprices &lt;- imap_dfr(daily, ~ tibble::tibble(\n  date   = as.Date(.y),\n  open   = as.numeric(.x[[\"1. open\"]]),\n  high   = as.numeric(.x[[\"2. high\"]]),\n  low    = as.numeric(.x[[\"3. low\"]]),\n  close  = as.numeric(.x[[\"4. close\"]]),\n  volume = as.numeric(.x[[\"5. volume\"]])\n)) |&gt;\n  arrange(date)\nprices\n\n# A tibble: 100 × 6\n   date        open  high   low close   volume\n   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;\n 1 2025-07-01  496.  498.  491.  492. 19945375\n 2 2025-07-02  490.  494.  489.  491. 16319641\n 3 2025-07-03  494.  500.  493.  499. 13984829\n 4 2025-07-07  497.  499.  495.  498. 13981605\n 5 2025-07-08  497.  498.  494.  497. 11846586\n 6 2025-07-09  500.  507.  500.  504. 18659538\n 7 2025-07-10  503.  504.  498.  501. 16498740\n 8 2025-07-11  498.  505.  498.  503. 16459512\n 9 2025-07-14  502.  504.  501.  503. 12058848\n10 2025-07-15  503.  508.  503.  506. 14927202\n# ℹ 90 more rows"
+    "text": "R: Alpha Vantage → tidy daily prices\n\nlibrary(httr2)\nlibrary(purrr)\nlibrary(dplyr)\n\nakey &lt;- Sys.getenv(\"ALPHAVANTAGE_API_KEY\", unset = \"demo\")\nresp &lt;- request(\"https://www.alphavantage.co/query\") |&gt;\n  req_url_query(`function` = \"TIME_SERIES_DAILY\", symbol = \"MSFT\", apikey = akey) |&gt;\n  req_perform()\njs &lt;- resp_body_json(resp, simplifyVector = TRUE)\n\ndaily &lt;- js[[\"Time Series (Daily)\"]]\nprices &lt;- imap_dfr(daily, ~ tibble::tibble(\n  date   = as.Date(.y),\n  open   = as.numeric(.x[[\"1. open\"]]),\n  high   = as.numeric(.x[[\"2. high\"]]),\n  low    = as.numeric(.x[[\"3. low\"]]),\n  close  = as.numeric(.x[[\"4. close\"]]),\n  volume = as.numeric(.x[[\"5. volume\"]])\n)) |&gt;\n  arrange(date)\nprices\n\n# A tibble: 100 × 6\n   date        open  high   low close   volume\n   &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;\n 1 2025-07-09  500.  507.  500.  504. 18659538\n 2 2025-07-10  503.  504.  498.  501. 16498740\n 3 2025-07-11  498.  505.  498.  503. 16459512\n 4 2025-07-14  502.  504.  501.  503. 12058848\n 5 2025-07-15  503.  508.  503.  506. 14927202\n 6 2025-07-16  505.  507.  502.  506. 15154374\n 7 2025-07-17  506.  513.  506.  512. 17503129\n 8 2025-07-18  514.  515.  507.  510. 21209666\n 9 2025-07-21  507.  512.  506.  510. 14066805\n10 2025-07-22  511.  511.  505.  505. 13868644\n# ℹ 90 more rows"
   },
   {
     "objectID": "lecture03.html#python-alpha-vantage-tidy-daily-prices",
@@ -3259,7 +3301,7 @@
     "href": "lecture04.html#peeking-at-generics-r",
     "title": "Lecture 4 — Software Engineering for Data Science",
     "section": "Peeking at generics (R)",
-    "text": "Peeking at generics (R)\n\nsummary\n\nfunction (object, ...) \nUseMethod(\"summary\")\n&lt;bytecode: 0x561cc01d1798&gt;\n&lt;environment: namespace:base&gt;\n\nhead(summary.default)\n\n                                                    \n1 function (object, ..., digits, quantile.type = 7) \n2 {                                                 \n3     if (is.factor(object))                        \n4         return(summary.factor(object, ...))       \n5     else if (is.matrix(object)) {                 \n6         if (missing(digits))                      \n\nhead(summary.lm)\n\n                                                               \n1 function (object, correlation = FALSE, symbolic.cor = FALSE, \n2     ...)                                                     \n3 {                                                            \n4     z &lt;- object                                              \n5     p &lt;- z$rank                                              \n6     rdf &lt;- z$df.residual"
+    "text": "Peeking at generics (R)\n\nsummary\n\nfunction (object, ...) \nUseMethod(\"summary\")\n&lt;bytecode: 0x5568d595b0c8&gt;\n&lt;environment: namespace:base&gt;\n\nhead(summary.default)\n\n                                                    \n1 function (object, ..., digits, quantile.type = 7) \n2 {                                                 \n3     if (is.factor(object))                        \n4         return(summary.factor(object, ...))       \n5     else if (is.matrix(object)) {                 \n6         if (missing(digits))                      \n\nhead(summary.lm)\n\n                                                               \n1 function (object, correlation = FALSE, symbolic.cor = FALSE, \n2     ...)                                                     \n3 {                                                            \n4     z &lt;- object                                              \n5     p &lt;- z$rank                                              \n6     rdf &lt;- z$df.residual"
   },
   {
     "objectID": "lecture04.html#forwarding-extra-arguments",
